@@ -5,19 +5,21 @@ function Settings(app, name, appSave, workspaceFields) {
 	function loadPanels(panels) {
 		for (const p in panels) {
 			if (p === 'el') continue;
+			if (!app.ui.panels[p]) continue;
+			let panel = app.ui.panels[p];
+			let settings = panels[p];
 			
-			if (panels[p].docked) app.ui.panels[p].dock();
-			else app.ui.panels[p].undock();
+			if (settings.docked) panel.dock();
+			else panel.undock();
 			
 			// ui.panels[p].open.update(panels[p].open);
-			if (!panels[p].open) app.ui.panels[p].close();
+			if (!settings.open) panel.close();
 			
-			if (panels[p].block) app.ui.panels[p].block();
-			if (panels[p].headless) app.ui.panels[p].headless();
+			if (settings.block) panel.block();
+			if (settings.headless) panel.headless();
 			
-			app.ui.panels[p].order = panels[p].order;
-			app.ui.panels[p].gridArea = panels[p].gridArea;
-
+			panel.order = settings.order;
+			panel.gridArea = settings.gridArea;
 		}
 	}
 
@@ -43,16 +45,8 @@ function Settings(app, name, appSave, workspaceFields) {
 		
 		settings.panels = {};
 		for (const p in app.ui.panels) {
-			if (p !== 'el') {
-				settings.panels[p] = {
-					open: app.ui.panels[p].isOpen,
-					docked: app.ui.panels[p].isDocked,
-					order: app.ui.panels[p].order,
-					block: app.ui.panels[p].isBlock,
-					headless: app.ui.panels[p].isHeadless,
-					gridArea: app.ui.panels[p].gridArea,
-				};
-			}
+			if (p === 'el') continue;
+			settings.panels[p] = app.ui.panels[p].settings;
 		}
 
 		settings.quickRef = app.ui.quickRef.list;

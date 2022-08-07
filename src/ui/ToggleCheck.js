@@ -17,10 +17,10 @@ class UIToggleCheck extends UICollection {
 			this.check.el.blur();
 		});
 
-		this.label = new UIElement({ tag: 'label' });
-		this.label.text = params.text;
+		// this.label = new UIElement({ tag: 'label' });
+		// this.label.text = params.text;
 
-		this.el.appendChild(this.label.el);
+		// this.el.appendChild(this.label.el);
 		this.el.appendChild(this.check.el);
 
 	}

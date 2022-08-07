@@ -1,4 +1,4 @@
-	{
+{
 	"interface": {
 		"label": "Interface",
 		"uis": [
@@ -97,9 +97,7 @@
 					},
 					{
 						"type": "UIToggleCheck",
-						"fromModule": {
-							"callback": "toggleMaxWidth"
-						},
+						"callback": "toggleMaxWidth",
 						"params": {
 							"text": "Max Width",
 							"class": "left-end"
@@ -120,7 +118,7 @@
 			}
 		]
 	},
-	"quickRef": {
+	"quick": {
 		"label": "Quick Ref",
 		"uis": [
 			{

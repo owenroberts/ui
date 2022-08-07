@@ -90,7 +90,14 @@ class UIPanel extends UICollection {
 	}
 
 	get settings() {
-
+		return {
+			open: this.isOpen,
+			docked: this.isDocked,
+			order: this.order,
+			block: this.isBlock,
+			headless: this.isHeadless,
+			gridArea: this.gridArea,
+		};
 	}
 
 	close() {
@@ -132,9 +139,6 @@ class UIPanel extends UICollection {
 		let row = _row 
 			|| this.rows[this.rows.length - 1]
 			|| this.addRow();
-		if (ui.prompt == "Go To Frame") {
-			// console.log(row)
-		}
 		row.append(ui, k);
 	}
 }

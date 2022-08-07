@@ -12,6 +12,7 @@ class UIElement {
 
 		if (params.id !== undefined) this.el.id = params.id;
 		if (params.class) this.addClass(params.class); // list?
+		if (params.text) this.el.textContent = params.text;
 
 		// if (params.type) this.el.type = params.type; -- get rid of type used for buttons
 	}

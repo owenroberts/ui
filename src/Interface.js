@@ -1,4 +1,4 @@
-function Interface(app) {
+function Interface(app, params) {
 	const self = this;
 	const uiTypes = {
 		UILabel,
@@ -49,6 +49,10 @@ function Interface(app) {
 	const timelineArea = new UICollection({ id: 'timeline-panels', class: 'panels' });
 	uiTimeline.append(timelineArea);
 
+	if (params.useMain) {
+		
+	}
+
 	window.toolTip = new UILabel({id: 'tool-tip'});
 	interface.append(window.toolTip);
 
@@ -95,7 +99,7 @@ function Interface(app) {
 
 	async function loadInterfaceFiles(file, callback) {
 		const appFile = await fetch(file).then(response => response.json());
-		const interfaceFile = await fetch('../interface/interface.json').then(response => response.json());
+		const interfaceFile = await fetch('../ui/interface.json').then(response => response.json());
 		
 		const data = { ...interfaceFile };
 		for (const k in appFile) {
@@ -112,8 +116,12 @@ function Interface(app) {
 					self.createUI(uis.list[j], uis.module, uis.sub, panel);
 				}
 				// gives panel to module -- give to all ?
-				if (uis.module == 'ui' && uis.sub) app.ui[uis.sub].panel = panel;
-				if (data.addPanel) app[key].panel = panel;
+				if (uis.module === 'ui' && uis.sub) {
+					app.ui[uis.sub].panel = panel;
+				}
+				if (data[key].addPanel && !app[uis.module].panel) {
+					app[uis.module].panel = panel;
+				}
 			}
 		}
 		self.addSelect([
@@ -160,7 +168,6 @@ function Interface(app) {
 	};
 
 	this.addPanels = function() {
-
 	};
 
 	this.createPanel = function(key, data) {
@@ -205,7 +212,7 @@ function Interface(app) {
 			params.callback = function(value) {
 				m[data.string] = value;
 			}
-			params.value = +[data.string];
+			params.value = m[data.string];
 		}
 
 		/* this is fuckin nuts right ... */
@@ -231,7 +238,11 @@ function Interface(app) {
 		let ui = new uiTypes[data.type](params);
 		
 		if (data.type == 'UIRow') panel.addRow(data.k, params.class);
-		else if (data.k) panel.append(ui, data.k);
+		else if (data.k) {
+			// panel.append(ui, data.k);
+			// dont know if this will fuck up anything yet
+			panel.add(ui, undefined, data.k); 
+		}
 		else panel.add(ui);
 
 		/* add is to row, append is adding it straight there */
