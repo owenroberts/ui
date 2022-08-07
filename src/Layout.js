@@ -40,7 +40,6 @@ function Layout(ui, params) {
 	};
 
 	this.addSelectPanels = function(panelList) {
-		console.log(self.panel.layout.uiSelect)
 		panelList.forEach(p => {
 			const [option, label] = p;
 			self.panel.layout.uiSelect.addOption(option, false, label);
@@ -48,9 +47,7 @@ function Layout(ui, params) {
 	};
 
 	this.dockPanel = function(section) {
-		console.log(self.panel.layout.uiSelect.value)
 		const panel = ui.panels[self.panel.layout.uiSelect.value];
-		console.log(panel);
 		panel.dock();
 		if (panel.gridArea !== section) {
 			panel.gridArea = section;

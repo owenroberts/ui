@@ -114,11 +114,25 @@
 		input[type=text] {
 			border: none;
 			background-color: $ui-color;
-			padding-right: 0.25em;
+			// padding-right: 0.25em;
 			// height: 1.125rem;
+
+			text-align: left;
+			vertical-align: bottom;
+			line-height: 1.6;
 			
 			&:focus {
 				border: 1px solid $accent-color;
+			}
+
+			&:focus-visible {
+				border: unset;
+				outline: unset;
+				background: white;
+				// color: white;
+				&::placeholder {
+					// color: white;
+				}
 			}
 
 			&.left-end,
@@ -134,7 +148,8 @@
 			&.right-end { @include right-end; }
 		}
 
-		input.number {
+		input.number,
+		input.drag {
 			text-align: left;
 			vertical-align: bottom;
 			line-height: 1.6;
@@ -147,12 +162,23 @@
 		}
 
 		input[type=file] {
-
 			flex: 100%;
 		}
 
 		.ui-collection {
 			padding-right: 0.25em;
+			.number,
+			.drag {
+				&:focus-visible {
+					border: unset;
+					outline: unset;
+					background: $ui-select;
+					color: white;
+					&::placeholder {
+						color: white;
+					}
+				}
+			}
 		}
 
 		&.break {

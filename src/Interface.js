@@ -28,7 +28,7 @@ function Interface(app, params) {
 	this.keys = {};
 	this.faces = {}; /* references to faces we need to update values ???  */
 	this.panels = new UICollection({ id: "ui-panels", class: "panels" });
-	this.default = this.panels;
+	
 	this.quickRef = new QuickRef(app);
 	
 	this.maxPanels = 100; // limit number of panels open at one time, default 100, basically ignore this -- save for when we have abc layout
