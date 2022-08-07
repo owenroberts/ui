@@ -28,6 +28,7 @@ function Interface(app, params) {
 	this.keys = {};
 	this.faces = {}; /* references to faces we need to update values ???  */
 	this.panels = new UICollection({ id: "ui-panels", class: "panels" });
+	this.default = this.panels;
 	this.quickRef = new QuickRef(app);
 	
 	this.maxPanels = 100; // limit number of panels open at one time, default 100, basically ignore this -- save for when we have abc layout
@@ -37,38 +38,7 @@ function Interface(app, params) {
 	// break between collapsed and uncollapsed panels
 	this.panels.append(new UIElement({ id: 'panel-break' }));
 
-	// this.layout = new Layout(this); -- later
-	const container = new UICollection({ id: 'container' });
-	const interface = new UICollection({ id: 'interface' });
-	container.append(interface);
-	const selector = new UICollection({ id: 'selector' });
-	interface.append(selector);
-	interface.append(this.panels);
-	const uiTimeline = new UICollection({ id: 'ui-timeline' });
-	container.append(uiTimeline);
-	const timelineArea = new UICollection({ id: 'timeline-panels', class: 'panels' });
-	uiTimeline.append(timelineArea);
-
-	if (params.useMain) {
-		
-	}
-
-	window.toolTip = new UILabel({id: 'tool-tip'});
-	interface.append(window.toolTip);
-
-	this.toggleTimelineView = function(isOn) {
-		const area = isOn ? timelineArea : self.panels;
-		for (const p in self.panels) {
-			if (self.panels[p].gridArea === 'timeline') {
-				area.append(self.panels[p]);
-			}
-		}
-	};
-
-	this.toggleRL = function(isOn) {
-		if (isOn) container.addClass('RL');
-		else container.removeClass('RL');
-	};
+	this.layout = new Layout(this, params);
 
 	let baseFontSize = 11;
 	this.updateScale = function(value) {
@@ -124,50 +94,19 @@ function Interface(app, params) {
 				}
 			}
 		}
-		self.addSelect([
+
+		self.layout.addSelectPanels([
 			...Object.keys(data).map(k => [k, data[k].label])
 		]);
+		
 		// self.settings.load();
 		self.quickRef.addData(data);
+		self.panels.layout.dock();
 		if (callback) callback();
 	}
 
-	// use module ? 
 	this.load = function(file, callback) {
 		loadInterfaceFiles(file, callback);
-	};
-
-	this.addSelect = function(panelList) {
-		
-		const selectBtn = new UISelectButton({
-			callback: value => {
-				self.panels[value].dock();
-				if (self.panels[value].gridArea !== 'default') {
-					self.panels[value].gridArea = 'default';
-					self.panels.append(self.panels[value]);
-				}
-			},
-			btn: '+',
-			btns: [
-				{
-					text: '+t',
-					callback: value => {
-						self.panels[value].dock();
-						self.panels[value].gridArea = 'timeline';
-						self.toggleTimelineView(true); // turn on timeline view if not on
-					}
-				}
-			]
-		});
-
-		panelList.forEach(p => {
-			const [option, label] = p;
-			selectBtn.select.addOption(option, false, label);
-		});
-		selector.append(selectBtn);
-	};
-
-	this.addPanels = function() {
 	};
 
 	this.createPanel = function(key, data) {
@@ -253,6 +192,12 @@ function Interface(app, params) {
 		if (data.face && data.ignoreSettings) ui.ignoreSettings = true;
 	};
 
+	this.update = function() {
+		app.uiUpdate();
+	};
+
+	/* replace with UISection later
+
 	this.toggleMaxWidth = function(value) {
 		self.useMaxWidth = value;
 		if (self.useMaxWidth) interface.addClass('max-width');
@@ -264,10 +209,5 @@ function Interface(app, params) {
 		interface.el.style.setProperty('--max-width', self.maxWidth);
 	};
 
-	this.update = function() {
-		app.uiUpdate();
-	};
-
-	// just think this looks nice
-	interface.append(new UILabel({ id: 'resize', text: '|||' }));
+	*/
 }

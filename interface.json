@@ -50,29 +50,6 @@
 			{
 				"module": "ui",
 				"list": [
-					{ "type": "UIRow" },
-					{
-						"type": "UIToggle",
-						"face": "timelineView",
-						"fromModule": {
-							"callback": "toggleTimelineView"
-						},
-						"params": {
-							"onText": "Timeline View",
-							"offText": "Timeline View"
-						}
-					},
-					{
-						"type": "UIToggle",
-						"face": "rl",
-						"fromModule": {
-							"callback": "toggleRL"
-						},
-						"params": {
-							"onText": "R/L",
-							"offText": "L/R"
-						}
-					},
 					{
 						"row": true,
 						"type": "UINumberStep",
@@ -203,5 +180,66 @@
 				]
 			}
 		]	
+	},
+	"layout": {
+		"label": "Layout",
+		"uis": [
+			{
+				"module": "ui",
+				"sub": "layout",
+				"list": [
+					{
+						"type": "UIRow",
+						"k": "layout"
+					},
+					{
+						"type": "UISelect",
+						"k": "uiSelect"
+					},
+					{
+						"type": "UIButton",
+						"callback": "dockPanel",
+						"params": {
+							"text": "+",
+							"args": ["default"]
+						}
+					},
+					{
+						"type": "UIButton",
+						"callback": "dockPanel",
+						"params": {
+							"text": "+t",
+							"args": ["timeline"]
+						}
+					},
+					{
+						"type": "UIButton",
+						"callback": "dockPanel",
+						"params": {
+							"text": "+m",
+							"args": ["main"]
+						}
+					},
+					{
+						"type": "UIToggle",
+						"face": "timelineView",
+						"callback": "toggleTimelineView",
+						"params": {
+							"onText": "Timeline View",
+							"offText": "Timeline View"
+						}
+					},
+					{
+						"type": "UIToggle",
+						"face": "rl",
+						"callback": "toggleRL",
+						"params": {
+							"onText": "R/L",
+							"offText": "L/R"
+						}
+					}
+				]
+			}
+		]
 	}
 }
