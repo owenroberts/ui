@@ -33,7 +33,7 @@ class UINumberRange extends UICollection {
 	}
 
 	update(value, uiOnly) {
-		if (!uiOnly) this.callback(value, ...this.args);
+		if (!uiOnly) this.callback(+value, ...this.args);
 		this.value = value;
 	}
 
@@ -43,6 +43,6 @@ class UINumberRange extends UICollection {
 	}
 
 	get value() {
-		return this.numberInput.value;
+		return +this.numberInput.value;
 	}
 }
