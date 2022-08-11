@@ -29,7 +29,6 @@
 		border-top: 1px solid $text-color;
 	}
 
-
 	&.undocked { display: none !important; }
 	&.closed { 
 		height: 25px; 
@@ -280,15 +279,9 @@
 	}
 
 	&.block .row {
-		&::-webkit-scrollbar {
-			display: none;
-		}
-		overflow-x: scroll;
-		overflow-y: hidden;
+		@include horizontal-scroll;
 
-		.ui-collection {
-			display: flex;
-		}
+		
 		&.header {
 			overflow: initial;
 		}

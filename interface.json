@@ -71,25 +71,6 @@
 						"fromModule": {
 							"value": "maxPanels"
 						}
-					},
-					{
-						"type": "UIToggleCheck",
-						"callback": "toggleMaxWidth",
-						"params": {
-							"text": "Max Width",
-							"class": "left-end"
-						}
-					},
-					{
-						"type": "UINumber",
-						"face": "maxWidthDisplay",
-						"fromModule": {
-							"callback": "setMaxWidth",
-							"value": "maxWidth"
-						},
-						"params": {
-							"class": "right-end"
-						}
 					}
 				]
 			}
@@ -188,38 +169,6 @@
 				"module": "ui",
 				"sub": "layout",
 				"list": [
-					{
-						"type": "UIRow",
-						"k": "layout"
-					},
-					{
-						"type": "UISelect",
-						"k": "uiSelect"
-					},
-					{
-						"type": "UIButton",
-						"callback": "dockPanel",
-						"params": {
-							"text": "+",
-							"args": ["default"]
-						}
-					},
-					{
-						"type": "UIButton",
-						"callback": "dockPanel",
-						"params": {
-							"text": "+t",
-							"args": ["timeline"]
-						}
-					},
-					{
-						"type": "UIButton",
-						"callback": "dockPanel",
-						"params": {
-							"text": "+m",
-							"args": ["main"]
-						}
-					},
 					{
 						"type": "UIToggle",
 						"face": "timelineView",

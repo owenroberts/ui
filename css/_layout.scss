@@ -6,7 +6,7 @@
 	grid-template-areas:
 		'ui main'
 		'timeline timeline';
-	justify-content: space-between;
+	// justify-content: space-between;
 
 	&.RL {
 		grid-template-areas:
@@ -17,31 +17,40 @@
 	#main { grid-area: main; }
 	#ui-timeline { grid-area: timeline }
 	
-	#interface {
+	.ui-section {
 		min-width: 120px;
 		--max-width: 500;
 		grid-area: ui;
 
 		&.max-width {
 			max-width: calc(var(--max-width) * 1px);
+			width: calc(var(--max-width) * 1px);
+		}
+	}
+}
+
+.ui-section {
+	.section-header {
+		background: $border-color;
+		border-top-right-radius: 0.5em;
+		border-top-left-radius: 0.5em;
+		display: flex;
+		@include horizontal-scroll;
+
+		.width-collection {
+			display: flex;
 		}
 	}
 }
 
 .panels {
-	margin-top: 0.25em;
+	// margin-top: 0.25em;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0 0.5rem;
 	align-items: baseline;
 	justify-content: space-between;
 }
-
-// break in collapsed and uncollapsed panels
-#panel-break {
-	flex-basis: 100%;
-}
-
 
 #quickRef-panel {
 	.row { 

@@ -27,16 +27,15 @@ function Interface(app, params) {
 
 	this.keys = {};
 	this.faces = {}; /* references to faces we need to update values ???  */
-	this.panels = new UICollection({ id: "ui-panels", class: "panels" });
+	this.panels = {};
+	// all existing panels is different than section panels ...
+	// but they can start here ... 
 	
 	this.quickRef = new QuickRef(app);
 	
 	this.maxPanels = 100; // limit number of panels open at one time, default 100, basically ignore this -- save for when we have abc layout
 	this.maxWidth = 500;
 	this.useMaxWidth = false;
-
-	// break between collapsed and uncollapsed panels
-	this.panels.append(new UIElement({ id: 'panel-break' }));
 
 	this.layout = new Layout(this, params);
 
@@ -110,7 +109,6 @@ function Interface(app, params) {
 	};
 
 	this.createPanel = function(key, data) {
-
 		const panel = new UIPanel({ 
 			id: key, 
 			label: data.label, 
@@ -119,9 +117,7 @@ function Interface(app, params) {
 				// console.log(openPanels) 
 			}
 		});
-		this.panels.append(panel, key);
-		
-		
+		this.panels[key] = panel;
 		return panel;
 	};
 

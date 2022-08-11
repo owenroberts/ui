@@ -43,7 +43,7 @@ class UIDrag extends UIText {
 			drag.active = false;
 			drag.x = 0;
 			drag.y = 0;
-			self.el.blur();
+			// self.el.blur();
 			document.removeEventListener('mousemove', mouseMove);
 			document.removeEventListener('mouseup', mouseUp);
 		}

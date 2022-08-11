@@ -7,23 +7,17 @@ function Layout(ui, params) {
 	const self = this;
 
 	const container = new UICollection({ id: 'container' });
-	const interface = new UICollection({ id: 'interface' });
-	container.append(interface);
-	const selector = new UICollection({ id: 'selector' });
-	interface.append(selector);
-	interface.append(ui.panels);
+	this.default = new UISection({ id: 'ui', gridArea: 'default' }, ui);
+	container.append(this.default);
 	
-	const uiTimeline = new UICollection({ id: 'ui-timeline' });
-	container.append(uiTimeline);
-	const timelineArea = new UICollection({ id: 'timeline-panels', class: 'panels' });
-	uiTimeline.append(timelineArea);
-
-	const uiMain = new UICollection({ id: 'main' });
-	const mainArea = new UICollection({ id: 'main-panels' });
-	uiMain.append(mainArea);
+	// this.interface.append(ui.panels); // adding main panels to the interface collection
+	
+	this.timeline = new UISection({ id: 'ui-timeline', gridArea: 'timeline' }, ui);
+	container.append(this.timeline);
+	this.main = new UISection({ id: 'main', gridArea: 'main' }, ui);
 
 	window.toolTip = new UILabel({id: 'tool-tip'});
-	interface.append(window.toolTip);
+	this.default.append(window.toolTip);
 
 	this.toggleTimelineView = function(isOn) {
 		const area = isOn ? timelineArea : ui.panels;
@@ -40,22 +34,8 @@ function Layout(ui, params) {
 	};
 
 	this.addSelectPanels = function(panelList) {
-		panelList.forEach(p => {
-			const [option, label] = p;
-			self.panel.layout.uiSelect.addOption(option, false, label);
-		});
+		this.default.addSelectorOptions(panelList);
+		this.timeline.addSelectorOptions(panelList);
+		this.main.addSelectorOptions(panelList);
 	};
-
-	this.dockPanel = function(section) {
-		const panel = ui.panels[self.panel.layout.uiSelect.value];
-		panel.dock();
-		if (panel.gridArea !== section) {
-			panel.gridArea = section;
-			if (section === 'default') ui.panels.append(panel);
-			// if (section === 'timeline') timelineArea.append(panel);
-			if (section === 'main') mainArea.append(panel);
-		}
-		if (section === 'timeline') self.toggleTimelineView(true);
-	};
-
 }

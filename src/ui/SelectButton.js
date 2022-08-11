@@ -1,6 +1,8 @@
 class UISelectButton extends UICollection {
 	constructor(params) {
 		super(params);
+		this.addClass('ui-collection');
+
 
 		const select = new UISelect({
 			options: params.options,

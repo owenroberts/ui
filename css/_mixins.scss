@@ -15,3 +15,12 @@
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
 }
+
+@mixin horizontal-scroll {
+	&::-webkit-scrollbar {
+		display: none;
+	}
+	overflow-x: scroll;
+	overflow-y: hidden;
+	.ui-collection { display: flex; }
+}

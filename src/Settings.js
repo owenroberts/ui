@@ -20,6 +20,8 @@ function Settings(app, name, appSave, workspaceFields) {
 			
 			panel.order = settings.order;
 			panel.gridArea = settings.gridArea;
+		
+			app.ui.layout[panel.gridArea].panels.append(panel);
 		}
 	}
 
