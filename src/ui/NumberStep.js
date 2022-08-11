@@ -15,7 +15,7 @@ class UINumberStep extends UICollection {
 			...params,
 			class: 'middle',
 			drag: value => {
-				this.value = this.value + this.step * value;
+				this.update(this.value + this.step * value);
 			},
 			callback: value => {
 				this.update(+value);

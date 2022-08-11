@@ -15,6 +15,21 @@
 
 	// margin: 0 0.5em 0.5em 0;
 
+	& .break,
+	& .break-line,
+	& .break-line-up {
+		flex-basis: 100%;
+	}
+
+	& .break-line {
+		border-bottom: 1px solid $text-color;
+	}
+
+	& .break-line-up {
+		border-top: 1px solid $text-color;
+	}
+
+
 	&.undocked { display: none !important; }
 	&.closed { 
 		height: 25px; 
@@ -39,6 +54,7 @@
 	.row label { margin-bottom: 0; }
 
 	.row {
+		
 		margin-bottom: 0.25em;
 		display: flex;
 		align-items: center;
@@ -129,10 +145,6 @@
 				border: unset;
 				outline: unset;
 				background: white;
-				// color: white;
-				&::placeholder {
-					// color: white;
-				}
 			}
 
 			&.left-end,
@@ -167,23 +179,8 @@
 
 		.ui-collection {
 			padding-right: 0.25em;
-			.number,
-			.drag {
-				&:focus-visible {
-					border: unset;
-					outline: unset;
-					background: $ui-select;
-					color: white;
-					&::placeholder {
-						color: white;
-					}
-				}
-			}
 		}
 
-		&.break {
-			flex-basis: 100%;
-		}
 	}
 
 	.btn {

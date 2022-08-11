@@ -32,6 +32,32 @@
 	}
 }
 
+.panel .row .value-bg {
+
+	label, 
+	input.drag {
+		border: 0;
+		padding: 0;
+		color: $text-color;
+		
+	}
+
+	input.drag {
+		background-color: transparent;
+		&::placeholder {
+			color: $text-color;
+		}
+	}
+
+	padding: 3px;
+	margin-right: 0.25em;
+	margin-top: 0.25em;
+
+	border-radius: 3px;
+	--value-percent: 0;
+	background: linear-gradient(90deg, $ui-select 0%, $ui-select calc(var(--value-percent) * 1%), $ui-color calc(var(--value-percent) * 1%));
+}
+
 /* toggle */
 .on { background-color: $ui-select; }
 

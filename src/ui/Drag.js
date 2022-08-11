@@ -2,11 +2,11 @@ class UIDrag extends UIText {
 	constructor(params) {
 		super(params);
 		this.addClass('drag');
+		const self = this;
 
 		const drag = { 
 			x: 0, // position when clicked
 			y: 0, 
-			lock: 'none', // lock to up/down right/left
 			timeout: 5, 
 			timer: 0, // timeout so it doesn't go nuts
 			prev: 0, // -1 or 1
@@ -25,13 +25,11 @@ class UIDrag extends UIText {
 			if (!drag.active) return;
 
 			const delta = { x: ev.pageX - drag.x, y: ev.pageY - drag.y };
-			if (drag.lock === 'none') {
-				drag.lock = Math.abs(delta.x) > Math.abs(delta.y) ? 'x' : 'y';
-			}
+			const dir = Math.abs(delta.x) > Math.abs(delta.y) ? 'x' : 'y';
 
-			if (Math.abs(delta[drag.lock]) > 10 && drag.timer === 0) {
-				const m = drag.lock === 'x' ? 1 : -1; // multiplier for x/y
-				if (params.drag) params.drag(m * Math.sign(delta[drag.lock]));
+			if (Math.abs(delta[dir]) > 10 && drag.timer === 0) {
+				const m = dir === 'x' ? 1 : -1; // multiplier for x/y
+				if (params.drag) params.drag(m * Math.sign(delta[dir]));
 				drag.timer = drag.timeout;
 				drag.x = ev.pageX;
 				drag.y = ev.pageY;
@@ -45,7 +43,7 @@ class UIDrag extends UIText {
 			drag.active = false;
 			drag.x = 0;
 			drag.y = 0;
-			drag.lock = 'none';
+			self.el.blur();
 			document.removeEventListener('mousemove', mouseMove);
 			document.removeEventListener('mouseup', mouseUp);
 		}
