@@ -1,0 +1,230 @@
+.btn {
+
+	--progress-percent: 0;
+
+	display: inline-block;
+	background-color: $ui-color;
+	padding: 0 0.5em;
+	border-radius: 3px;
+	
+	&:hover {
+		background: $ui-select;
+		cursor: pointer;
+	}
+	
+	&:active {
+		background-color: $ui-highlight;
+	}
+	
+	transition: background-color 150ms ease-in;
+	line-height: 1.75;
+	vertical-align: middle;
+	white-space: nowrap;
+	
+	&.press { background-color: $accent-two; }
+
+	&.left-end { @include left-end; }
+	&.middle { @include middle; }
+	&.right-end { @include right-end; }
+
+	&.progress {
+		background: linear-gradient(90deg, $ui-select 0%, $ui-select calc(var(--progress-percent) * 1%), $ui-color calc(var(--progress-percent) * 1%));
+	}
+}
+
+.panel .row .value-bg {
+
+	label, 
+	input.drag {
+		border: 0;
+		padding: 0;
+		color: $text-color;
+		
+	}
+
+	input.drag {
+		background-color: transparent;
+		width: 2em;
+		&::placeholder {
+			color: $text-color;
+		}
+	}
+
+	padding: 3px;
+	margin-right: 0.25em;
+	margin-top: 0.25em;
+
+	border-radius: 3px;
+	--value-percent: 0;
+	background: linear-gradient(90deg, $ui-select 0%, $ui-select calc(var(--value-percent) * 1%), $ui-color calc(var(--value-percent) * 1%));
+}
+
+.panel .row,
+.section-header {
+	label { line-height: 1.5; }
+		
+	span, 
+	label, 
+	input, 
+	select {
+		white-space: nowrap;
+		margin-right: 0.25em;
+		margin-top: 0.25em;
+		// flex: 0 1 12%;
+		&.block {
+			flex: auto;
+			text-align: left;
+		}
+	}
+
+	input {
+		flex: 0 1 28px;
+		width: calc(calc(var(--base-font-size) * 3) * 1px);
+		text-align: right;
+	}
+	
+	input[type=range], 
+	input[type=color] {
+		flex: 1 1 auto;
+	}
+
+	input[type=range] {
+		-webkit-appearance: none;
+		width: 100%;
+		background-color: white;
+		border: 1px solid $ui-color;
+		margin-left: 0;
+		border-radius: 3px;
+		margin: 0.25em 0;
+
+		&:active {
+			border: 1px solid $main-color;
+		}
+
+		&:focus {
+			outline: none;
+			border: 1px solid $main-color;
+			&::-webkit-slider-thumb {
+				background-color: $main-color;
+			}
+		}
+
+		&::-webkit-slider-thumb {
+			-webkit-appearance: none; 
+			outline: none;
+			background-color: $ui-color;
+			height: 1.25em;
+			width: 0.75em;
+			cursor: grab;
+			&:active { 
+				cursor: grabbing; 
+				background-color: $main-color;
+			}
+		}
+
+		&::-ms-track {
+			width: 100%;
+			cursor: pointer;
+		}
+	}
+	
+	input[type=text] {
+		border: none;
+		background-color: $ui-color;
+		// padding-right: 0.25em;
+		// height: 1.125rem;
+
+		text-align: left;
+		vertical-align: bottom;
+		line-height: 1.6;
+		
+		&:focus {
+			border: 1px solid $accent-color;
+		}
+
+		&:focus-visible {
+			border: unset;
+			outline: unset;
+			background: white;
+		}
+
+		&.left-end,
+		&.middle,
+		&.right-end { 
+			// height: 1.125rem;
+			text-align: center;
+			width: calc(var(--base-font-size) * 3 * 1px);
+		}
+
+		&.left-end { @include left-end; }
+		&.middle { @include middle; }
+		&.right-end { @include right-end; }
+	}
+
+	input.number,
+	input.drag {
+		text-align: left;
+		vertical-align: bottom;
+		line-height: 1.6;
+	}
+
+	input[type=checkbox].toggle-check {
+		margin: 0;
+		width: auto;
+		vertical-align: text-bottom;
+	}
+
+	input[type=file] {
+		flex: 100%;
+	}
+
+	.ui-collection {
+		padding-right: 0.25em;
+	}
+}
+
+/* toggle */
+.on { background-color: $ui-select; }
+
+.modal {
+	position: fixed;
+	background: white;
+	padding: 0.5em;
+	border-radius: 1em;
+	border: 2px solid $main-color;
+	box-shadow: 1px 1px 4px $ui-highlight;
+	z-index: 9;
+	max-width: 400px;
+	overflow-y: scroll;
+	max-height: 90vh;
+
+	display: flex;
+	flex-wrap: wrap;
+
+	.break { flex-basis: 100%; }
+
+	input { max-width: 40px; }
+	input.search { max-width: inherit }
+
+	label:first-child { flex: 100%; }
+
+	label, 
+	.btn, 
+	input {
+		margin: 3px;
+	}
+}
+
+#title {
+	border: none;
+	max-width: 120px;
+	border-bottom: 1px solid transparent;
+	flex-basis: 100%;
+	text-align: left;
+	padding: 3px;
+	background-color: white;
+	&:focus {
+		outline: none;
+		border-bottom: 1px solid black;
+	}
+}

@@ -191,19 +191,4 @@ function Interface(app, params) {
 	this.update = function() {
 		app.uiUpdate();
 	};
-
-	/* replace with UISection later
-
-	this.toggleMaxWidth = function(value) {
-		self.useMaxWidth = value;
-		if (self.useMaxWidth) interface.addClass('max-width');
-		else interface.removeClass('max-width');
-	};
-
-	this.setMaxWidth = function(value) {
-		self.maxWidth = +value;
-		interface.el.style.setProperty('--max-width', self.maxWidth);
-	};
-
-	*/
 }

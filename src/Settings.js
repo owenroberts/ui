@@ -33,6 +33,16 @@ function Settings(app, name, appSave, workspaceFields) {
 		}
 	}
 
+	function loadLayout(layouts) {
+		for (const k in layouts) {
+			app.ui.layout[k].maxWidth.update(layouts[k].maxWidth);
+			app.ui.layout[k].maxWidthToggle.update(layouts[k].maxWidthToggle);
+			if (layouts[k].isVisible !== undefined) {
+				app.ui.layout[k].isVisible = layouts[k].isVisible;
+			}
+		}
+	}
+
 	this.save = function() {
 		const settings = {};
 		
@@ -51,6 +61,13 @@ function Settings(app, name, appSave, workspaceFields) {
 			settings.panels[p] = app.ui.panels[p].settings;
 		}
 
+		settings.layout = {
+			default: app.ui.layout.default.settings,
+			main: app.ui.layout.main.settings,
+			timeline: app.ui.layout.timeline.settings,
+
+		};
+
 		settings.quickRef = app.ui.quickRef.list;
 		localStorage[appName] = JSON.stringify(settings);
 	};
@@ -61,6 +78,7 @@ function Settings(app, name, appSave, workspaceFields) {
 			// if (appLoad) appLoad(settings);
 			loadPanels(settings.panels);
 			loadInterface(settings.interface);
+			loadLayout(settings.layout);
 
 			if (settings.quickRef) {
 				app.ui.quickRef.list = settings.quickRef;

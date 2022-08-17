@@ -19,18 +19,18 @@ function Layout(ui, params) {
 	window.toolTip = new UILabel({id: 'tool-tip'});
 	this.default.append(window.toolTip);
 
-	this.toggleTimelineView = function(isOn) {
-		const area = isOn ? timelineArea : ui.panels;
-		for (const p in ui.panels) {
-			if (ui.panels[p].gridArea === 'timeline') {
-				area.append(ui.panels[p]);
-			}
-		}
+	this.toggleTimeline = function(isOn) {
+		self.timeline.isVisible = isOn;
 	};
 
 	this.toggleRL = function(isOn) {
 		if (isOn) container.addClass('RL');
 		else container.removeClass('RL');
+	};
+
+	this.toggleUP = function(isOn) {
+		if (isOn) container.addClass('UP');
+		else container.removeClass('UP');
 	};
 
 	this.addSelectPanels = function(panelList) {

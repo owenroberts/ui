@@ -51,20 +51,6 @@
 				"module": "ui",
 				"list": [
 					{
-						"row": true,
-						"type": "UINumberStep",
-						"face": "interfaceScale",
-						"label": "Scale",
-						"fromModule": {
-							"callback": "updateScale"
-						},
-						"params": {
-							"value": 11,
-							"min": 10,
-							"max": 40
-						}
-					},
-					{
 						"type": "UINumberStep",
 						"label": "Max panels",
 						"number": "maxPanels",
@@ -171,20 +157,27 @@
 				"list": [
 					{
 						"type": "UIToggle",
-						"face": "timelineView",
-						"callback": "toggleTimelineView",
+						"face": "timelineLayout",
+						"callback": "toggleTimeline",
 						"params": {
-							"onText": "Timeline View",
-							"offText": "Timeline View"
+							"onText": "Timeline",
+							"offText": "Timeline"
 						}
 					},
 					{
 						"type": "UIToggle",
-						"face": "rl",
+						"face": "rightLayout",
 						"callback": "toggleRL",
 						"params": {
-							"onText": "R/L",
-							"offText": "L/R"
+							"text": "▶/◀"
+						}
+					},
+					{
+						"type": "UIToggle",
+						"face": "upLayout",
+						"callback": "toggleUP",
+						"params": {
+							"text": "▼/▲"
 						}
 					}
 				]

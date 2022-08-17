@@ -39,6 +39,21 @@ class UISection extends UICollection {
 			}
 		});
 		widthCollection.append(this.maxWidthToggle);
+
+		this._isVisible = true;
+
+		const scaleCollection = new UICollection({ 'class': 'scale-collection' });
+		header.append(scaleCollection);
+		scaleCollection.append(new UILabel({ text: 'Scale' }));
+		this.baseFontSize = new UINumberStep({
+			value: 11,
+			min: 10,
+			max: 40,
+			callback: value => {
+				this.setProp('--base-font-size', +value);
+			}
+		});
+		scaleCollection.append(this.baseFontSize);
 	}
 
 	addSelectorOptions(panelList) {
@@ -48,10 +63,22 @@ class UISection extends UICollection {
 		});
 	}
 
+	get isVisible() {
+		return this._isVisible;
+	}
+
+	set isVisible(value) {
+		this._isVisible = value;
+		if (!value) this.addClass('hidden');
+		else this.removeClass('hidden');
+	}
+
 	get settings() {
 		return {
 			maxWidthToggle: this.maxWidthToggle.value,
-			maxWidth: this.maxWidth.value
+			maxWidth: this.maxWidth.value,
+			isVisible: this.isVisible,
+			baseFontSize: this.baseFontSize.value,
 		}
 	}
 }
