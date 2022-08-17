@@ -1,5 +1,6 @@
+.break { flex-basis: 100%; }
 .panel {
-	flex-basis: 12em;
+	flex-basis: 14em;
 	flex-grow: 1;
 	max-width: 20em;
 	order: 0;
@@ -15,7 +16,6 @@
 
 	// margin: 0 0.5em 0.5em 0;
 
-	& .break,
 	& .break-line,
 	& .break-line-up {
 		flex-basis: 100%;
@@ -53,14 +53,10 @@
 	.row label { margin-bottom: 0; }
 
 	.row {
-		
 		margin-bottom: 0.25em;
 		display: flex;
 		align-items: center;
 		flex-wrap: wrap;
-		
-		
-
 	}
 
 	.btn {

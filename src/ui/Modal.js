@@ -10,9 +10,7 @@ class UIModal extends UICollection {
 		
 		const self = this;
 
-		this.break = new UIElement({
-			class: 'break'
-		});
+		this.break = new UIElement({ class: 'break' });
 		this.append(this.break);
 
 		this.submit = new UIButton({

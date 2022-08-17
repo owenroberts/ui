@@ -39,18 +39,21 @@
 		border: 0;
 		padding: 0;
 		color: $text-color;
-		
+		margin: 0;
 	}
 
 	input.drag {
 		background-color: transparent;
 		width: 2em;
 		&::placeholder {
-			color: $text-color;
+			// color: $text-color;
 		}
 	}
 
-	padding: 3px;
+	display: flex;
+	align-items: baseline;
+	column-gap: 2px;
+	padding: 2px;
 	margin-right: 0.25em;
 	margin-top: 0.25em;
 

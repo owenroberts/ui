@@ -35,8 +35,8 @@
 		--max-width: 500;
 
 		&.max-width {
-			max-width: calc(var(--max-width) * 1px);
-			width: calc(var(--max-width) * 1px);
+			min-width: calc(var(--max-width) * 1px);
+			// width: calc(var(--max-width) * 1px);
 		}
 	}
 }
@@ -71,12 +71,12 @@
 }
 
 .panels {
-	// margin-top: 0.25em;
+	--ui-scale: 12;
+	font-size: calc(var(--ui-scale) * 1px);
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0 0.5rem;
 	align-items: baseline;
-	justify-content: space-between;
 }
 
 #quickRef-panel {

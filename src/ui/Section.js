@@ -50,7 +50,7 @@ class UISection extends UICollection {
 			min: 10,
 			max: 40,
 			callback: value => {
-				this.setProp('--base-font-size', +value);
+				this.panels.setProp('--ui-scale', +value);
 			}
 		});
 		scaleCollection.append(this.baseFontSize);
