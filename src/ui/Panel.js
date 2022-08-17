@@ -100,6 +100,11 @@ class UIPanel extends UICollection {
 		};
 	}
 
+	get lastRow() {
+		if (this.rows.length === 0) return this.addRow();
+		return this.rows[this.rows.length - 1];
+	}
+
 	close() {
 		this.addClass('closed');
 		this.open.set(false);

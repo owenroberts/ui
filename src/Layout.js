@@ -38,4 +38,10 @@ function Layout(ui, params) {
 		this.timeline.addSelectorOptions(panelList);
 		this.main.addSelectorOptions(panelList);
 	};
+
+	this.addSelectOption = function(key, label) {
+		this.default.addSelectorOption(key, label);
+		this.timeline.addSelectorOption(key, label);
+		this.main.addSelectorOption(key, label);
+	};
 }

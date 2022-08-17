@@ -63,6 +63,10 @@ class UISection extends UICollection {
 		});
 	}
 
+	addSelectorOption(key, label) {
+		this.selector.select.addOption(key, false, label);
+	}
+
 	get isVisible() {
 		return this._isVisible;
 	}
