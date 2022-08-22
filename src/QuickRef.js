@@ -157,6 +157,14 @@ function QuickRef(app) {
 				if (ui.face) {
 					app.ui.faces[ui.face].update();
 				}
+				if (ui.type === 'UIFile') { // temp fix
+					if (ui.face) { 
+						app.ui.faces[ui.face].keyHandler();
+					} else {
+						const f = new UIFile({ ...ui.params, callback: mod[ui.callback] });
+						f.keyHandler();
+					}
+				}
 				else if (ui.callback) {
 					if (args) mod[ui.callback](...args);
 					else mod[ui.callback]();
