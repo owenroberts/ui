@@ -146,4 +146,17 @@ class UIPanel extends UICollection {
 			|| this.addRow();
 		row.append(ui, k);
 	}
+
+	setup(settings) {
+		if (settings.docked) this.dock();
+		else this.undock();
+		
+		if (!settings.open) this.close();
+		
+		if (settings.block) this.block();
+		if (settings.headless) this.headless();
+		
+		this.order = settings.order;
+		this.gridArea = settings.gridArea;
+	}
 }

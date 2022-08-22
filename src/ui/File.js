@@ -3,23 +3,25 @@ class UIFile extends UIButton {
 		super(params);
 		this.multiple = params.multiple || false;
 		this.promptDefault = params.promptDefault;
+		this.fileType = params.fileType || 'application/json';
 	}
 
 	/* bc button doesn't have an update func */
 	keyHandler() {
-		const { callback, promptDefault, multiple } = this;
+		const { callback, promptDefault, multiple, fileType } = this;
 		
 		function readFile(files, directoryPath) {
 			for (let i = 0, f; f = files[i]; i++) {
-				if (!f.type.match('application/json')) {
-					continue;
-				}
+				if (!f.type.match(fileType)) continue;
 				const reader = new FileReader();
 				reader.onload = (function(theFile) {
 					return function(e) {
-						const filePath = directoryPath + f.name;
+						const filePath = '/' + directoryPath + '/' + f.name;
 						const fileName = f.name.split('.')[0];
-						callback(JSON.parse(e.target.result), fileName, filePath);
+						let data;
+						if (fileType === 'application/json') data = JSON.parse(e.target.result);
+						else data = e.target.result;
+						callback(data, fileName, filePath);
 					};
 				})(f);
 				reader.readAsText(f);

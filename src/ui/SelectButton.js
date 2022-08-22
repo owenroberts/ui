@@ -1,6 +1,7 @@
 class UISelectButton extends UICollection {
 	constructor(params) {
 		super(params);
+		if (params.callback) this.callback = params.callback;
 		this.addClass('ui-collection');
 
 
@@ -15,7 +16,7 @@ class UISelectButton extends UICollection {
 			text: "+",
 			css: { 'margin-left': '1px' },
 			callback: () => {
-				params.callback(select.value);
+				if (this.callback) this.callback(select.value);
 			}
 		});
 

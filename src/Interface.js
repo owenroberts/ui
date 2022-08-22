@@ -94,13 +94,8 @@ function Interface(app, params) {
 			}
 		}
 
-		// self.layout.addSelectPanels([
-		// 	...Object.keys(data).map(k => [k, data[k].label])
-		// ]);
-		
 		// self.settings.load();
 		self.quickRef.addData(data);
-		self.panels.layout.dock();
 		if (callback) callback();
 	}
 
@@ -118,7 +113,6 @@ function Interface(app, params) {
 			}
 		});
 		self.panels[key] = panel;
-		// self.layout.addSelectPanels([[key, data.label]]);
 		self.layout.addSelectOption(key, data.label);
 		return panel;
 	};

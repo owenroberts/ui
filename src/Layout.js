@@ -20,6 +20,7 @@ function Layout(ui, params) {
 	this.default.append(window.toolTip);
 
 	this.toggleTimeline = function(isOn) {
+		console.log('timeline toggle', isOn);
 		self.timeline.isVisible = isOn;
 	};
 
@@ -43,5 +44,13 @@ function Layout(ui, params) {
 		this.default.addSelectorOption(key, label);
 		this.timeline.addSelectorOption(key, label);
 		this.main.addSelectorOption(key, label);
+	};
+
+	this.getSettings = function() {
+		return {
+			default: self.default.settings,
+			timeline: self.timeline.settings,
+			main: self.main.settings,
+		};
 	};
 }

@@ -3,24 +3,13 @@ function Settings(app, name, appSave, workspaceFields) {
 	const appName = `settings-${name}`;
 	
 	function loadPanels(panels) {
+		// console.log(panels);
 		for (const p in panels) {
 			if (p === 'el') continue;
 			if (!app.ui.panels[p]) continue;
+			app.ui.panels[p].setup(panels[p]);
 			let panel = app.ui.panels[p];
 			let settings = panels[p];
-			
-			if (settings.docked) panel.dock();
-			else panel.undock();
-			
-			// ui.panels[p].open.update(panels[p].open);
-			if (!settings.open) panel.close();
-			
-			if (settings.block) panel.block();
-			if (settings.headless) panel.headless();
-			
-			panel.order = settings.order;
-			panel.gridArea = settings.gridArea;
-		
 			app.ui.layout[panel.gridArea].panels.append(panel);
 		}
 	}
@@ -29,16 +18,19 @@ function Settings(app, name, appSave, workspaceFields) {
 		for (const f in interface) {
 			if (f === 'palettes') continue;
 			if (f === 'quickRef') continue;
-			if (app.ui.faces[f]) app.ui.faces[f].update(interface[f]);
+			if (app.ui.faces[f]) {
+				// console.log(f, interface[f], app.ui.faces[f])
+				app.ui.faces[f].update(interface[f]);
+			}
 		}
 	}
 
-	function loadLayout(layouts) {
-		for (const k in layouts) {
-			app.ui.layout[k].maxWidth.update(layouts[k].maxWidth);
-			app.ui.layout[k].maxWidthToggle.update(layouts[k].maxWidthToggle);
-			if (layouts[k].isVisible !== undefined) {
-				app.ui.layout[k].isVisible = layouts[k].isVisible;
+	function loadLayout(layout) {
+		for (const section in layout) {
+			app.ui.layout[section].maxWidth.update(layout[section].maxWidth);
+			app.ui.layout[section].maxWidthToggle.update(layout[section].maxWidthToggle);
+			if (layout[section].isVisible !== undefined) {
+				app.ui.layout[section].isVisible = layout[section].isVisible;
 			}
 		}
 	}
@@ -61,12 +53,7 @@ function Settings(app, name, appSave, workspaceFields) {
 			settings.panels[p] = app.ui.panels[p].settings;
 		}
 
-		settings.layout = {
-			default: app.ui.layout.default.settings,
-			main: app.ui.layout.main.settings,
-			timeline: app.ui.layout.timeline.settings,
-
-		};
+		settings.layout = app.ui.layout.getSettings();
 
 		settings.quickRef = app.ui.quickRef.list;
 		localStorage[appName] = JSON.stringify(settings);
@@ -102,9 +89,9 @@ function Settings(app, name, appSave, workspaceFields) {
 	if (!workspaceFields) workspaceFields = [];
 	workspaceFields = [
 		...workspaceFields,
-		'timelineView', 
-		'interfaceScale', 
-		'rl'
+		'timelineLayout', 
+		'rightLayout',
+		'upLayout',
 	];
 
 	this.saveLayout = function() {
@@ -113,8 +100,12 @@ function Settings(app, name, appSave, workspaceFields) {
 		workspaceFields.forEach(f => {
 			interfaceSettings[f] = app.ui.faces[f].value;
 		});
-		const panelSettings = JSON.parse(localStorage.getItem(appName)).panels;
-		const jsonFile = JSON.stringify({ panels: panelSettings, interface: interfaceSettings });
+		const savedSettings = JSON.parse(localStorage.getItem(appName));
+		const jsonFile = JSON.stringify({ 
+			panels: savedSettings.panels, 
+			layout: savedSettings.layout,
+			interface: interfaceSettings,
+		});
 		const fileName = prompt('Layout Name:', 'New Layout');
 		const blob = new Blob([jsonFile], { type: "application/x-download;charset=utf-8" });
 		saveAs(blob, `${fileName}.json`);
@@ -128,6 +119,7 @@ function Settings(app, name, appSave, workspaceFields) {
 				.then(data => { 
 					loadInterface(data.interface); 
 					loadPanels(data.panels);
+					loadLayout(data.layout);
 				})
 				.catch(error => { console.error(error); });
 		} else {
@@ -144,6 +136,7 @@ function Settings(app, name, appSave, workspaceFields) {
 							const settings = JSON.parse(e.target.result);
 							loadPanels(settings.panels);
 							loadInterface(settings.interface);
+							loadLayout(settings.layout);
 						}
 					})(f);
 					reader.readAsText(f);
