@@ -1,6 +1,5 @@
 class UIFile extends UIButton {
 	constructor(params) {
-		console.log(params.promptDefault);
 		super(params);
 		this.multiple = params.multiple || false;
 		this.promptDefault = params.promptDefault;
