@@ -23,21 +23,21 @@ function QuickRef(app) {
 		
 		function modalOptions() {
 			const options = {};
-			data[p1.value].uis.forEach(ui => {
-				ui.list.forEach(el => {
+			data[p1.value].modules.forEach(mod => {
+				mod.controls.forEach(control => {
 
-					let createQuickUI = (el.number || el.toggle) ? true : false;
-					if (el.fromModule) createQuickUI = el.fromModule.callback ? true : false;
+					let createQuickUI = (control.number || control.toggle) ? true : false;
+					if (control.fromModule) createQuickUI = control.fromModule.callback ? true : false;
 
 					if (createQuickUI) {
-						const title = el.params ? 
-							el.params.text || el.params.onText || el.params.label || el.face:
-							el.fromModule.callback;
+						const title = control.params ? 
+							control.params.text || control.params.onText || control.params.label || control.face:
+							control.fromModule.callback;
 						
-						el.mod = ui.module;
-						el.sub = ui.sub;
+						control.mod = ui.key;
+						control.sub = ui.sub;
 
-						options[title] = el;
+						options[title] = control;
 					}
 				});
 			});
@@ -118,21 +118,21 @@ function QuickRef(app) {
 		let options = {};
 
 		Object.keys(data).forEach(k => {
-			return data[k].uis.forEach(ui => {
-				return ui.list
-					.filter(u => !ignoreUIs.includes(u.type))
-					.filter(u => u.key !== 'ctrl-space') // this one 
-					.forEach(u => {
+			return data[k].modules.forEach(mod => {
+				return mod.controls
+					.filter(c => !ignoreUIs.includes(c.type))
+					.filter(c => c.key !== 'ctrl-space') // this one 
+					.forEach(control => {
 						let label = data[k].label + ' > ';
-						let n = u.label;
-						if (!n && u.params) {  
-							n = u.params.text || u.params.onText || u.params.placeholder;
+						let n = control.label;
+						if (!n && control.params) {  
+							n = control.params.text || control.params.onText || control.params.placeholder;
 						}
-						if (!n) n = u.face;
-						if (!n) console.error('quick search fuck', u);
+						if (!n) n = control.face;
+						if (!n) console.error('quick search fuck', control);
 						label += n;
-						if (u.key) label += ` (key: ${u.key})`;
-						options[label] = { ...u, module: ui.module, sub: ui.sub };
+						if (control.key) label += ` (key: ${control.key})`;
+						options[label] = { ...control, module: mod.key, sub: mod.sub };
 					});
 			});
 		});
@@ -143,9 +143,8 @@ function QuickRef(app) {
 			position: { x: window.innerWidth / 2, y: window.innerHeight / 2 },
 			callback: () => {
 
-				// gotta be a better way to do this part
+				// gotta be a better way to do this part -- data from uis not original file
 				const ui = options[input.value];
-
 				const mod = ui.sub ? app[ui.module][ui.sub] : app[ui.module];
 				let args;
 				if (ui.params) {
@@ -154,9 +153,8 @@ function QuickRef(app) {
 					}
 				}
 				
-				if (ui.face) {
-					app.ui.faces[ui.face].update();
-				}
+				if (ui.face) app.ui.faces[ui.face].update();
+
 				if (ui.type === 'UIFile') { // temp fix
 					if (ui.face) { 
 						app.ui.faces[ui.face].keyHandler();
@@ -176,11 +174,9 @@ function QuickRef(app) {
 						else mod[ui.fromModule.callback]();
 					}
 				}
-
 				else if (ui.number) {
 					mod[ui.number] = +prompt(ui.prompt || ui.label);
 				}
-
 				else if (ui.toggle) {
 					mod[ui.toggle] = !m[ui.toggle];
 				}
