@@ -68,33 +68,29 @@ function Interface(app, params) {
 
 	async function loadInterfaceFiles(file, callback) {
 		const appFile = await fetch(file).then(response => response.json());
-		const interfaceFile = await fetch('../ui/interface.json').then(response => response.json());
+		const interfaceFile = await fetch('../ui/static/panels.json').then(response => response.json());
 		
 		const data = { ...interfaceFile };
 		for (const k in appFile) {
-			if (data[k]) data[k].uis.push(...appFile[k].uis);
+			if (data[k]) data[k].modules.push(...appFile[k].modules);
 			else data[k] = { ...appFile[k] };
 		}
 		
 		for (const key in data) {
 			const panel = self.panels[key] || self.createPanel(key, data[key]);
-			const sections = data[key].uis;
-			for (let i = 0; i < sections.length; i++) {
-				const uis = sections[i];
-				for (let j = 0; j < uis.list.length; j++) {
-					self.createUI(uis.list[j], uis.module, uis.sub, panel);
+			const modules = data[key].modules;
+			for (let i = 0; i < modules.length; i++) {
+				const { key, sub, controls} = modules[i];
+				for (let j = 0; j < controls.length; j++) {
+					self.createControl(controls[j], key, sub, panel);
 				}
-				// gives panel to module -- give to all ?
-				if (uis.module === 'ui' && uis.sub) {
-					app.ui[uis.sub].panel = panel;
-				}
-				if (data[key].addPanel && !app[uis.module].panel) {
-					app[uis.module].panel = panel;
-				}
+				if (key === 'ui' && sub) app.ui[sub].panel = panel;
+				// if (!app[key].panel) app[key].panel = panel; 
+				// modules are references in multiple panels, need better way to do this ...
+				// get panel references
 			}
 		}
 
-		// self.settings.load();
 		self.quickRef.addData(data);
 		if (callback) callback();
 	}
@@ -117,7 +113,7 @@ function Interface(app, params) {
 		return panel;
 	};
 
-	this.createUI = function(data, mod, sub, panel) {
+	this.createControl = function(data, mod, sub, panel) {
 
 		const m = sub ? app[mod][sub] : app[mod]; // module with sub module
 		// this is because a bunch of modules are "sub modules" of the ui object, for no reason?

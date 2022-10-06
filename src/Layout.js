@@ -20,7 +20,6 @@ function Layout(ui, params) {
 	this.default.append(window.toolTip);
 
 	this.toggleTimeline = function(isOn) {
-		console.log('timeline toggle', isOn);
 		self.timeline.isVisible = isOn;
 	};
 

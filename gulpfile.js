@@ -14,10 +14,10 @@ const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 
 const files = [
-	'src/ui/Element.js',
-	'src/ui/Collection.js',
-	'src/ui/Input.js',
-	'src/ui/Text.js',
+	'src/elements/Element.js',
+	'src/elements/Collection.js',
+	'src/elements/Input.js',
+	'src/elements/Text.js',
 	'src/**/*.js',
 ];
 

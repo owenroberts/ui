@@ -1,11 +1,11 @@
 {
 	"interface": {
 		"label": "Interface",
-		"uis": [
+		"modules": [
 			{
-				"module": "ui",
+				"key": "ui",
 				"sub": "settings",
-				"list": [
+				"controls": [
 					{
 						"type": "UIButton",
 						"key": "ctrl-s",
@@ -48,8 +48,8 @@
 				]
 			},
 			{
-				"module": "ui",
-				"list": [
+				"key": "ui",
+				"controls": [
 					{
 						"type": "UINumberStep",
 						"label": "Max panels",
@@ -64,11 +64,11 @@
 	},
 	"quick": {
 		"label": "Quick Ref",
-		"uis": [
+		"modules": [
 			{
-				"module": "ui",
+				"key": "ui",
 				"sub": "quickRef",
-				"list": [
+				"controls": [
 					{
 						"type": "UINumberStep",
 						"label": "Scale",
@@ -113,11 +113,11 @@
 	},
 	"workspaces": {
 		"label": "Workspaces",
-		"uis": [
+		"modules": [
 			{
-				"module": "ui",
+				"key": "ui",
 				"sub": "settings",
-				"list": [
+				"controls": [
 				{
 						"type": "UIButton",
 						"key": "alt-w",
@@ -150,11 +150,11 @@
 	},
 	"layout": {
 		"label": "Layout",
-		"uis": [
+		"modules": [
 			{
-				"module": "ui",
+				"key": "ui",
 				"sub": "layout",
-				"list": [
+				"controls": [
 					{
 						"type": "UIToggle",
 						"face": "timelineLayout",
