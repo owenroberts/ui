@@ -1,4 +1,6 @@
-class UIInputList extends UICollection {
+import UICollection from './Collection.js';
+
+export default class UIInputList extends UICollection {
 	constructor(params) {
 		super(params);
 

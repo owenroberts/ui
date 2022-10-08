@@ -1,4 +1,6 @@
-class UIModal extends UICollection {
+import UICollection from './Collection.js';
+
+export default class UIModal extends UICollection {
 	constructor(params) {
 		super({});
 		if (params.callback) this.callback = params.callback;

@@ -1,4 +1,6 @@
-class UIFile extends UIButton {
+import UIButton from './Button.js';
+
+export default class UIFile extends UIButton {
 	constructor(params) {
 		super(params);
 		this.multiple = params.multiple || false;

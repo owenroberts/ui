@@ -1,4 +1,6 @@
-class UIInput extends UIElement {
+import UIElement from './Element.js';
+
+export default class UIInput extends UIElement {
 	constructor(params) {
 		params.tag = "input";
 		super(params);

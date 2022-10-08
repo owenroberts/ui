@@ -1,4 +1,31 @@
-function Interface(app, params) {
+import Settings from './Settings.js';
+import QuickRef from './QuickRef.js';
+import Layout from './Layout.js';
+
+import UILabel from './elements/Label.js';
+import UIElement from './elements/Element.js';
+import UIRange from './elements/Range.js';
+import UIText from './elements/Text.js';
+import UINumber from './elements/Number.js';
+import UINumberRange from './elements/NumberRange.js';
+import UINumberStep from './elements/NumberStep.js';
+import UIToggle from './elements/Toggle.js';
+import UIToggleCheck from './elements/ToggleCheck.js';
+import UIButton from './elements/Button.js';
+import UIColor from './elements/Color.js';
+import UISelect from './elements/Select.js';
+import UISelectButton from './elements/SelectButton.js';
+import UICollection from './elements/Collection.js';
+import UIList from './elements/List.js';
+import UIRow from './elements/Row.js';
+import UIInput from './elements/Input.js';
+import UIInputList from './elements/InputList.js';
+import UIFile from './elements/File.js';
+import UIPanel from './elements/Panel.js';
+
+import { Cool } from '../lib/cool/cool.js';
+
+export default function Interface(app, params) {
 	const self = this;
 	const uiTypes = {
 		UILabel,

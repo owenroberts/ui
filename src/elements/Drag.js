@@ -1,4 +1,6 @@
-class UIDrag extends UIText {
+import UIText from './Text.js';
+
+export default class UIDrag extends UIText {
 	constructor(params) {
 		super(params);
 		this.addClass('drag');

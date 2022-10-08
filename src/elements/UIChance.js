@@ -1,4 +1,8 @@
-class UIChance extends UICollection {
+import UIDrag from './Drag.js';
+import UILabel from './Label.js';
+import UICollection from './Collection.js';
+
+export default class UIChance extends UICollection {
 	constructor(params) {
 		super(params);
 		this.addClass('value-bg');

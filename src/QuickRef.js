@@ -2,7 +2,7 @@
 	module for running a function or adding uis to quick ref menu
 */
 
-function QuickRef(app) {
+export default function QuickRef(app) {
 	const self = this;
 	const data = {};
 	const defaultFontSize = 11;

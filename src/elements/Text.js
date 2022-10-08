@@ -1,4 +1,6 @@
-class UIText extends UIInput {
+import UIInput from './Input.js';
+
+export default class UIText extends UIInput {
 	constructor(params) {
 		super(params);
 		this.el.type = "text";

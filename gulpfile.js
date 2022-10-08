@@ -7,28 +7,24 @@ const sourcemaps = require('gulp-sourcemaps');
 const concat = require('gulp-concat');
 const terser = require('gulp-terser');
 const merge = require('merge-stream');
+const rollup = require('gulp-better-rollup');
 
 const sass = require('gulp-sass')(require('sass'));
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 
-const files = [
-	'src/elements/Element.js',
-	'src/elements/Collection.js',
-	'src/elements/Input.js',
-	'src/elements/Text.js',
-	'src/**/*.js',
-];
+function logError(err) {
+	console.error('* gulp-terser error', err.message, err.filename, err.line, err.col, err.pos);
+}
 
-function jsTask(sourcePath, buildPath, includeCool) {
-	if (includeCool) files.unshift('lib/cool/cool.js')
-	return src(files.map(f => sourcePath + f))
+function jsTask(sourcePath, buildPath, coolPath) {
+	let files = [sourcePath];
+	if (coolPath) files.unshift(coolPath + 'lib/cool/cool.js')
+	return src(files)
 		.pipe(sourcemaps.init())
-		.pipe(concat('ui.min.js'))
-		.pipe(terser().on('error', function(err) {
-			console.error('* gulp-terser error', err.message, err.filename, err.line, err.col, err.pos);
-		}))
+		.pipe(rollup({}, { file: 'ui.min.js' }, 'umd'))
+		.pipe(terser().on('error', logError))
 		.pipe(sourcemaps.write('./src_maps'))
 		.pipe(dest(buildPath));
 }
@@ -42,18 +38,18 @@ function sassTask(sourcePath, buildPath) {
 		.pipe(dest(buildPath))
 }
 
-function exportTask(includeCool) {
-	return jsTask('./ui/', './ui/build', includeCool);
+function exportTask(coolPath) {
+	return jsTask('./ui/src/ui.js', './ui/build', coolPath);
 }
 
-task('js', () => { return jsTask('./', './build'); });
+task('js', () => { return jsTask('./src/ui.js', './build'); });
 task('sass', () => { return sassTask('./css/style.scss', './css'); });
 task('css', series('sass'));
 task('build', series(jsTask, sassTask));
 
 module.exports = {
 	exportTask: exportTask
-}
+};
 
 
 

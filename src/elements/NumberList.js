@@ -1,4 +1,8 @@
-class UINumberList extends UICollection {
+import UINumber from './Number.js';
+import UIButton from './Button.js';
+import UICollection from './Collection.js';
+
+export default class UINumberList extends UICollection {
 	constructor(params) {
 		super(params);
 		this.addClass('number-list');

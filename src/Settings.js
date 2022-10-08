@@ -1,4 +1,4 @@
-function Settings(app, name, appSave, workspaceFields) {
+export default function Settings(app, name, appSave, workspaceFields) {
 	const self = this;
 	const appName = `settings-${name}`;
 	
@@ -14,13 +14,13 @@ function Settings(app, name, appSave, workspaceFields) {
 		}
 	}
 
-	function loadInterface(interface) {
-		for (const f in interface) {
+	function loadInterface(ui) {
+		for (const f in ui) {
 			if (f === 'palettes') continue;
 			if (f === 'quickRef') continue;
 			if (app.ui.faces[f]) {
 				// console.log(f, interface[f], app.ui.faces[f])
-				app.ui.faces[f].update(interface[f]);
+				app.ui.faces[f].update(ui[f]);
 			}
 		}
 	}
@@ -44,8 +44,8 @@ function Settings(app, name, appSave, workspaceFields) {
 			.forEach(f => {
 				s[f] = app.ui.faces[f].value;
 			});
-		const interface = appSave ? { ...s, ...appSave() } : { ...s };
-		settings.interface = interface;
+		const ui = appSave ? { ...s, ...appSave() } : { ...s };
+		settings.interface = ui;
 		
 		settings.panels = {};
 		for (const p in app.ui.panels) {
@@ -144,5 +144,4 @@ function Settings(app, name, appSave, workspaceFields) {
 			};
 		}
 	};
-
 }

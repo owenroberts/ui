@@ -1,4 +1,8 @@
-class UINumberStep extends UICollection {
+import UIDrag from './Drag.js';
+import UIButton from './Button.js';
+import UICollection from './Collection.js';
+
+export default class UINumberStep extends UICollection {
 	constructor(params) {
 		super(params);
 		this.addClass('number-step');

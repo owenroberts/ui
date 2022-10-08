@@ -1,4 +1,6 @@
-class UIButton extends UIElement {
+import UIElement from './Element.js';
+
+export default class UIButton extends UIElement {
 	constructor(params) {
 		params.tag = "span";
 		super(params);

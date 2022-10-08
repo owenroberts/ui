@@ -1,4 +1,8 @@
-class UISelectButton extends UICollection {
+import UISelect from './Select.js';
+import UIButton from './Button.js';
+import UICollection from './Collection.js';
+
+export default class UISelectButton extends UICollection {
 	constructor(params) {
 		super(params);
 		if (params.callback) this.callback = params.callback;

@@ -3,7 +3,11 @@
 	ui is interface
 */
 
-function Layout(ui, params) {
+import UICollection from './elements/Collection.js';
+import UISection from './elements/Section.js';
+import UILabel from './elements/Label.js';
+
+export default function Layout(ui, params) {
 	const self = this;
 
 	const container = new UICollection({ id: 'container' });

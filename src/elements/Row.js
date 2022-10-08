@@ -1,4 +1,6 @@
-class UIRow extends UICollection {
+import UICollection from './Collection.js';
+
+export default class UIRow extends UICollection {
 	constructor(params) {
 		super(params);
 		this.addClass('row');
