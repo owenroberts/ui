@@ -62,3 +62,5 @@ class UIListStep extends UICollection {
 		return this.textInput.value;
 	}
 }
+
+UI.Elements.UIListStep = UIListStep;

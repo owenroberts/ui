@@ -5,3 +5,5 @@ class UILabel extends UIElement {
 		this.text = params.text;
 	}
 }
+
+UI.Elements.UILabel = UILabel;

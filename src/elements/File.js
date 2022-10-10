@@ -38,3 +38,5 @@ class UIFile extends UIButton {
 		};
 	}
 }
+
+UI.Elements.UIFile = UIFile;

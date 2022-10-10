@@ -1,0 +1,1 @@
+window.UI = { Elements: {} }; // make Interface, Settings, some elements available to modules

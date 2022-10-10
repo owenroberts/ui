@@ -30,3 +30,5 @@ class UIRange extends UIInput {
 		this.el.step = step;
 	}
 }
+
+UI.Elements.UIRange = UIRange;

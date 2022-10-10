@@ -41,3 +41,5 @@ class UINumberList extends UICollection {
 	}
 
 }
+
+UI.Elements.UINumberList = UINumberList;

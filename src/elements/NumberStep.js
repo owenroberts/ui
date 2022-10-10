@@ -72,3 +72,5 @@ class UINumberStep extends UICollection {
 		return this.numberInput.value;
 	}
 }
+
+UI.Elements.UINumberStep = UINumberStep;

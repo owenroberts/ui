@@ -37,3 +37,5 @@ class UIRow extends UICollection {
 	}
 
 }
+
+UI.Elements.UIRow = UIRow;

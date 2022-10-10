@@ -51,3 +51,5 @@ class UIText extends UIInput {
 		return this._value || this.placeholder;
 	}
 }
+
+UI.Elements.UIText = UIText;

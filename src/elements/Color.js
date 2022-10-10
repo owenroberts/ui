@@ -59,3 +59,5 @@ class UIColor extends UIInput {
 		return [this.el, this.palette.el];
 	}
 }
+
+UI.Elements.UIColor = UIColor;

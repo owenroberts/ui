@@ -48,3 +48,5 @@ class UIToggle extends UIButton {
 		return this.isOn;
 	}
 }
+
+UI.Elements.UIToggle = UIToggle;

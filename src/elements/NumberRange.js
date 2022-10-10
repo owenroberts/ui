@@ -46,3 +46,5 @@ class UINumberRange extends UICollection {
 		return +this.numberInput.value;
 	}
 }
+
+UI.Elements.UINumberRange = UINumberRange;

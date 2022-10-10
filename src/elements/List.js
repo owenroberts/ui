@@ -37,3 +37,5 @@ class UIList extends UICollection {
 		}
 	}
 }
+
+UI.Elements.UIList = UIList;

@@ -38,3 +38,5 @@ class UISelectButton extends UICollection {
 
 	}
 }
+
+UI.Elements.UISelectButton = UISelectButton;

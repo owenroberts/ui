@@ -7,3 +7,5 @@ class UIInput extends UIElement {
 		if (params.key) this.setKey(params.key, params.label);
 	}
 }
+
+UI.Elements.UIInput = UIInput;

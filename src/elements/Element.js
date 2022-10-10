@@ -75,3 +75,5 @@ class UIElement {
 		this.el.remove();
 	}
 }
+
+UI.Elements.UIElement = UIElement;

@@ -29,3 +29,5 @@ class UINumber extends UIText {
 		this.update(+prompt(this.prompt));
 	}
 }
+
+UI.Elements.UINumber = UINumber;

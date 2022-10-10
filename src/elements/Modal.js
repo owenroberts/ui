@@ -80,3 +80,5 @@ class UIModal extends UICollection {
 		this.el.remove();
 	}
 }
+
+UI.Elements.UIModal = UIModal;

@@ -44,3 +44,5 @@ class UIInputList extends UICollection {
 		}
 	}
 }
+
+UI.Elements.UIInputList = UIInputList;

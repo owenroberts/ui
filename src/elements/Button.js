@@ -16,3 +16,5 @@ class UIButton extends UIElement {
 		// next frame -- have to know button is calling
 	}
 }
+
+UI.Elements.UIButton = UIButton;

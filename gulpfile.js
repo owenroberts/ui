@@ -7,6 +7,7 @@ const sourcemaps = require('gulp-sourcemaps');
 const concat = require('gulp-concat');
 const terser = require('gulp-terser');
 const merge = require('merge-stream');
+const iife = require("gulp-iife");
 
 const sass = require('gulp-sass')(require('sass'));
 const postcss = require('gulp-postcss');
@@ -14,6 +15,7 @@ const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 
 const files = [
+	'src/ui.js',
 	'src/elements/Element.js',
 	'src/elements/Collection.js',
 	'src/elements/Input.js',
@@ -26,6 +28,7 @@ function jsTask(sourcePath, buildPath, includeCool) {
 	return src(files.map(f => sourcePath + f))
 		.pipe(sourcemaps.init())
 		.pipe(concat('ui.min.js'))
+		.pipe(iife())
 		.pipe(terser().on('error', function(err) {
 			console.error('* gulp-terser error', err.message, err.filename, err.line, err.col, err.pos);
 		}))

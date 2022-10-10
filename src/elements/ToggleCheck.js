@@ -40,3 +40,5 @@ class UIToggleCheck extends UICollection {
 
 	
 }
+
+UI.Elements.UIToggleCheck = UIToggleCheck;

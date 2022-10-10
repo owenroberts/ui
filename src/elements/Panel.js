@@ -160,3 +160,5 @@ class UIPanel extends UICollection {
 		this.gridArea = settings.gridArea;
 	}
 }
+
+UI.Elements.UIPanel = UIPanel;

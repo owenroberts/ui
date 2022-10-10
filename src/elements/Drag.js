@@ -53,3 +53,5 @@ class UIDrag extends UIText {
 		if (params.value !== undefined) this.value = params.value;
 	}
 }
+
+UI.Elements.UIDrag = UIDrag;

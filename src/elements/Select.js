@@ -43,3 +43,5 @@ class UISelect extends UIElement {
 		}
 	}
 }
+
+UI.Elements.UISelect = UISelect;

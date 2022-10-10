@@ -86,3 +86,5 @@ class UISection extends UICollection {
 		}
 	}
 }
+
+UI.Elements.UISection = UISection;

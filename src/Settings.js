@@ -144,5 +144,4 @@ function Settings(app, name, appSave, workspaceFields) {
 			};
 		}
 	};
-
 }

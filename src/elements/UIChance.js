@@ -40,3 +40,5 @@ class UIChance extends UICollection {
 		}
 	}
 }
+
+UI.Elements.UIChance = UIChance;

@@ -39,6 +39,8 @@ function Interface(app, params) {
 
 	this.layout = new Layout(this, params);
 
+	this.settings = new Settings(app, params.name, undefined, params.workspaceFields);
+
 	let baseFontSize = 11;
 	this.updateScale = function(value) {
 		if (value) baseFontSize = +value;
@@ -92,6 +94,7 @@ function Interface(app, params) {
 		}
 
 		self.quickRef.addData(data);
+		self.settings.load();
 		if (callback) callback();
 	}
 
@@ -184,3 +187,5 @@ function Interface(app, params) {
 		app.uiUpdate();
 	};
 }
+
+UI.Interface = Interface;

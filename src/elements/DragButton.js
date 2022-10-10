@@ -27,3 +27,5 @@ class UIDragButton extends UIButton {
 		});
 	}
 }
+
+UI.Elements.UIDragButton = UIDragButton;
