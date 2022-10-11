@@ -3,23 +3,23 @@
 */
 
 function QuickRef(app) {
-	const self = this;
+
 	const data = {};
+	let list = [];
+
 	const defaultFontSize = 11;
+	let fontSize = 11;
 
-	this.fontSize = 11;
-	this.list = [];
-
-	this.setScale = function(value) {
-		self.fontSize = +value;
+	function setScale(value) {
+		fontSize = +value;
 		document.body.style.setProperty('--quick-ref-font-size', +value);
-	};
+	}
 
-	this.reset = function() {
-		lns.ui.faces.quickRefScale.update(defaultFontSize);
-	};
+	function reset() {
+		app.ui.faces.quickRefScale.update(defaultFontSize);
+	}
 
-	this.addRef = function() {
+	function addRef() {
 		
 		function modalOptions() {
 			const options = {};
@@ -47,11 +47,11 @@ function QuickRef(app) {
 				const m2 = new UIModal({
 					title: "ui", 
 					app: app, 
-					position: self.panel.position, 
+					position: app.ui.quick.panel.position,
 					callback: function() {
 						const d = options[p2.value];
-						const ui = app.ui.createUI(d, d.mod, d.sub, self.panel);
-						self.list.push(d);
+						const ui = app.ui.createControl(d, d.mod, d.sub, self.panel);
+						list.push(d);
 					}
 				});
 
@@ -65,10 +65,10 @@ function QuickRef(app) {
 					callback: function() {
 						m2.clear();
 						const d = options[p2.value];
-
 						const m = d.sub ? app[d.mod][d.sub] : app[d.mod];
-						// most callbacks
-						if (d.fromModule) {
+						
+						if (d.callback) m[d.callback]();
+						else if (d.fromModule) { // legacy
 							if (d.fromModule.callback) {
 								m[d.fromModule.callback]();
 							}
@@ -76,16 +76,10 @@ function QuickRef(app) {
 
 						/* 
 							direct set properties, toggle, number 
-							doesn't update ui
+							doesn't update ui -- bad ..
 						*/
-						if (d.number) {
-							m[d.number] = +prompt(d.prompt || d.label);
-						}
-
-						if (d.toggle) {
-							m[d.toggle] = !m[d.toggle];
-						}
-
+						if (d.number) m[d.number] = +prompt(d.prompt || d.label);
+						if (d.toggle) m[d.toggle] = !m[d.toggle];
 					}
 				});
 				m2.add(callFunc);
@@ -97,21 +91,21 @@ function QuickRef(app) {
 		const m1 = new UIModal({
 			title: "panels", 
 			app: app, 
-			position: self.panel.position,
+			position: app.ui.quick.panel.position,
 			callback: modalOptions
 		});
 
 		const p1 = new UISelect({ options: Object.keys(data) });
 		m1.add(p1);
-	};
+	}
 
-	this.addData = function(newData) {
+	function addData(newData) {
 		for (const k in newData) {
 			data[k] = newData[k];
 		}
-	};
+	}
 
-	this.openQuickMenu = function() {
+	function openQuickMenu() {
 
 		// populat ui optoins
 		let ignoreUIs = ['UIRow', 'UILabel'];
@@ -145,6 +139,7 @@ function QuickRef(app) {
 
 				// gotta be a better way to do this part -- data from uis not original file
 				const ui = options[input.value];
+				console.log(ui);
 				const mod = ui.sub ? app[ui.module][ui.sub] : app[ui.module];
 				let args;
 				if (ui.params) {
@@ -198,6 +193,10 @@ function QuickRef(app) {
 		input.input.el.addEventListener('keydown', ev => {
 			if (Cool.keys[ev.which] === 'escape') m.clear();
 		});
-	};
+	}
 
+	return {
+		setScale, reset, addRef, addData, openQuickMenu,
+		getList: () => { return list }
+	};
 }

@@ -1,16 +1,23 @@
-function Settings(app, name, appSave, workspaceFields) {
-	const self = this;
+function Settings(app, params) {
+	let { name, workspaceFields, appLoad, appSave } = params;
 	const appName = `settings-${name}`;
-	
+
+	if (!workspaceFields) workspaceFields = [];
+	workspaceFields = [
+		...workspaceFields,
+		'timelineLayout', 
+		'rightLayout',
+		'upLayout',
+	];
+
 	function loadPanels(panels) {
-		// console.log(panels);
 		for (const p in panels) {
 			if (p === 'el') continue;
 			if (!app.ui.panels[p]) continue;
 			app.ui.panels[p].setup(panels[p]);
 			let panel = app.ui.panels[p];
 			let settings = panels[p];
-			app.ui.layout[panel.gridArea].panels.append(panel);
+			app.ui.layout[panel.gridArea || 'default'].panels.append(panel);
 		}
 	}
 
@@ -35,7 +42,7 @@ function Settings(app, name, appSave, workspaceFields) {
 		}
 	}
 
-	this.save = function() {
+	function save() {
 		const settings = {};
 		
 		const s = {};
@@ -54,15 +61,13 @@ function Settings(app, name, appSave, workspaceFields) {
 		}
 
 		settings.layout = app.ui.layout.getSettings();
-
-		settings.quickRef = app.ui.quickRef.list;
+		settings.quickRef = app.ui.quickRef.getList();
 		localStorage[appName] = JSON.stringify(settings);
-	};
+	}
 
-	this.load = function(appLoad) {
+	function load(appLoad) {
 		if (localStorage[appName]) {
 			const settings = JSON.parse(localStorage[appName]);
-			// if (appLoad) appLoad(settings);
 			loadPanels(settings.panels);
 			loadInterface(settings.interface);
 			loadLayout(settings.layout);
@@ -74,28 +79,19 @@ function Settings(app, name, appSave, workspaceFields) {
 				});
 			}
 		}
-	};
+	}
 
-	this.clear = function() {
-		// delete localStorage[appName];
+	function clear() {
 		localStorage.setItem(appName, '');
-	};
+	}
 
 	// better way to set this up??
-	this.toggleSaveSettings = function() {
+	function toggleSaveSettings() {
 		app.files.saveSettingsOnUnload = !app.files.saveSettingsOnUnload;
-	};
+	}
 
-	if (!workspaceFields) workspaceFields = [];
-	workspaceFields = [
-		...workspaceFields,
-		'timelineLayout', 
-		'rightLayout',
-		'upLayout',
-	];
-
-	this.saveLayout = function() {
-		self.save();
+	function saveWorkspace() {
+		save();
 		const interfaceSettings = {};
 		workspaceFields.forEach(f => {
 			interfaceSettings[f] = app.ui.faces[f].value;
@@ -109,17 +105,17 @@ function Settings(app, name, appSave, workspaceFields) {
 		const fileName = prompt('Layout Name:', 'New Layout');
 		const blob = new Blob([jsonFile], { type: "application/x-download;charset=utf-8" });
 		saveAs(blob, `${fileName}.json`);
-	};
+	}
 
-	this.loadLayoutFile = function(url) {
+	function loadWorkspace(url) {
 		// load default file
 		if (url) {
 			fetch(url)
 				.then(response => { return response.json() })
-				.then(data => { 
-					loadInterface(data.interface); 
-					loadPanels(data.panels);
-					loadLayout(data.layout);
+				.then(settings => {
+					loadInterface(settings.interface); 
+					loadPanels(settings.panels);
+					loadLayout(settings.layout);
 				})
 				.catch(error => { console.error(error); });
 		} else {
@@ -143,5 +139,7 @@ function Settings(app, name, appSave, workspaceFields) {
 				}
 			};
 		}
-	};
+	}
+
+	return { save, load, clear, loadLayout, saveWorkspace, loadWorkspace, toggleSaveSettings };
 }

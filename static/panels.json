@@ -46,19 +46,6 @@
 						}
 					}
 				]
-			},
-			{
-				"key": "ui",
-				"controls": [
-					{
-						"type": "UINumberStep",
-						"label": "Max panels",
-						"number": "maxPanels",
-						"fromModule": {
-							"value": "maxPanels"
-						}
-					}
-				]
 			}
 		]
 	},
@@ -121,20 +108,16 @@
 				{
 						"type": "UIButton",
 						"key": "alt-w",
-						"fromModule": {
-							"callback": "saveLayout"
-						},
+						"callback": "saveWorkspace",
 						"params": {
-							"text": "Save Interface Layout"
+							"text": "Save Workspace"
 						}
 					},
 					{
 						"type": "UIButton",
-						"fromModule": {
-							"callback": "loadLayoutFile"
-						},
+						"callback": "loadWorkspace",
 						"params": {
-							"text": "Load Interface Layout"
+							"text": "Load Workspace"
 						}
 					},
 					{

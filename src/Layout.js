@@ -3,53 +3,62 @@
 	ui is interface
 */
 
-function Layout(ui, params) {
-	const self = this;
+function Layout(app, params) {
 
 	const container = new UICollection({ id: 'container' });
-	this.default = new UISection({ id: 'ui', gridArea: 'default' }, ui);
-	container.append(this.default);
 	
-	// this.interface.append(ui.panels); // adding main panels to the interface collection
+	const defaultUI = new UISection({ id: 'ui', gridArea: 'default', addPanelToSection });
+	container.append(defaultUI);
 	
-	this.timeline = new UISection({ id: 'ui-timeline', gridArea: 'timeline' }, ui);
-	container.append(this.timeline);
-	this.main = new UISection({ id: 'main', gridArea: 'main' }, ui);
+	const timeline = new UISection({ id: 'ui-timeline', gridArea: 'timeline', addPanelToSection });
+	container.append(timeline);
+	
+	const main = new UISection({ id: 'main', gridArea: 'main', addPanelToSection });
 
-	window.toolTip = new UILabel({id: 'tool-tip'});
-	this.default.append(window.toolTip);
+	const ToolTip = new UILabel({ id: 'tool-tip' });
+	defaultUI.append(ToolTip);
+	window.ToolTip = ToolTip; // better way to do this?
 
-	this.toggleTimeline = function(isOn) {
+	function addPanelToSection(panelName, section) {
+		const panel = app.ui.panels[panelName];
+		section.panels.append(panel);
+		panel.gridArea = params.gridArea;
+		panel.dock();
+	}
+
+	function toggleTimeline(isOn) {
 		self.timeline.isVisible = isOn;
-	};
+	}
 
-	this.toggleRL = function(isOn) {
+	function toggleRL(isOn) {
 		if (isOn) container.addClass('RL');
 		else container.removeClass('RL');
-	};
+	}
 
-	this.toggleUP = function(isOn) {
+	function toggleUP(isOn) {
 		if (isOn) container.addClass('UP');
 		else container.removeClass('UP');
-	};
+	}
 
-	this.addSelectPanels = function(panelList) {
-		this.default.addSelectorOptions(panelList);
-		this.timeline.addSelectorOptions(panelList);
-		this.main.addSelectorOptions(panelList);
-	};
+	function addSelectPanels(panelList) {
+		defaultUI.addSelectorOptions(panelList);
+		timeline.addSelectorOptions(panelList);
+		main.addSelectorOptions(panelList);
+	}
 
-	this.addSelectOption = function(key, label) {
-		this.default.addSelectorOption(key, label);
-		this.timeline.addSelectorOption(key, label);
-		this.main.addSelectorOption(key, label);
-	};
+	function addSelectOption(key, label) {
+		defaultUI.addSelectorOption(key, label);
+		timeline.addSelectorOption(key, label);
+		main.addSelectorOption(key, label);
+	}
 
-	this.getSettings = function() {
+	function getSettings() {
 		return {
-			default: self.default.settings,
-			timeline: self.timeline.settings,
-			main: self.main.settings,
+			default: defaultUI.settings,
+			timeline: timeline.settings,
+			main: main.settings,
 		};
-	};
+	}
+
+	return { default: defaultUI, timeline, main, toggleTimeline, toggleRL, toggleUP, addSelectPanels, addSelectOption, getSettings };
 }

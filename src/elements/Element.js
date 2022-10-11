@@ -33,6 +33,10 @@ class UIElement {
 		return { x: this.el.getBoundingClientRect().x, y: this.el.getBoundingClientRect().y };
 	}
 
+	getPosition() {
+		return { x: this.el.getBoundingClientRect().x, y: this.el.getBoundingClientRect().y };
+	}
+
 	setProp(prop, value) {
 		this.el.style.setProperty(prop, value);
 	}
@@ -60,14 +64,14 @@ class UIElement {
 	}
 
 	onPress(triggerRelease) {
-		toolTip.text = `${this.el.title}`;
-		toolTip.addClass('visible');
+		ToolTip.text = `${this.el.title}`;
+		ToolTip.addClass('visible');
 		this.addClass('triggered');
 		if (triggerRelease === true) setTimeout(this.onRelease.bind(this), 400);
 	}
 
 	onRelease() {
-		toolTip.removeClass('visible');
+		ToolTip.removeClass('visible');
 		this.removeClass('triggered');
 	}
 

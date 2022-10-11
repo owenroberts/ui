@@ -1,5 +1,5 @@
 class UISection extends UICollection {
-	constructor(params, ui) {
+	constructor(params) {
 		super(params);
 		this.addClass('ui-section');
 
@@ -12,10 +12,7 @@ class UISection extends UICollection {
 		this.selector = new UISelectButton({ 
 			class: 'selector',
 			callback: value => {
-				const panel = ui.panels[value];
-				this.panels.append(panel);
-				panel.gridArea = params.gridArea;
-				panel.dock();
+				params.addPanelToSection(value, this);
 			}
 		});
 		header.append(this.selector);

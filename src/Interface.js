@@ -1,61 +1,31 @@
 function Interface(app, params) {
-	const self = this;
-	const uiTypes = {
-		UILabel,
-		UIElement,
-		UIRange,
-		UIText,
-		UINumber,
-		UINumberRange,
-		UINumberStep,
-		UIToggle,
-		UIToggleCheck,
-		UIButton,
-		UIColor,
-		UISelect,
-		UISelectButton,
-		UICollection,
-		UIList,
-		UIRow,
-		UIInput,
-		UIInputList,
-		UIFile,
-	};
 
 	// turn off ipad request desktop
 	document.body.classList.add(Cool.mobilecheck() ? 'mobile' : 'desktop');
 
-	this.keys = {};
-	this.faces = {}; /* references to faces we need to update values ???  */
-	this.panels = {};
-	// all existing panels is different than section panels ...
-	// but they can start here ... 
+	const keys = {}; // all short cut keys
+	const faces = {}; // all interfaces that need to be saved/updated -- make this all interfaces?
+	const panels = {};
 	
-	this.quickRef = new QuickRef(app);
-	
-	this.maxPanels = 100; // limit number of panels open at one time, default 100, basically ignore this -- save for when we have abc layout
-	this.maxWidth = 500;
-	this.useMaxWidth = false;
-
-	this.layout = new Layout(this, params);
-
-	this.settings = new Settings(app, params.name, undefined, params.workspaceFields);
+	const quickRef = new QuickRef(app);
+	const layout = new Layout(app, params);
+	const settings = new Settings(app, params);
 
 	let baseFontSize = 11;
-	this.updateScale = function(value) {
+	function updateScale(value) {
 		if (value) baseFontSize = +value;
 		document.body.style.setProperty('--base-font-size', baseFontSize);
-	};
+	}
 
 	/* key commands */
-	this.keyDown = function(ev) {
+	function keyDown(ev) {
 		let k = Cool.keys[ev.which];
 		if (k === "space") ev.preventDefault();
 		k = ev.shiftKey ? "shift-" + k : k;
 		k = ev.ctrlKey ? "ctrl-" + k : k;
 		k = ev.altKey ? "alt-" + k : k;
 
-		const ui = self.keys[k];
+		const ui = keys[k];
 
 		if (k && ui && 
 			document.activeElement.type !== "text" &&
@@ -65,8 +35,8 @@ function Interface(app, params) {
 			ui.keyHandler(ev.target.value);
 			ui.onPress(true);
 		}
-	};
-	document.addEventListener("keydown", self.keyDown, false);
+	}
+	document.addEventListener("keydown", keyDown, false);
 
 	async function loadInterfaceFiles(file, callback) {
 		const appFile = await fetch(file).then(response => response.json());
@@ -79,44 +49,43 @@ function Interface(app, params) {
 		}
 		
 		for (const key in data) {
-			const panel = self.panels[key] || self.createPanel(key, data[key]);
+			const panel = panels[key] || createPanel(key, data[key]);
 			const modules = data[key].modules;
 			for (let i = 0; i < modules.length; i++) {
 				const { key, sub, controls} = modules[i];
 				for (let j = 0; j < controls.length; j++) {
-					self.createControl(controls[j], key, sub, panel);
+					createControl(controls[j], key, sub, panel);
 				}
 				if (key === 'ui' && sub) app.ui[sub].panel = panel;
-				// if (!app[key].panel) app[key].panel = panel; 
-				// modules are references in multiple panels, need better way to do this ...
-				// get panel references
 			}
 		}
 
-		self.quickRef.addData(data);
-		self.settings.load();
+		quickRef.addData(data);
+		settings.load();
 		if (callback) callback();
 	}
 
-	this.load = function(file, callback) {
+	function load(file, callback) {
 		loadInterfaceFiles(file, callback);
-	};
+	}
 
-	this.createPanel = function(key, data) {
+	function createPanel(key, data) {
 		const panel = new UIPanel({ 
 			id: key, 
 			label: data.label, 
 			onToggle: function() {
-				let openPanels = lns.ui.panels.uiList.filter(p => p.isOpen && p.isDocked);
+				// later close other panels
+				// let openPanels = lns.ui.panels.uiList.filter(p => p.isOpen && p.isDocked);
 				// console.log(openPanels) 
+				// do this in UISection ...
 			}
 		});
-		self.panels[key] = panel;
-		self.layout.addSelectOption(key, data.label);
+		panels[key] = panel;
+		layout.addSelectOption(key, data.label);
 		return panel;
-	};
+	}
 
-	this.createControl = function(data, mod, sub, panel) {
+	function createControl(data, mod, sub, panel) {
 
 		const m = sub ? app[mod][sub] : app[mod]; // module with sub module
 		// this is because a bunch of modules are "sub modules" of the ui object, for no reason?
@@ -165,7 +134,7 @@ function Interface(app, params) {
 		
 		// console.log(data);
 		// console.log(panel.rows);
-		let ui = new uiTypes[data.type](params);
+		let ui = new UI.Elements[data.type](params);
 		
 		if (data.type == 'UIRow') panel.addRow(data.k, params.class);
 		else if (data.k) {
@@ -178,14 +147,16 @@ function Interface(app, params) {
 		/* add is to row, append is adding it straight there */
 
 		if (params.prompt) ui.prompt = params.prompt; /* only key commands -- why here? */
-		if (params.key) self.keys[data.key] = ui;
-		if (data.face) self.faces[data.face] = ui;
+		if (params.key) keys[data.key] = ui;
+		if (data.face) faces[data.face] = ui;
 		if (data.face && data.ignoreSettings) ui.ignoreSettings = true;
-	};
+	}
 
-	this.update = function() {
+	function update() {
 		app.uiUpdate();
-	};
+	}
+
+	return { keys, faces, panels, settings, quickRef, layout, load, update, updateScale, createPanel, createControl };
 }
 
 UI.Interface = Interface;
