@@ -25,6 +25,7 @@
     "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-terser": "^2.1.0",
+    "node-color-log": "^10.0.2",
     "sass": "^1.54.0"
   }
 }

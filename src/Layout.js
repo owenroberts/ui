@@ -26,20 +26,6 @@ function Layout(app, params) {
 		panel.dock();
 	}
 
-	function toggleTimeline(isOn) {
-		self.timeline.isVisible = isOn;
-	}
-
-	function toggleRL(isOn) {
-		if (isOn) container.addClass('RL');
-		else container.removeClass('RL');
-	}
-
-	function toggleUP(isOn) {
-		if (isOn) container.addClass('UP');
-		else container.removeClass('UP');
-	}
-
 	function addSelectPanels(panelList) {
 		defaultUI.addSelectorOptions(panelList);
 		timeline.addSelectorOptions(panelList);
@@ -60,5 +46,38 @@ function Layout(app, params) {
 		};
 	}
 
-	return { default: defaultUI, timeline, main, toggleTimeline, toggleRL, toggleUP, addSelectPanels, addSelectOption, getSettings };
+	function init() {
+		const panel = app.ui.createPanel('layout');
+		
+		app.ui.addProp('timelineLayout', {
+			type: 'UIToggleCheck', // remove UI eventually ??
+			value: true,
+			label: 'Timeline',
+			callback: value => {
+				timeline.isVisible = value;
+			}
+		}, panel);
+
+		app.ui.addProp('rightLayout', {
+			type: 'UIToggleCheck',
+			value: false,
+			label: "▶/◀",
+			callback: value => {
+				if (value) container.addClass('RL');
+				else container.removeClass('RL');
+			}
+		}, panel);
+
+		app.ui.addProp('upLayout', {
+			type: 'UIToggleCheck',
+			value: false,
+			label: "▼/▲",
+			callback: value => {
+				if (value) container.addClass('UP');
+				else container.removeClass('UP');
+			}
+		}, panel);
+	}
+
+	return { default: defaultUI, timeline, main, init, addSelectPanels, addSelectOption, getSettings };
 }

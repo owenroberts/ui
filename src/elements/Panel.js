@@ -1,6 +1,8 @@
 class UIPanel extends UICollection {
 	constructor(params) {
 		super({ id: `${params.id}-panel` });
+		this.id = params.id;
+		this.isPanel = true;
 		this.addClass("panel");
 		this.addClass("undocked");
 		this.gridArea = 'default';
@@ -14,10 +16,10 @@ class UIPanel extends UICollection {
 		this.open = new UIToggle({
 			onText: "－",
 			offText: "＋",
-			type: "toggle",
+			class: "toggle",
 			isOn: true, // default open
-			callback: () => {
-				if (!this.open.isOn) this.addClass('closed');
+			callback: isOn => {
+				if (!isOn) this.addClass('closed');
 				else this.removeClass('closed');
 			}
 		});
@@ -27,13 +29,13 @@ class UIPanel extends UICollection {
 
 		this.header.append(new UIButton({
 			text: 'X',
-			type: 'undock-btn',
+			class: 'undock-btn',
 			callback: this.undock.bind(this)
 		}));
 
 		this.orderBtn = new UIButton({
 			text: this.order || "0",
-			type: "order-btn",
+			class: "order-btn",
 			callback: () => {
 				this.order = +this.el.style.order + 1;
 				this.orderBtn.text = this.order;
@@ -43,7 +45,7 @@ class UIPanel extends UICollection {
 
 		this.header.append(new UIButton({
 			text: "[]",
-			type: "block-btn",
+			class: "block-btn",
 			callback: () =>  {
 				if (this.el.classList.contains('block')) 
 					this.el.classList.remove('block');
@@ -54,7 +56,7 @@ class UIPanel extends UICollection {
 
 		this.header.append(new UIButton({
 			text: "<",
-			type: "headless-btn",
+			class: "headless-btn",
 			callback: () => {
 				if (this.el.classList.contains('headless')) 
 					this.el.classList.remove('headless');
@@ -139,7 +141,7 @@ class UIPanel extends UICollection {
 		this.remove(row);
 	}
 
-	add(ui, _row, k) {
+	add(ui, _row, k) { // flip row and k?
 		// if (ui.prompt == "Go To Frame") console.log(ui)
 		let row = _row 
 			|| this.rows[this.rows.length - 1]

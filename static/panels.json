@@ -9,9 +9,7 @@
 					{
 						"type": "UIButton",
 						"key": "ctrl-s",
-						"fromModule": {
-							"callback": "save"
-						},
+						"callback": "save",
 						"params": {
 							"text": "Save"
 						}
@@ -19,30 +17,16 @@
 					{
 						"type": "UIButton",
 						"key": "alt-s",
-						"fromModule": {
-							"callback": "load"
-						},
+						"callback": "load",
 						"params": {
 							"text": "Load"
 						}
 					},
 					{
 						"type": "UIButton",
-						"fromModule": {
-							"callback": "clear"
-						},
+						"callback": "clear",
 						"params": {
 							"text": "Clear"
-						}
-					},
-					{
-						"type": "UIToggle",
-						"fromModule": {
-							"callback": "toggleSaveSettings"
-						},
-						"params": {
-							"onText": "Auto Save On",
-							"offText": "Auto Save Off"
 						}
 					}
 				]
@@ -71,18 +55,14 @@
 					},
 					{
 						"type": "UIButton",
-						"fromModule": {
-							"callback": "reset"
-						},
+						"callback": "reset",
 						"params": {
 							"text": "Reset"
 						}
 					},
 					{
 						"type": "UIButton",
-						"fromModule": {
-							"callback": "addRef"
-						},
+						"callback": "addRef",
 						"params": {
 							"text": "+"
 						}
@@ -90,9 +70,7 @@
 					{
 						"type": "UIButton",
 						"key": "ctrl-space",
-						"fromModule": {
-							"callback": "openQuickMenu"
-						}
+						"callback": "openQuickMenu"
 					}
 				]
 			}

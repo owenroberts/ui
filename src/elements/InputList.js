@@ -8,15 +8,26 @@ class UIInputList extends UICollection {
 		});
 		this.input.el.setAttribute('list', params.listName);
 		this.input.el.addEventListener('change', ev => {
+			// err when modal removed ... 
 			this.input.el.blur();
-			if (params.callback()) params.callback();
+			if (params.callback) params.callback(this.value);
 		});
+		
+		if (params.escape) {
+			this.input.el.addEventListener('keydown', ev => {
+				if (Cool.keys[ev.which] === 'escape') params.escape();
+			});
+		}
 
 		this.list = new UIElement({
 			tag: 'datalist',
 			id: params.listName
 		});
 		this.setOptions(params.options || []);
+	}
+
+	focus() {
+		this.input.el.focus();
 	}
 
 	get html() {

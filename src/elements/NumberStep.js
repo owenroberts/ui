@@ -6,8 +6,8 @@ class UINumberStep extends UICollection {
 		this.callback = params.callback;
 		this.args = params.args;
 		this.step = +params.step || 1;
-		this.min = +params.min || 0;
-		this.max = +params.max || 100;
+		this.min = +params.min || +params.range[0] || 0;
+		this.max = +params.max || +params.range[1] || 100;
 
 		// constrain range?
 		
@@ -41,7 +41,6 @@ class UINumberStep extends UICollection {
 		this.append(this.stepDown);
 		this.append(this.numberInput);
 		this.append(this.stepUp);
-		
 	}
 
 	keyHandler(value) {
@@ -50,6 +49,9 @@ class UINumberStep extends UICollection {
 	}
 
 	update(value, uiOnly) {
+		if (value === undefined) value = prompt(this.prompt);
+		if (value === undefined || value === null || value === '') return alert('No value entered.');
+		else value = +value;
 		if (value < this.min) value = this.min;
 		if (value > this.max) value = this.max;
 		this.value = value;

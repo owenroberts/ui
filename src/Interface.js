@@ -6,10 +6,7 @@ function Interface(app, params) {
 	const keys = {}; // all short cut keys
 	const faces = {}; // all interfaces that need to be saved/updated -- make this all interfaces?
 	const panels = {};
-	
-	const quickRef = new QuickRef(app);
-	const layout = new Layout(app, params);
-	const settings = new Settings(app, params);
+	let quick, layout, settings;
 
 	let baseFontSize = 11;
 	function updateScale(value) {
@@ -38,9 +35,18 @@ function Interface(app, params) {
 	}
 	document.addEventListener("keydown", keyDown, false);
 
+	function setup() {
+		layout = new Layout(app, params);
+		quick = new QuickRef(app);
+		layout.init(); // maybe layout is the only one ... 
+		quick.init();
+		settings = new Settings(app, params);
+		settings.load();
+	}
+
 	async function loadInterfaceFiles(file, callback) {
 		const appFile = await fetch(file).then(response => response.json());
-		const interfaceFile = await fetch('../ui/static/panels.json').then(response => response.json());
+		const interfaceFile = {}; // await fetch('../ui/static/panels.json').then(response => response.json());
 		
 		const data = { ...interfaceFile };
 		for (const k in appFile) {
@@ -60,29 +66,95 @@ function Interface(app, params) {
 			}
 		}
 
-		quickRef.addData(data);
+		quick.addData(data);
 		settings.load();
 		if (callback) callback();
 	}
 
 	function load(file, callback) {
-		loadInterfaceFiles(file, callback);
+		// loadInterfaceFiles(file, callback);
 	}
 
-	function createPanel(key, data) {
-		const panel = new UIPanel({ 
-			id: key, 
-			label: data.label, 
-			onToggle: function() {
-				// later close other panels
-				// let openPanels = lns.ui.panels.uiList.filter(p => p.isOpen && p.isDocked);
-				// console.log(openPanels) 
-				// do this in UISection ...
-			}
-		});
+	function labelFromKey(key) {
+		let label = key[0].toUpperCase() + key.substring(1);
+		label = label.replace(/(?<=[a-z])(?=[A-Z])/g, ' ');
+		return label;
+	}
+
+	function createPanel(key, params={}) {
+		if (panels[key]) return panels[key];
+		const label = params.label || labelFromKey(key);
+		const panel = new UIPanel({ id: key, label });
 		panels[key] = panel;
-		layout.addSelectOption(key, data.label);
+		layout.addSelectOption(key, label);
 		return panel;
+	}
+
+	function addCallbacks(callbacks, panel) {
+		callbacks.forEach(params => { addCallback(params, panel); });
+	}
+
+	function addCallback(params, panel) {
+		if (!panel.isPanel) panel = createPanel(panel);
+		if (params.row) panel.addRow();
+		if (params.label) panel.add(new UILabel({ text: params.label }));
+		const ui = new UI.Elements.UIButton(params);
+		if (params.k) panel.add(ui, undefined, params.k);
+		else panel.add(ui);
+		if (params.key) keys[params.key] = ui;
+		
+		quick.registerCallback(labelFromKey(panel.id), labelFromKey(params.text || params.label), params); // fuck
+		return ui;
+	}
+
+	function getType(value, type) {
+		if (typeof value === 'string') return 'UIText';
+		if (typeof value === 'number') return 'UINumber';
+		if (typeof value === 'boolean') return 'UIToggle';
+	}
+
+	function addProp(prop, params, panel) {
+		if (!panel.isPanel) panel = createPanel(panel);
+		const type = params.type || getType(params.value);
+		const ui = new UI.Elements[type](params);
+		panel.addRow();
+		if (params.label) {
+			panel.add(new UILabel({ 
+				text: params.label || labelFromKey(prop),
+				css: { 'margin-right': 'auto' }
+			}));
+		}
+		panel.add(ui);
+		faces[prop] = ui;
+
+		if (params.reset) {
+			panel.add(new UIButton({ text: 'Reset', callback: () => {
+				ui.update(params.value);
+			}}))
+		}
+
+		quick.registerProp(prop, labelFromKey(panel.id), labelFromKey(prop), params);
+		// console.log(panel, ui);
+		return ui;
+	}
+
+	function addUI(params, panel) {
+		if (!panel.isPanel) panel = createPanel(panel);
+		if (params.row) panel.addRow();
+		let ui = new UI.Elements[params.type](params);
+		panel.add(ui, undefined, params.k);
+		return ui;
+	}
+
+	function removeUI(ui, panel) {
+		if (!panel.isPanel) panel = createPanel(panel);
+		// console.log(ui, panel);
+		panel.remove(ui);
+	}
+
+	function removeK(ui, panel) {
+		if (!panel.isPanel) panel = createPanel(panel);
+		panel.removeK(K);
 	}
 
 	function createControl(data, mod, sub, panel) {
@@ -156,7 +228,11 @@ function Interface(app, params) {
 		app.uiUpdate();
 	}
 
-	return { keys, faces, panels, settings, quickRef, layout, load, update, updateScale, createPanel, createControl };
+	function getLayout() { return layout; } // getter/setter?
+	function getQuickRef() { return quick; }
+	function getSettings() { return settings; }
+
+	return { keys, faces, panels, getLayout, getQuickRef, getSettings, setup, load, update, updateScale, createPanel, createControl, addCallback, addCallbacks, addProp, addUI, removeUI, removeK  };
 }
 
 UI.Interface = Interface;

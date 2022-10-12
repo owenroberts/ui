@@ -9,14 +9,14 @@ class UIToggleCheck extends UICollection {
 			class: 'toggle-check'
 		});
 
-		if (params.label) {
-			this.append(new UILabel({
-				text: params.label,
-			}));
-		}
+		// if (params.label) {
+		// 	this.append(new UILabel({
+		// 		text: params.label,
+		// 	}));
+		// }
 
 		this.check.el.type = 'checkbox';
-		this.check.el.checked = params.isOn || false;
+		this.check.el.checked = params.isOn || params.value || false;
 		this.check.el.addEventListener('change', ev => {
 			if (this.callback) this.callback(ev.target.checked);
 			this.check.el.blur();
@@ -34,11 +34,10 @@ class UIToggleCheck extends UICollection {
 	}
 
 	update(value) {
+		if (value === undefined) value = !this.value; // it is a toggle ...
 		this.check.el.checked = value;
 		if (this.callback) this.callback(value);
 	}
-
-	
 }
 
 UI.Elements.UIToggleCheck = UIToggleCheck;

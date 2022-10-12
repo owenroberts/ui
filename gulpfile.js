@@ -14,6 +14,8 @@ const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 
+const logger = require('node-color-log');
+
 const files = [
 	'src/ui.js',
 	'src/elements/Element.js',
@@ -30,7 +32,8 @@ function jsTask(sourcePath, buildPath, includeCool) {
 		.pipe(concat('ui.min.js'))
 		.pipe(iife())
 		.pipe(terser().on('error', function(err) {
-			console.error('* gulp-terser error', err.message, err.filename, err.line, err.col, err.pos);
+			logger.color('red')
+				.log('* gulp-terser error', err.message, err.filename, err.line, err.col, err.pos);
 		}))
 		.pipe(sourcemaps.write('./src_maps'))
 		.pipe(dest(buildPath));

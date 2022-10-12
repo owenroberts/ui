@@ -11,13 +11,14 @@ function Settings(app, params) {
 	];
 
 	function loadPanels(panels) {
+		const layout = app.ui.getLayout();
 		for (const p in panels) {
 			if (p === 'el') continue;
 			if (!app.ui.panels[p]) continue;
 			app.ui.panels[p].setup(panels[p]);
 			let panel = app.ui.panels[p];
 			let settings = panels[p];
-			app.ui.layout[panel.gridArea || 'default'].panels.append(panel);
+			layout[panel.gridArea || 'default'].panels.append(panel);
 		}
 	}
 
@@ -34,10 +35,10 @@ function Settings(app, params) {
 
 	function loadLayout(layout) {
 		for (const section in layout) {
-			app.ui.layout[section].maxWidth.update(layout[section].maxWidth);
-			app.ui.layout[section].maxWidthToggle.update(layout[section].maxWidthToggle);
+			app.ui.getLayout()[section].maxWidth.update(layout[section].maxWidth);
+			app.ui.getLayout()[section].maxWidthToggle.update(layout[section].maxWidthToggle);
 			if (layout[section].isVisible !== undefined) {
-				app.ui.layout[section].isVisible = layout[section].isVisible;
+				app.ui.getLayout()[section].isVisible = layout[section].isVisible;
 			}
 		}
 	}
@@ -60,8 +61,8 @@ function Settings(app, params) {
 			settings.panels[p] = app.ui.panels[p].settings;
 		}
 
-		settings.layout = app.ui.layout.getSettings();
-		settings.quickRef = app.ui.quickRef.getList();
+		settings.layout = app.ui.getLayout().getSettings();
+		settings.quickRef = app.ui.getQuickRef().getList();
 		localStorage[appName] = JSON.stringify(settings);
 	}
 
@@ -73,9 +74,10 @@ function Settings(app, params) {
 			loadLayout(settings.layout);
 
 			if (settings.quickRef) {
-				app.ui.quickRef.list = settings.quickRef;
+				app.ui.getQuickRef().list = settings.quickRef;
 				settings.quickRef.forEach(ref => {
-					app.ui.createUI(ref, ref.mod, ref.sub, app.ui.panels.quickRef);
+					// app.ui.createUI(ref, ref.mod, ref.sub, app.ui.panels.quickRef);
+					console.log(ref);
 				});
 			}
 		}
@@ -85,17 +87,14 @@ function Settings(app, params) {
 		localStorage.setItem(appName, '');
 	}
 
-	// better way to set this up??
-	function toggleSaveSettings() {
-		app.files.saveSettingsOnUnload = !app.files.saveSettingsOnUnload;
-	}
-
 	function saveWorkspace() {
 		save();
 		const interfaceSettings = {};
-		workspaceFields.forEach(f => {
-			interfaceSettings[f] = app.ui.faces[f].value;
-		});
+		workspaceFields
+			.filter(f => app.ui.faces[f])
+			.forEach(f => {
+				interfaceSettings[f] = app.ui.faces[f].value;
+			});
 		const savedSettings = JSON.parse(localStorage.getItem(appName));
 		const jsonFile = JSON.stringify({ 
 			panels: savedSettings.panels, 
@@ -108,8 +107,8 @@ function Settings(app, params) {
 	}
 
 	function loadWorkspace(url) {
-		// load default file
 		if (url) {
+			// load default file
 			fetch(url)
 				.then(response => { return response.json() })
 				.then(settings => {
@@ -141,5 +140,24 @@ function Settings(app, params) {
 		}
 	}
 
-	return { save, load, clear, loadLayout, saveWorkspace, loadWorkspace, toggleSaveSettings };
+	// const panel = app.ui.createPanel('settings');
+	app.ui.addCallbacks([
+		{ callback: save, key: "ctrl-s", text: 'Save' },
+		{ callback: load, key: "alt-s", text: 'Load' },
+		{ callback: clear, text: 'Clear' }
+	], 'settings');
+
+	app.ui.addCallbacks([
+		{ callback: saveWorkspace, key: 'alt-w', text: 'Save' },
+		{ callback: loadWorkspace, text: 'Load' },
+		// { callback:  }
+	], 'workspaces');
+
+	app.ui.addUI({
+		row: true,
+		type: "UILabel",
+		text: "Defaults"
+	}, 'workspaces');
+
+	return { load };
 }
