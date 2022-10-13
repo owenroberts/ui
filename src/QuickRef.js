@@ -4,9 +4,8 @@
 
 function QuickRef(app) {
 
-	const data = {};
 	const reg = [];
-	let list = [];
+	const list = [];
 	const defaultFontSize = 11;
 	let panel;
 
