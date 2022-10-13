@@ -40,8 +40,8 @@ function Interface(app, params) {
 		quick = new QuickRef(app);
 		layout.init(); // maybe layout is the only one ... 
 		quick.init();
-		settings = new Settings(app, params);
-		settings.load();
+		// settings = new Settings(app, params);
+		// settings.load();
 	}
 
 	async function loadInterfaceFiles(file, callback) {
@@ -99,11 +99,11 @@ function Interface(app, params) {
 		if (params.row) panel.addRow();
 		if (params.label) panel.add(new UILabel({ text: params.label }));
 		const ui = new UI.Elements.UIButton(params);
-		if (params.k) panel.add(ui, undefined, params.k);
-		else panel.add(ui);
+		panel.add(ui, undefined, params.k);
 		if (params.key) keys[params.key] = ui;
 		
-		quick.registerCallback(labelFromKey(panel.id), labelFromKey(params.text || params.label), params); // fuck
+		quick.registerCallback(labelFromKey(panel.id), labelFromKey(params.text || params.label), params);
+		
 		return ui;
 	}
 
@@ -113,19 +113,26 @@ function Interface(app, params) {
 		if (typeof value === 'boolean') return 'UIToggle';
 	}
 
+	function addProps(props, panel) {
+		for (const prop in props) {
+			addProp(prop, props[prop], panel);
+		}
+	}
+
 	function addProp(prop, params, panel) {
 		if (!panel.isPanel) panel = createPanel(panel);
 		const type = params.type || getType(params.value);
 		const ui = new UI.Elements[type](params);
 		panel.addRow();
-		if (params.label) {
+		if (params.label) { // any props not have a label ??
 			panel.add(new UILabel({ 
 				text: params.label || labelFromKey(prop),
-				css: { 'margin-right': 'auto' }
+				class: 'prop',
 			}));
 		}
 		panel.add(ui);
 		faces[prop] = ui;
+		if (params.key) keys[params.key] = ui;
 
 		if (params.reset) {
 			panel.add(new UIButton({ text: 'Reset', callback: () => {
@@ -134,7 +141,6 @@ function Interface(app, params) {
 		}
 
 		quick.registerProp(prop, labelFromKey(panel.id), labelFromKey(prop), params);
-		// console.log(panel, ui);
 		return ui;
 	}
 
@@ -143,6 +149,7 @@ function Interface(app, params) {
 		if (params.row) panel.addRow();
 		let ui = new UI.Elements[params.type](params);
 		panel.add(ui, undefined, params.k);
+		if (params.key) keys[params.key] = ui;
 		return ui;
 	}
 
@@ -232,7 +239,7 @@ function Interface(app, params) {
 	function getQuickRef() { return quick; }
 	function getSettings() { return settings; }
 
-	return { keys, faces, panels, getLayout, getQuickRef, getSettings, setup, load, update, updateScale, createPanel, createControl, addCallback, addCallbacks, addProp, addUI, removeUI, removeK  };
+	return { keys, faces, panels, getLayout, getQuickRef, getSettings, setup, load, update, updateScale, createPanel, createControl, addCallback, addCallbacks, addProp, addProps, addUI, removeUI, removeK  };
 }
 
 UI.Interface = Interface;

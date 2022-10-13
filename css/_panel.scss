@@ -48,9 +48,16 @@
 		&.closed {
 			order: -2 !important;
 		}
+
+		.row label {
+			margin-right: 3px;
+		}
 	}
 
-	.row label { margin-bottom: 0; }
+	.row label { 
+		margin-bottom: 0;
+		margin-right: auto;
+	}
 
 	.row {
 		margin-bottom: 0.25em;

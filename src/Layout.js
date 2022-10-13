@@ -19,10 +19,10 @@ function Layout(app, params) {
 	defaultUI.append(ToolTip);
 	window.ToolTip = ToolTip; // better way to do this?
 
-	function addPanelToSection(panelName, section) {
+	function addPanelToSection(panelName, section, gridArea) {
 		const panel = app.ui.panels[panelName];
 		section.panels.append(panel);
-		panel.gridArea = params.gridArea;
+		panel.gridArea = gridArea;
 		panel.dock();
 	}
 

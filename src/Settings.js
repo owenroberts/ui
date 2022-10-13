@@ -161,3 +161,5 @@ function Settings(app, params) {
 
 	return { load };
 }
+
+UI.Settings = Settings;

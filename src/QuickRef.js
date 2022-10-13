@@ -48,7 +48,6 @@ function QuickRef(app) {
 		});
 		m.add(input);
 		input.focus();
-	
 	}
 
 	function open() {

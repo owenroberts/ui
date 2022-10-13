@@ -147,6 +147,7 @@ class UIPanel extends UICollection {
 			|| this.rows[this.rows.length - 1]
 			|| this.addRow();
 		row.append(ui, k);
+		return ui;
 	}
 
 	setup(settings) {

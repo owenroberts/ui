@@ -3,7 +3,8 @@ class UISelect extends UIElement {
 		params.tag = "select";
 		super(params);
 		if (params.callback) this.callback = params.callback;
-		this.setOptions(params.options || [], params.selected);
+		this.setOptions(params.options || []);
+		if (params.selected) this.value = params.selected;
 		
 		this.el.addEventListener('change', function(ev) {
 			if (params.callback) params.callback(ev.target.value);
@@ -23,23 +24,20 @@ class UISelect extends UIElement {
 		}
 	}
 
-	addOption(value, selected, text) {
+	addOption(value, text) {
 		const opt = document.createElement("option");
 		opt.value = opt.textContent = value;
-		if (selected) opt.selected = "selected";
 		if (text) opt.textContent = text;
 		this.el.appendChild(opt);
 	}
 
-	setOptions(options, selected) {
+	setOptions(options) {
 		for (let i = 0; i < options.length; i++) {
 			const opt = Array.from(this.el.options).map(o => o.value);
 			const { value, text } = typeof options[i] === 'string' ?
 				{ value: options[i] }  :
 				options[i];
-			if (!opt.includes(value)) {
-				this.addOption(value, selected == options[i], text);
-			}
+			if (!opt.includes(value)) this.addOption(value, text);
 		}
 	}
 }

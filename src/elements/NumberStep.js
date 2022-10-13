@@ -6,8 +6,10 @@ class UINumberStep extends UICollection {
 		this.callback = params.callback;
 		this.args = params.args;
 		this.step = +params.step || 1;
-		this.min = +params.min || +params.range[0] || 0;
-		this.max = +params.max || +params.range[1] || 100;
+		this.min = params.range ? +params.range[0] :
+			+params.min || 0;
+		this.max = params.range ? +params.range[1] :
+			+params.max || 100;
 
 		// constrain range?
 		

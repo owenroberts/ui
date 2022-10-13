@@ -12,7 +12,7 @@ class UISection extends UICollection {
 		this.selector = new UISelectButton({ 
 			class: 'selector',
 			callback: value => {
-				params.addPanelToSection(value, this);
+				params.addPanelToSection(value, this, params.gridArea);
 			}
 		});
 		header.append(this.selector);
