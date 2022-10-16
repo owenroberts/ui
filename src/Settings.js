@@ -1,5 +1,5 @@
 function Settings(app, params) {
-	let { name, workspaceFields, appLoad, appSave } = params;
+	let { name, workspaceFields, workspaces} = params;
 	const appName = `settings-${name}`;
 
 	if (!workspaceFields) workspaceFields = [];
@@ -46,13 +46,13 @@ function Settings(app, params) {
 	function save() {
 		const settings = {};
 		
-		const s = {};
+		const interface = {};
 		Object.keys(app.ui.faces)
 			.filter(f => !app.ui.faces[f].ignoreSettings)
 			.forEach(f => {
-				s[f] = app.ui.faces[f].value;
+				interface[f] = app.ui.faces[f].value;
 			});
-		const interface = appSave ? { ...s, ...appSave() } : { ...s };
+		// const interface = appSave ? { ...s, ...appSave() } : { ...s };
 		settings.interface = interface;
 		
 		settings.panels = {};
@@ -66,7 +66,7 @@ function Settings(app, params) {
 		localStorage[appName] = JSON.stringify(settings);
 	}
 
-	function load(appLoad) {
+	function load() {
 		if (localStorage[appName]) {
 			const settings = JSON.parse(localStorage[appName]);
 			loadPanels(settings.panels);
@@ -150,14 +150,22 @@ function Settings(app, params) {
 	app.ui.addCallbacks([
 		{ callback: saveWorkspace, key: 'alt-w', text: 'Save' },
 		{ callback: loadWorkspace, text: 'Load' },
-		// { callback:  }
 	], 'workspaces');
 
 	app.ui.addUI({
 		row: true,
 		type: "UILabel",
-		text: "Defaults"
+		text: "Defaults",
+		class: 'break',
 	}, 'workspaces');
+
+	workspaces.forEach(workspace => {
+		const { text, url } = workspace;
+		app.ui.addCallback({
+			text,
+			callback: () => { loadWorkspace(url); }
+		}, 'workspaces');
+	});
 
 	return { load };
 }

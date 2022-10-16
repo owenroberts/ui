@@ -40,8 +40,6 @@ function Interface(app, params) {
 		quick = new QuickRef(app);
 		layout.init(); // maybe layout is the only one ... 
 		quick.init();
-		// settings = new Settings(app, params);
-		// settings.load();
 	}
 
 	async function loadInterfaceFiles(file, callback) {

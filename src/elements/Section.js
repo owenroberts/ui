@@ -56,12 +56,12 @@ class UISection extends UICollection {
 	addSelectorOptions(panelList) {
 		panelList.forEach(p => {
 			const [option, label] = p;
-			this.selector.select.addOption(option, false, label);
+			this.selector.select.addOption(option, label);
 		});
 	}
 
 	addSelectorOption(key, label) {
-		this.selector.select.addOption(key, false, label);
+		this.selector.select.addOption(key, label);
 	}
 
 	get isVisible() {
