@@ -61,6 +61,7 @@ function QuickRef(app) {
 
 		function callCallback(label) {
 			const ui = reg.find(e => e.label === label);
+			if (!ui) return;
 			if (ui.type === 'prop') app.ui.faces[ui.prop].update();
 			// test other types ...
 			else ui.params.callback();

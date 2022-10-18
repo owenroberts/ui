@@ -7,15 +7,20 @@ class UIInputList extends UICollection {
 			class: 'search'
 		});
 		this.input.el.setAttribute('list', params.listName);
-		this.input.el.addEventListener('change', ev => {
-			// err when modal removed ... 
+		
+		function changeHandler(ev) {
 			this.input.el.blur();
 			if (params.callback) params.callback(this.value);
-		});
+		}
+
+		this.input.el.addEventListener('change', changeHandler);
 		
 		if (params.escape) {
 			this.input.el.addEventListener('keydown', ev => {
-				if (Cool.keys[ev.which] === 'escape') params.escape();
+				if (Cool.keys[ev.which] === 'escape') {
+					this.input.el.removeEventListener('change', changeHandler);
+					params.escape();
+				}
 			});
 		}
 
@@ -24,14 +29,13 @@ class UIInputList extends UICollection {
 			id: params.listName
 		});
 		this.setOptions(params.options || []);
+
+		this.append(this.input);
+		this.append(this.list);
 	}
 
 	focus() {
 		this.input.el.focus();
-	}
-
-	get html() {
-		return [this.input.el, this.list.el];
 	}
 
 	get value() {

@@ -124,12 +124,12 @@ function Interface(app, params) {
 		}
 
 		let ui = new UI.Elements[type](params);
-		panel.add(ui, undefined, params.k);
+		panel.add(ui, params.k);
 
 		if (params.key) keys[params.key] = ui;
 		if (params.face) {
-			faces[params.face] = ui;
 			ui.ignoreSettings = true;
+			faces[params.face] = ui;
 		}
 		return ui;
 	}
