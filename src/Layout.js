@@ -46,7 +46,7 @@ function Layout(app, params) {
 		};
 	}
 
-	function connectUI() {
+	function connect() {
 		
 		app.ui.addProps({
 
@@ -79,5 +79,5 @@ function Layout(app, params) {
 		}, 'layout');
 	}
 
-	return { default: defaultUI, timeline, main, connectUI, addSelectPanels, addSelectOption, getSettings };
+	return { default: defaultUI, timeline, main, connect, addSelectPanels, addSelectOption, getSettings };
 }

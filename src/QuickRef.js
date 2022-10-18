@@ -87,7 +87,7 @@ function QuickRef(app) {
 		reg.push({ label: `${mod} > ${label}`, prop, params, type: 'prop' });
 	}
 
-	function connectUI() {
+	function connect() {
 
 		panel = app.ui.getPanel('quick', { label: 'Quick Ref' });
 
@@ -109,7 +109,7 @@ function QuickRef(app) {
 	}
 
 	return {
-		connectUI, registerCallback, registerProp, 
+		connect, registerCallback, registerProp, 
 		getList: () => { return list; }
 	};
 }

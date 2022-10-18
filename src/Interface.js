@@ -137,8 +137,8 @@ function Interface(app, params) {
 	function setup() {
 		layout = new Layout(app, params);
 		quick = new QuickRef(app);
-		layout.connectUI(); // maybe layout is the only one ... 
-		quick.connectUI();
+		layout.connect(); // maybe layout is the only one ... 
+		quick.connect();
 	}
 
 	function getLayout() { return layout; } // getter/setter?
