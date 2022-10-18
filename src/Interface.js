@@ -35,12 +35,6 @@ function Interface(app, params) {
 		return label;
 	}
 
-	function getType(value, type) {
-		if (typeof value === 'string') return 'UIText';
-		if (typeof value === 'number') return 'UINumber';
-		if (typeof value === 'boolean') return 'UIToggle';
-	}
-
 	function getPanel(key, params={}) {
 		if (!key) return currentPanel;
 		if (panels[key]) return panels[key];
@@ -57,8 +51,23 @@ function Interface(app, params) {
 	}
 
 	function addCallback(params, panel) {
-		if (!params.type) params.type = 'UIButton';
-		addControl(params, panel);
+		if (!panel) panel = currentPanel;
+		if (!panel.isPanel) panel = getPanel(panel);
+		if (params.row) panel.addRow();
+		if (params.label) panel.add(new UILabel({ text: params.label }));
+		const ui = new UI.Elements.UIButton(params);
+		panel.add(ui, undefined, params.k);
+		if (params.key) keys[params.key] = ui;
+		
+		quick.registerCallback(labelFromKey(panel.id), labelFromKey(params.text || params.label), params);
+		
+		return ui;
+	}
+
+	function getType(value, type) {
+		if (typeof value === 'string') return 'UIText';
+		if (typeof value === 'number') return 'UINumber';
+		if (typeof value === 'boolean') return 'UIToggle';
 	}
 
 	function addProps(props, panel) {
@@ -68,9 +77,6 @@ function Interface(app, params) {
 	}
 
 	function addProp(prop, params, panel) {
-		// params.face = prop;
-		// addControl(params, panel);
-
 		if (!panel) panel = currentPanel;
 		if (!panel.isPanel) panel = getPanel(panel);
 		const type = params.type || getType(params.value);
@@ -109,34 +115,13 @@ function Interface(app, params) {
 		if (params.row) panel.addRow();
 		const type = params.type || getType(params.value);
 		let ui = new UI.Elements[type](params);
-		if (params.label) { // any props not have a label ??
-			panel.add(new UILabel({ 
-				text: params.label || labelFromKey(params.face),
-				class: 'prop',
-			}));
-		}
-		panel.add(ui, params.k);
+		// add label
+		panel.add(ui, undefined, params.k);
 		if (params.key) keys[params.key] = ui;
 		if (params.face) {
 			faces[params.face] = ui;
 			ui.ignoreSettings = true;
 		}
-		return ui;
-	}
-
-	function addControl(params, panel) {
-		if (!panel) panel = currentPanel;
-		if (!panel.isPanel) panel = getPanel(panel);
-		if (params.row) panel.addRow();
-		if (params.label) panel.add(new UILabel({ text: params.label }));
-
-		const ui = new UI.Elements[params.type](params);
-		panel.add(ui, params.k);
-
-		if (params.key) keys[params.key] = ui;
-
-		quick.registerCallback(labelFromKey(panel.id), labelFromKey(params.text || params.label), params);
-
 		return ui;
 	}
 
