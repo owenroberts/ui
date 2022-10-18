@@ -140,7 +140,7 @@ function Settings(app, params) {
 
 	app.ui.addCallbacks([
 		{ callback: save, key: "ctrl-s", text: 'Save' },
-		{ callback: load, key: "alt-s", text: 'Load' },
+		{ callback: load, text: 'Load' },
 		{ callback: clear, text: 'Clear' },
 	], 'settings');
 
