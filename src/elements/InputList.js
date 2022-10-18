@@ -2,36 +2,37 @@ class UIInputList extends UICollection {
 	constructor(params) {
 		super(params);
 
-		this.input = new UIElement({
+		const input = new UIElement({
 			tag: 'input',
 			class: 'search'
 		});
-		this.input.el.setAttribute('list', params.listName);
+		input.el.setAttribute('list', params.listName);
 		
 		function changeHandler(ev) {
-			this.input.el.blur();
+			input.el.blur();
 			if (params.callback) params.callback(this.value);
 		}
-
-		this.input.el.addEventListener('change', changeHandler);
+		// const boundHandler = changeHandler.bind(this);
+		input.el.addEventListener('change', changeHandler);
 		
 		if (params.escape) {
-			this.input.el.addEventListener('keydown', ev => {
+			input.el.addEventListener('keydown', ev => {
 				if (Cool.keys[ev.which] === 'escape') {
-					this.input.el.removeEventListener('change', changeHandler);
+					input.el.removeEventListener('change', changeHandler);
 					params.escape();
 				}
 			});
 		}
 
-		this.list = new UIElement({
+		const list = new UIElement({
 			tag: 'datalist',
 			id: params.listName
 		});
-		this.setOptions(params.options || []);
 
-		this.append(this.input);
-		this.append(this.list);
+		this.append(input, 'input');
+		this.append(list, 'list');
+		
+		this.setOptions(params.options || []);
 	}
 
 	focus() {
@@ -42,19 +43,22 @@ class UIInputList extends UICollection {
 		return this.input.el.value;
 	}
 
-	addOption(value, selected, text) {
+	set value(value) {
+		this.input.value = value;
+	}
+
+	addOption(value, text) {
 		const opt = document.createElement("option");
 		opt.value = opt.textContent = value;
-		if (selected) opt.selected = "selected";
 		if (text) opt.textContent = text;
 		this.list.el.appendChild(opt);
 	}
 
-	setOptions(options, selected) {
+	setOptions(options) {
 		for (let i = 0; i < options.length; i++) {
 			const opt = Array.from(this.list.el.options).map(o => o.value);
 			if (!opt.includes(options[i])) {
-				this.addOption(options[i], selected == options[i]);
+				this.addOption(options[i]);
 			}
 		}
 	}
