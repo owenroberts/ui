@@ -35,6 +35,12 @@ function Interface(app, params) {
 		return label;
 	}
 
+	function getType(value, type) {
+		if (typeof value === 'string') return 'UIText';
+		if (typeof value === 'number') return 'UINumber';
+		if (typeof value === 'boolean') return 'UIToggle';
+	}
+
 	function getPanel(key, params={}) {
 		if (!key) return currentPanel;
 		if (panels[key]) return panels[key];
@@ -55,19 +61,14 @@ function Interface(app, params) {
 		if (!panel.isPanel) panel = getPanel(panel);
 		if (params.row) panel.addRow();
 		if (params.label) panel.add(new UILabel({ text: params.label }));
-		const ui = new UI.Elements.UIButton(params);
+		
+		const ui = new UI.Elements[params.type || 'UIButton'](params);
 		panel.add(ui, undefined, params.k);
 		if (params.key) keys[params.key] = ui;
 		
 		quick.registerCallback(labelFromKey(panel.id), labelFromKey(params.text || params.label), params);
 		
 		return ui;
-	}
-
-	function getType(value, type) {
-		if (typeof value === 'string') return 'UIText';
-		if (typeof value === 'number') return 'UINumber';
-		if (typeof value === 'boolean') return 'UIToggle';
 	}
 
 	function addProps(props, panel) {
@@ -105,7 +106,7 @@ function Interface(app, params) {
 
 	function addUIs(uis, panel) {
 		for (const prop in uis) {
-			const params = { ...uis[prop], face: prop };
+			const params = { ...uis[prop], face: prop, row: true };
 			addUI(params, panel);
 		}
 	}
@@ -114,9 +115,17 @@ function Interface(app, params) {
 		if (!panel.isPanel) panel = getPanel(panel);
 		if (params.row) panel.addRow();
 		const type = params.type || getType(params.value);
+		
+		if (params.label) { // any props not have a label ??
+			panel.add(new UILabel({ 
+				text: params.label || labelFromKey(prop),
+				class: 'prop',
+			}));
+		}
+
 		let ui = new UI.Elements[type](params);
-		// add label
 		panel.add(ui, undefined, params.k);
+
 		if (params.key) keys[params.key] = ui;
 		if (params.face) {
 			faces[params.face] = ui;
