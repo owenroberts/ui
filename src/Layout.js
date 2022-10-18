@@ -3,7 +3,7 @@
 	ui is interface
 */
 
-function Layout(app, params) {
+function Layout(app) {
 
 	const container = new UICollection({ id: 'container' });
 	
@@ -15,9 +15,7 @@ function Layout(app, params) {
 	
 	const main = new UISection({ id: 'main', gridArea: 'main', addPanelToSection });
 
-	const ToolTip = new UILabel({ id: 'tool-tip' });
 	defaultUI.append(ToolTip);
-	window.ToolTip = ToolTip; // better way to do this?
 
 	function addPanelToSection(panelName, section, gridArea) {
 		const panel = app.ui.panels[panelName];

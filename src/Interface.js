@@ -28,6 +28,7 @@ function Interface(app, params) {
 		keys[k].onPress(true);
 	}
 	document.addEventListener("keydown", keyDown, false);
+	window.ToolTip = new UILabel({ id: 'tool-tip' });
 
 	function labelFromKey(key) {
 		let label = key[0].toUpperCase() + key.substring(1);
@@ -124,20 +125,20 @@ function Interface(app, params) {
 		}
 
 		let ui = new UI.Elements[type](params);
-		panel.add(ui, params.k);
+		panel.add(ui, undefined, params.k);
 
 		if (params.key) keys[params.key] = ui;
 		if (params.face) {
-			ui.ignoreSettings = true;
 			faces[params.face] = ui;
+			ui.ignoreSettings = true;
 		}
 		return ui;
 	}
 
 	function setup() {
-		layout = new Layout(app, params);
+		layout = new Layout(app);
 		quick = new QuickRef(app);
-		layout.connect(); // maybe layout is the only one ... 
+		layout.connect();
 		quick.connect();
 	}
 

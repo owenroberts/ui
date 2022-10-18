@@ -26,10 +26,8 @@ function Settings(app, params) {
 		for (const f in interface) {
 			if (f === 'palettes') continue;
 			if (f === 'quickRef') continue;
-			if (app.ui.faces[f]) {
-				// console.log(f, interface[f], app.ui.faces[f])
-				app.ui.faces[f].update(interface[f]);
-			}
+			if (!app.ui.faces[f]) continue;
+			app.ui.faces[f].update(interface[f]);
 		}
 	}
 
