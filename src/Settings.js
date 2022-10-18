@@ -140,11 +140,10 @@ function Settings(app, params) {
 		}
 	}
 
-	// const panel = app.ui.createPanel('settings');
 	app.ui.addCallbacks([
 		{ callback: save, key: "ctrl-s", text: 'Save' },
 		{ callback: load, key: "alt-s", text: 'Load' },
-		{ callback: clear, text: 'Clear' }
+		{ callback: clear, text: 'Clear' },
 	], 'settings');
 
 	app.ui.addCallbacks([

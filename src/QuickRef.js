@@ -1,11 +1,12 @@
 /*
 	module for running a function or adding uis to quick ref menu
+	register all callbacks, props, uis with params to either run or recreate ui 
 */
 
 function QuickRef(app) {
 
-	const reg = [];
-	const list = [];
+	const reg = []; // registered uis for reference
+	const list = []; // list of uis added to interfaces
 	const defaultFontSize = 11;
 	let panel;
 
@@ -86,16 +87,15 @@ function QuickRef(app) {
 		reg.push({ label: `${mod} > ${label}`, prop, params, type: 'prop' });
 	}
 
-	function init() {
+	function connectUI() {
 
-		panel = app.ui.createPanel('quick', { label: 'Quick Ref' });
+		panel = app.ui.getPanel('quick', { label: 'Quick Ref' });
 
 		app.ui.addCallbacks([
-			{ callback: open, text: "Open", key: "ctrl-space" },
+			{ callback: open, text: "Menu", key: "ctrl-space" },
 			{ callback: add, text: "+" },
-		], panel);
+		]);
 
-		// how does this get set by saved data??
 		app.ui.addProp('quickRefScale', {
 			type: 'UINumberStep',
 			value: defaultFontSize,
@@ -105,11 +105,11 @@ function QuickRef(app) {
 			},
 			reset: true, // defaultFontSize ??
 			range: [10, 40],
-		}, panel);
+		});
 	}
 
 	return {
-		init, registerCallback, registerProp, 
-		getList: () => { return list }
+		connectUI, registerCallback, registerProp, 
+		getList: () => { return list; }
 	};
 }

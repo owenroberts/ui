@@ -141,7 +141,7 @@ class UIPanel extends UICollection {
 		this.remove(row);
 	}
 
-	add(ui, _row, k) { // flip row and k?
+	add(ui, k, _row) { // flip row and k?
 		// if (ui.prompt == "Go To Frame") console.log(ui)
 		let row = _row 
 			|| this.rows[this.rows.length - 1]

@@ -46,38 +46,38 @@ function Layout(app, params) {
 		};
 	}
 
-	function init() {
-		const panel = app.ui.createPanel('layout');
+	function connectUI() {
 		
-		app.ui.addProp('timelineLayout', {
-			type: 'UIToggleCheck', // remove UI eventually ??
-			value: true,
-			label: 'Timeline',
-			callback: value => {
-				timeline.isVisible = value;
-			}
-		}, panel);
+		app.ui.addProps({
 
-		app.ui.addProp('rightLayout', {
-			type: 'UIToggleCheck',
-			value: false,
-			label: "▶/◀",
-			callback: value => {
-				if (value) container.addClass('RL');
-				else container.removeClass('RL');
-			}
-		}, panel);
+			'timelineLayout': {
+				type: 'UIToggleCheck', // remove UI eventually ??
+				value: true,
+				label: 'Timeline',
+				callback: value => { timeline.isVisible = value; }
+			},
 
-		app.ui.addProp('upLayout', {
-			type: 'UIToggleCheck',
-			value: false,
-			label: "▼/▲",
-			callback: value => {
-				if (value) container.addClass('UP');
-				else container.removeClass('UP');
-			}
-		}, panel);
+			'rightLayout': {
+				type: 'UIToggleCheck',
+				value: false,
+				label: "▶/◀",
+				callback: value => {
+					if (value) container.addClass('RL');
+					else container.removeClass('RL');
+				}
+			},
+
+			'upLayout': {
+				type: 'UIToggleCheck',
+				value: false,
+				label: "▼/▲",
+				callback: value => {
+					if (value) container.addClass('UP');
+					else container.removeClass('UP');
+				}
+			}, 
+		}, 'layout');
 	}
 
-	return { default: defaultUI, timeline, main, init, addSelectPanels, addSelectOption, getSettings };
+	return { default: defaultUI, timeline, main, connectUI, addSelectPanels, addSelectOption, getSettings };
 }
