@@ -7,7 +7,7 @@ class UISection extends UICollection {
 		this.panels = new UICollection({ id: params.id + '-panels', class: 'panels' });
 		this.panels.append(new UIElement({ class: 'break' })); // break between panels
 
-		const header = new UICollection({ class: 'section-header' });
+		const header = new UICollection({ id: params.id + '-header', class: 'section-header' });
 
 		this.selector = new UISelectButton({ 
 			class: 'selector',

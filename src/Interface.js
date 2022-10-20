@@ -81,15 +81,16 @@ function Interface(app, params) {
 	function addProp(prop, params, panel) {
 		if (!panel) panel = currentPanel;
 		if (!panel.isPanel) panel = getPanel(panel);
+		
 		const type = params.type || getType(params.value);
 		const ui = new UI.Elements[type](params);
 		panel.addRow();
-		if (params.label) { // any props not have a label ??
-			panel.add(new UILabel({ 
-				text: params.label || labelFromKey(prop),
-				class: 'prop',
-			}));
-		}
+		// if (params.label) { // any props not have a label ??
+		panel.add(new UILabel({ 
+			text: params.label || labelFromKey(prop),
+			class: 'prop',
+		}));
+		// }
 		panel.add(ui);
 		if (prop === 'bpm') console.trace();
 		faces[prop] = ui;
@@ -106,15 +107,22 @@ function Interface(app, params) {
 	}
 
 	function addUIs(uis, panel) {
-		for (const prop in uis) {
-			const params = { ...uis[prop], face: prop, row: true };
-			addUI(params, panel);
+		if (Array.isArray(uis)) {
+			uis.forEach(ui => { addUI(ui, panel); });
+		}
+		else {
+			for (const prop in uis) {
+				const params = { ...uis[prop], face: prop, row: true };
+				addUI(params, panel);
+			}
 		}
 	}
 
 	function addUI(params, panel) {
+		if (!panel) panel = currentPanel;
 		if (!panel.isPanel) panel = getPanel(panel);
 		if (params.row) panel.addRow();
+
 		const type = params.type || getType(params.value);
 		
 		if (params.label) { // any props not have a label ??
@@ -136,7 +144,7 @@ function Interface(app, params) {
 	}
 
 	function setup() {
-		layout = new Layout(app);
+		layout = new Layout(app, params);
 		quick = new QuickRef(app);
 		layout.connect();
 		quick.connect();

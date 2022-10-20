@@ -3,9 +3,10 @@
 	ui is interface
 */
 
-function Layout(app) {
+function Layout(app, params) {
 
 	const container = new UICollection({ id: 'container' });
+	const sections = {}; // use this instead ... figure out usemain
 	
 	const defaultUI = new UISection({ id: 'ui', gridArea: 'default', addPanelToSection });
 	container.append(defaultUI);

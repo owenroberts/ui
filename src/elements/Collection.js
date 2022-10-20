@@ -8,9 +8,11 @@ class UICollection extends UIElement {
 		if (k !== undefined) this[k] = ui;
 		if (Array.isArray(ui.html)) {
 			ui.html.forEach(el => {
+				// if (!this.el.contains(el) 
 				this.el.appendChild(el);
 			});
 		} else {
+			// if (!this.el.contains(ui.el) 
 			this.el.appendChild(ui.el);
 		}
 	}
