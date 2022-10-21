@@ -129,7 +129,7 @@ class UIPanel extends UICollection {
 	}
 
 	addRow(k, className) {
-		const row = new UIRow({ class: className, id: k });
+		const row = new UIRow({ id: k, class: className,  });
 		this.append(row, k);
 		this.rows.push(row);
 		return row;
