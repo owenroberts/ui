@@ -2,7 +2,10 @@ class UIRange extends UIInput {
 	constructor(params) {
 		super(params);
 		this.el.type = "range";
-		this.setRange(params.min, params.max);
+		
+		const [min, max] = params.range ? [...params.range] : [params.min, params.max];
+		this.setRange(min, max);
+		
 		this.value = params.value || params.min;
 		if (params.step) this.setStep(params.step);
 

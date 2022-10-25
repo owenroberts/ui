@@ -1,6 +1,6 @@
 function Settings(app, params) {
-	let { name, workspaceFields, workspaces} = params;
-	const appName = `settings-${name}`;
+	let { name, workspaceFields, workspaces, appLoad, appSave } = params;
+	const localStorageString = `settings-${name}`;
 
 	if (!workspaceFields) workspaceFields = [];
 	workspaceFields = [
@@ -51,6 +51,7 @@ function Settings(app, params) {
 				interface[f] = app.ui.faces[f].value;
 			});
 		// const interface = appSave ? { ...s, ...appSave() } : { ...s };
+		if (appSave) Object.assign(interface, appSave());
 		settings.interface = interface;
 		
 		settings.panels = {};
@@ -61,12 +62,12 @@ function Settings(app, params) {
 
 		settings.layout = app.ui.getLayout().getSettings();
 		settings.quickRef = app.ui.getQuickRef().getList();
-		localStorage[appName] = JSON.stringify(settings);
+		localStorage[localStorageString] = JSON.stringify(settings);
 	}
 
 	function load() {
-		if (localStorage[appName]) {
-			const settings = JSON.parse(localStorage[appName]);
+		if (localStorage[localStorageString]) {
+			const settings = JSON.parse(localStorage[localStorageString]);
 			loadPanels(settings.panels);
 			loadInterface(settings.interface);
 			loadLayout(settings.layout);
@@ -78,11 +79,12 @@ function Settings(app, params) {
 					console.log(ref);
 				});
 			}
+			if (appLoad) appLoad(settings);
 		}
 	}
 
 	function clear() {
-		localStorage.setItem(appName, '');
+		localStorage.setItem(localStorageString, '');
 	}
 
 	function saveWorkspace() {

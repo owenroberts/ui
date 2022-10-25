@@ -12,13 +12,14 @@ class UIDragButton extends UIButton {
 			this.down.x = ev.pageX;
 		});
 
+		// this is all fucked ...
 		document.addEventListener('mouseup', ev => {
 			if (this.dragging) {
 				const delta = ev.pageX - this.down.x;
 				if (Math.abs(delta) > 10) {
 					this.callback(
 						delta > 0 ? 1 : -1, 
-						Math.abs(Math.ceil(delta / lns.ui.timeline.frameWidth))
+						Math.abs(Math.ceil(delta / lns.timeline.frameWidth))
 					);
 				}
 			}

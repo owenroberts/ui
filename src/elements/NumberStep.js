@@ -52,7 +52,10 @@ class UINumberStep extends UICollection {
 
 	update(value, uiOnly) {
 		if (value === undefined) value = prompt(this.prompt);
-		if (value === undefined || value === null || value === '') return alert('No value entered.');
+		if (value === undefined || value === null || value === '') {
+			console.trace();
+			return alert('No value entered.');
+		}
 		else value = +value;
 		if (value < this.min) value = this.min;
 		if (value > this.max) value = this.max;

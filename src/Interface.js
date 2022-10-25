@@ -64,7 +64,7 @@ function Interface(app, params) {
 		if (params.label) panel.add(new UILabel({ text: params.label }));
 		
 		const ui = new UI.Elements[params.type || 'UIButton'](params);
-		panel.add(ui, undefined, params.k);
+		panel.add(ui, params.k);
 		if (params.key) keys[params.key] = ui;
 		
 		quick.registerCallback(labelFromKey(panel.id), labelFromKey(params.text || params.label), params);
@@ -86,12 +86,12 @@ function Interface(app, params) {
 		// console.log(type);
 		const ui = new UI.Elements[type](params);
 		panel.addRow();
-		// if (params.label) { // any props not have a label ??
-		panel.add(new UILabel({ 
-			text: params.label || labelFromKey(prop),
-			class: 'prop',
-		}));
-		// }
+		if (!params.noLabel) { // any props not have a label ??
+			panel.add(new UILabel({ 
+				text: params.label || labelFromKey(prop),
+				class: 'prop',
+			}));
+		}
 		panel.add(ui);
 		if (prop === 'bpm') console.trace();
 		faces[prop] = ui;

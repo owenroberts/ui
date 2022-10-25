@@ -4,12 +4,14 @@ class UIToggle extends UIButton {
 		this.onText = params.onText || params.text;
 		this.offText = params.offText || params.text;
 		this.isOn = params.isOn || params.value || false;
+		if (this.isOn) this.on();
 		// if (params.isOn) this.toggle();
 		super.text = this.isOn ? this.onText : this.offText;
 		this.addClass('toggle');
 	}
 
 	update(isOn, uiOnly) {
+
 		if (isOn !== this.isOn) {
 			if (this.isOn === undefined) this.isOn = isOn;
 			if (!uiOnly) this.callback(isOn);
