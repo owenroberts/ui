@@ -95,7 +95,7 @@ function Settings(app, params) {
 			.forEach(f => {
 				interfaceSettings[f] = app.ui.faces[f].value;
 			});
-		const savedSettings = JSON.parse(localStorage.getItem(appName));
+		const savedSettings = JSON.parse(localStorage.getItem(localStorageString));
 		const jsonFile = JSON.stringify({ 
 			panels: savedSettings.panels, 
 			layout: savedSettings.layout,

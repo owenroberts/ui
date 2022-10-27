@@ -171,7 +171,7 @@
 
 	input.number,
 	input.drag {
-		text-align: left;
+		text-align: right;
 		vertical-align: bottom;
 		line-height: 1.6;
 	}
@@ -180,6 +180,7 @@
 		margin: 0;
 		width: auto;
 		vertical-align: text-bottom;
+		zoom: 1.5;
 	}
 
 	input[type=file] {
@@ -221,6 +222,8 @@
 	input {
 		margin: 3px;
 	}
+
+	.right-end { margin-left: 0; }
 }
 
 #title {

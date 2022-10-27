@@ -5,16 +5,22 @@ class UISelect extends UIElement {
 		if (params.callback) this.callback = params.callback;
 		this.setOptions(params.options || []);
 		if (params.selected) this.value = params.selected;
+		if (params.value) this.value = params.value;
 		
-		this.el.addEventListener('change', function(ev) {
+		this.el.addEventListener('change', ev => {
 			if (params.callback) params.callback(ev.target.value);
 			ev.target.blur();
 		});
 	}
 
-	update(option) {
-		this.value = option;
-		if (this.callback) this.callback(option);
+	get options() {
+		return Array.from(this.el.options).map(o => o.value);
+	}
+
+	update(value) {
+		if (!this.options.includes(value)) this.addOption(value)
+		this.value = value;
+		if (this.callback) this.callback(value);
 	}
 
 	removeOption(value) {
