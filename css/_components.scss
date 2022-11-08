@@ -68,6 +68,7 @@
 }
 
 .panel .row,
+.modal,
 .section-header {
 	label { line-height: 1.5; }
 		
@@ -159,9 +160,9 @@
 		&.left-end,
 		&.middle,
 		&.right-end { 
-			// height: 1.125rem;
 			text-align: center;
 			width: calc(var(--base-font-size) * 3 * 1px);
+			margin: 0;
 		}
 
 		&.left-end { @include left-end; }
@@ -220,10 +221,25 @@
 	label, 
 	.btn, 
 	input {
-		margin: 3px;
+		// margin: 3px;
 	}
 
 	.right-end { margin-left: 0; }
+
+	&.key-command-list {
+		// max-width:
+		display: grid;
+    	grid-template-columns: 1fr 1fr 1fr;
+    	grid-gap: 0.25em 2em;
+    	max-width: 700px;
+	}
+
+	input[type=text] {
+
+		&.left-end { @include left-end; }
+		&.middle { @include middle; }
+		&.right-end { @include right-end; }
+	}
 }
 
 #title {

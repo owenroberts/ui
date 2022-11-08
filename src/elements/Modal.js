@@ -3,6 +3,7 @@ class UIModal extends UICollection {
 		super({});
 		if (params.callback) this.callback = params.callback;
 		this.addClass('modal');
+		if (params.class) this.addClass(params.class);
 		this.append(new UILabel({ text: params.title }));
 
 		// better way to do this ?? 
@@ -73,7 +74,7 @@ class UIModal extends UICollection {
 	}
 
 	addLabel(labelText) {
-		this.add(new UILabel({ text: labelText}));
+		this.add(new UILabel({ text: labelText }));
 	}
 
 	clear() {

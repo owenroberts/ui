@@ -6,6 +6,7 @@
 function QuickRef(app) {
 
 	const reg = []; // registered uis for reference
+	const keys = []; // list of key commands for display 
 	const list = []; // list of uis added to interfaces
 	const defaultFontSize = 11;
 	let panel;
@@ -82,10 +83,27 @@ function QuickRef(app) {
 
 	function registerCallback(mod, label, params) {
 		reg.push({ label: `${mod} > ${label}`, params, type: 'callback' });
+		if (params.key) keys.push({ key: params.key, label: `${mod} > ${label}` });
 	}
 
 	function registerProp(prop, mod, label, params) {
 		reg.push({ label: `${mod} > ${label}`, prop, params, type: 'prop' });
+		if (params.key) keys.push({ key: params.key, label: `${mod} > ${label}` });
+	}
+
+	function displayKeys() {
+		const m = new UIModal({
+			title: "Key Commands",
+			app: app,
+			class: 'key-command-list',
+			position: { x: 200, y: 120 },
+		});
+
+		for (let i = 0; i < keys.length; i++) {
+			const k = keys[i];
+			// m.add(new UIRow());
+			m.add(new UILabel({ text: k.key + ' --> ' + k.label, class: 'break' }));
+		}
 	}
 
 	function connect() {
@@ -95,6 +113,7 @@ function QuickRef(app) {
 		app.ui.addCallbacks([
 			{ callback: open, text: "Menu", key: "ctrl-space" },
 			{ callback: add, text: "+" },
+			{ callback: displayKeys, text: 'Key Commands', key: 'ctrl-,' }
 		]);
 
 		app.ui.addProp('quickRefScale', {

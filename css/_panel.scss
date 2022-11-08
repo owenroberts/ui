@@ -1,8 +1,8 @@
 .break { flex-basis: 100%; }
 .panel {
-	flex-basis: 14em;
+	flex-basis: 12em;
 	flex-grow: 1;
-	max-width: 20em;
+	// max-width: 20em;
 	order: 0;
 
 	background-color: $bg-color;

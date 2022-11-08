@@ -3,13 +3,14 @@ class UINumberStep extends UICollection {
 		super(params);
 		this.addClass('number-step');
 		this.addClass('ui-collection'); // should be in UICollection??
+		this.prompt = params.prompt;
 		this.callback = params.callback;
 		this.args = params.args;
 		this.step = +params.step || 1;
 		this.min = params.range ? +params.range[0] :
 			+params.min || 0;
 		this.max = params.range ? +params.range[1] :
-			+params.max || 100;
+			+params.max || 1000;
 
 		// constrain range?
 		
