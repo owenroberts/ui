@@ -41,7 +41,7 @@ class UISelect extends UIElement {
 		for (let i = 0; i < options.length; i++) {
 			const opt = Array.from(this.el.options).map(o => o.value);
 			const { value, text } = typeof options[i] === 'string' ?
-				{ value: options[i] }  :
+				{ value: options[i] } :
 				options[i];
 			if (!opt.includes(value)) this.addOption(value, text);
 		}

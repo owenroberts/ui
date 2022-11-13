@@ -162,7 +162,7 @@
 		&.right-end { 
 			text-align: center;
 			width: calc(var(--base-font-size) * 3 * 1px);
-			margin: 0;
+			// margin: 0;
 		}
 
 		&.left-end { @include left-end; }
@@ -189,7 +189,7 @@
 	}
 
 	.ui-collection {
-		padding-right: 0.25em;
+		// padding-right: 0.25em;
 	}
 }
 

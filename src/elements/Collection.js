@@ -17,6 +17,11 @@ class UICollection extends UIElement {
 		}
 	}
 
+	// most stuff uses add ...
+	add(ui, k) {
+		this.append(ui, k);
+	}
+
 	remove(ui, k) {
 		if (k) delete this[k];
 		this.el.removeChild(ui.el);
