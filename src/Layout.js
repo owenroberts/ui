@@ -48,7 +48,6 @@ function Layout(app, params) {
 	function connect() {
 		
 		app.ui.addProps({
-
 			'timelineLayout': {
 				type: 'UIToggleCheck', // remove UI eventually ??
 				value: true,
@@ -65,7 +64,6 @@ function Layout(app, params) {
 					else container.removeClass('RL');
 				}
 			},
-
 			'upLayout': {
 				type: 'UIToggleCheck',
 				value: false,
@@ -78,5 +76,5 @@ function Layout(app, params) {
 		}, 'layout');
 	}
 
-	return { default: defaultUI, timeline, main, connect, addSelectPanels, addSelectOption, getSettings };
+	return { default: defaultUI, timeline, main, container, connect, addSelectPanels, addSelectOption, getSettings };
 }

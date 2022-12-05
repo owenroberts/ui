@@ -20,7 +20,7 @@ class UINumber extends UIText {
 				}
 			}
 		}
-
+		if (typeof value === 'string') value = +value;
 		this.value = value; // always set value before callback
 		if (this.callback && !uiOnly) this.callback(value);
 	}
