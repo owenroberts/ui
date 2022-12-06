@@ -37,7 +37,6 @@ function Interface(app, params) {
 	}
 
 	function getType(value, type) {
-		// console.log(value, type);
 		if (typeof value === 'string') return 'UIText';
 		if (typeof value === 'number') return 'UINumber';
 		if (typeof value === 'boolean') return 'UIToggle';

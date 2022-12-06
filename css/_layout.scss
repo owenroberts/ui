@@ -8,10 +8,13 @@
 		'timeline timeline';
 	// justify-content: space-between;
 
+	#main { text-align: right; }
+
 	&.RL {
 		grid-template-areas:
 			'main ui'
 			'timeline timeline';
+		#main { text-align: left; }
 	}
 
 	&.UP {
