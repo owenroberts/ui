@@ -46,15 +46,16 @@ class UIModal extends UICollection {
 	adjustPosition() {
 		let x = parseInt(this.el.style.left);
 		let y = parseInt(this.el.style.top);
-		let w = parseInt(this.el.offsetWidth);
-		let h = parseInt(this.el.offsetHeight);
+		let w = parseInt(this.el.clientWidth);
+		let h = parseInt(this.el.clientHeight);
 
 		if (x + w > window.innerWidth) {
-			this.el.style.left = `${x - w}px`;
+			this.el.style.left = `${window.innerWidth - w - 20}px`;
 		}
 
 		if (y + h > window.innerHeight) {
-			this.el.style.top = `${y - h}px`;
+			console.log(y + h > window.innerHeight);
+			this.el.style.top = `${window.innerHeight - h - 20}px`;
 		}
 	}
 
@@ -66,15 +67,18 @@ class UIModal extends UICollection {
 		} else {
 			this.el.insertBefore(component.el, this.break.el);
 		}
+		this.adjustPosition();
 	}
 
 	addBreak(label) {
 		this.add(new UIElement({ class: "break" }));
 		if (label) this.addLabel(label);
+		this.adjustPosition();
 	}
 
 	addLabel(labelText) {
 		this.add(new UILabel({ text: labelText }));
+		this.adjustPosition();
 	}
 
 	clear() {
