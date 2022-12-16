@@ -54,7 +54,6 @@ class UIModal extends UICollection {
 		}
 
 		if (y + h > window.innerHeight) {
-			console.log(y + h > window.innerHeight);
 			this.el.style.top = `${window.innerHeight - h - 20}px`;
 		}
 	}
