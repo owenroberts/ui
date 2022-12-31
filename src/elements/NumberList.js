@@ -9,6 +9,7 @@ class UINumberList extends UICollection {
 			text: '+',
 			callback: () => {
 				this.addNumber(this.list.length, 0);
+				this.callback(this.list);
 			}
 		});
 
@@ -17,6 +18,7 @@ class UINumberList extends UICollection {
 			callback: () => {
 				this.list.pop();
 				this.removeK('n' + this.list.length);
+				this.callback(this.list);
 			}
 		});
 		
@@ -35,6 +37,7 @@ class UINumberList extends UICollection {
 			callback: value => {
 				this.list[index] = +value;
 				if (this.callback) this.callback(this.list);
+				this.callback(this.list);
 			}
 		});
 		this.append(n, 'n' + index);
