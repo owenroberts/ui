@@ -5,6 +5,7 @@ class UIInput extends UIElement {
 		this.callback = params.callback;
 		this.args = params.args || [];
 		if (params.key) this.setKey(params.key, params.label);
+		if (params.value) this.value = params.value;
 	}
 }
 
