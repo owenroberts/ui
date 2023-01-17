@@ -17,6 +17,11 @@ class UICollection extends UIElement {
 		}
 	}
 
+	insert(ui, ref) {
+		// html only has insert before
+		this.el.insertBefore(ui.el, ref.el);
+	}
+
 	// most stuff uses add ...
 	add(ui, k) {
 		this.append(ui, k);
