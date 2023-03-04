@@ -2,10 +2,18 @@
 
 	--progress-percent: 0;
 
+	border: unset;
+	font-size: inherit;
+	font-family: inherit;
+	margin: inherit;
+	padding: inherit;
+
 	display: inline-block;
 	background-color: $ui-color;
 	padding: 0 0.5em;
 	border-radius: 3px;
+
+
 	
 	&:hover {
 		background: $ui-select;
@@ -70,7 +78,7 @@
 .panel .row,
 .modal,
 .section-header {
-	label { line-height: 1.5; }
+	// label { line-height: 1.5; }
 		
 	span, 
 	label, 
@@ -190,6 +198,15 @@
 
 	.ui-collection {
 		// padding-right: 0.25em;
+	}
+}
+
+.tree {
+	.row .btn {
+		margin-bottom: 0;
+	}
+	.break {
+		// height: 2px; // dont remember why
 	}
 }
 

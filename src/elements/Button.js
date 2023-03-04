@@ -1,6 +1,6 @@
 class UIButton extends UIElement {
 	constructor(params) {
-		params.tag = "span";
+		params.tag = "button";
 		super(params);
 		this.addClass(params.btnClass || "btn"); /* for diff types of button */
 		this.text = this.el.textContent || params.text || params.onText;

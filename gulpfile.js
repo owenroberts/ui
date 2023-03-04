@@ -22,6 +22,7 @@ const files = [
 	'src/elements/Collection.js',
 	'src/elements/Input.js',
 	'src/elements/Text.js',
+	'src/elements/ListAdd.js',
 	'src/**/*.js',
 ];
 

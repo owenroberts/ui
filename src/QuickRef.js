@@ -39,7 +39,7 @@ function QuickRef(app) {
 			}));
 		} 
 
-		const input = new UIInputList({
+		const input = new UIInputSearch({
 			listName: 'quick-menu-list',
 			options: reg.map(e => e.label),
 			escape: () => { m.clear() },
@@ -68,7 +68,7 @@ function QuickRef(app) {
 			else ui.params.callback();
 		} 
 
-		const input = new UIInputList({
+		const input = new UIInputSearch({
 			listName: 'quick-menu-list',
 			options: reg.map(e => e.label),
 			escape: () => { m.clear() },

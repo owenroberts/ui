@@ -38,6 +38,10 @@ class UIRow extends UICollection {
 		this.uiChildren.splice(index, 1);
 	}
 
+	addBreak() {
+		this.add(new UIElement({ class: 'break' }));
+	}
+
 	get children() {
 		return this.uiChildren;
 	}

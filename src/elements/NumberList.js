@@ -1,43 +1,27 @@
-class UINumberList extends UICollection {
+class UINumberList extends UIListAdd {
 	constructor(params) {
 		super(params);
 		this.addClass('number-list');
-		this.list = [...params.list];
-		if (params.callback) this.callback = params.callback;
 
 		const add = new UIButton({
 			text: '+',
 			callback: () => {
-				this.addNumber(this.list.length, 0);
+				this.list.push(0);
+				this.addItem(this.list.length - 1, 0);
 				this.callback(this.list);
 			}
 		});
 
-		const remove = new UIButton({
-			text: 'X',
-			callback: () => {
-				this.list.pop();
-				this.removeK('n' + this.list.length);
-				this.callback(this.list);
-			}
-		});
-		
-		this.append(remove);
 		this.append(add);
-
-		for (let i = 0; i < this.list.length; i++) {
-			this.addNumber(i, this.list[i]);
-		}
-
+		this.addItems();
 	}
 
-	addNumber(index, value) {
-		const n = new UINumber({
+	addItem(index, value) {
+		const n = new UINumberStep({
 			value: value,
 			callback: value => {
 				this.list[index] = +value;
 				if (this.callback) this.callback(this.list);
-				this.callback(this.list);
 			}
 		});
 		this.append(n, 'n' + index);
