@@ -68,6 +68,7 @@ function Settings(app, params) {
 	function load() {
 		if (localStorage[localStorageString]) {
 			const settings = JSON.parse(localStorage[localStorageString]);
+
 			loadPanels(settings.panels);
 			loadInterface(settings.interface);
 			loadLayout(settings.layout);
@@ -80,6 +81,10 @@ function Settings(app, params) {
 				});
 			}
 			if (appLoad) appLoad(settings);
+		} else {
+			if (workspaces.length > 0) {
+				loadWorkspace(workspaces[0].url)
+			}
 		}
 	}
 
