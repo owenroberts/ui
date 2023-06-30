@@ -21,6 +21,17 @@ class UINumberStep extends UICollection {
 				this.update(this.value + this.step * value);
 			},
 			callback: value => {
+				// not DRY repeated in Number.js
+				if (typeof value === 'string') {
+					if (value.match(/\D/)) {
+						try {
+							value = eval(value);
+						} catch(e) {
+							alert("Please enter a numerical value or mathematical expression.");
+							return;
+						}
+					}
+				}
 				this.update(+value);
 			}
 		});
@@ -56,8 +67,10 @@ class UINumberStep extends UICollection {
 		if (value === undefined || value === null || value === '') {
 			console.trace();
 			return alert('No value entered.');
+		} else {
+			value = +value;
 		}
-		else value = +value;
+
 		if (value < this.min) value = this.min;
 		if (value > this.max) value = this.max;
 		this.value = value;
