@@ -19,6 +19,7 @@ class UIColor extends UIInput {
 	addColor(color) {
 		// console.trace();
 		const self = this;
+		if (!this.colors) return; // called by value update before it exists
 		if (!this.colors.includes(color) && color) {
 			this.colors.push(color);
 			const btn = new UIButton({

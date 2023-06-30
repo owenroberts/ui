@@ -20,9 +20,10 @@ const files = [
 	'src/ui.js',
 	'src/elements/Element.js',
 	'src/elements/Collection.js',
+	'src/elements/ListAdd.js',
+	'src/elements/InputList.js',
 	'src/elements/Input.js',
 	'src/elements/Text.js',
-	'src/elements/ListAdd.js',
 	'src/**/*.js',
 ];
 
@@ -56,7 +57,7 @@ function exportTask(includeCool) {
 task('js', () => { return jsTask('./', './build'); });
 task('sass', () => { return sassTask('./css/style.scss', './css'); });
 task('css', series('sass'));
-task('build', series(jsTask, sassTask));
+task('build', series('js', 'sass'));
 
 module.exports = {
 	exportTask: exportTask
