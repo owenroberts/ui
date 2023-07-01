@@ -36,7 +36,7 @@ class UIListStep extends UICollection {
 			text: '▲',
 			class: 'right-end',
 			callback: () => {
-				if (index <= list.length) index += 1;
+				if (index < list.length - 1) index += 1;
 				this.update(list[index]);
 			}
 		});
