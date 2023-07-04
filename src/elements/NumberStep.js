@@ -77,7 +77,7 @@ class UINumberStep extends UICollection {
 		// always set value before callback
 		if (!uiOnly) {
 			if (this.args) this.callback(value, ...this.args);
-			else this.callback(value);
+			else if (this.callback) this.callback(value);
 		}
 	}
 

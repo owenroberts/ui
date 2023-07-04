@@ -15,6 +15,7 @@ class UICollection extends UIElement {
 			// if (!this.el.contains(ui.el) 
 			this.el.appendChild(ui.el);
 		}
+		return ui;
 	}
 
 	insert(ui, ref) {
@@ -25,6 +26,7 @@ class UICollection extends UIElement {
 	// most stuff uses add ...
 	add(ui, k) {
 		this.append(ui, k);
+		return ui;
 	}
 
 	remove(ui, k) {

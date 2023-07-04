@@ -10,6 +10,7 @@ class UIRow extends UICollection {
 		super.append(ui, k);
 		if (k) this.keys.push(k);
 		this.uiChildren.push(ui);
+		return ui;
 	}
 
 	insert(ui, ref) {
@@ -36,6 +37,14 @@ class UIRow extends UICollection {
 		super.remove(ui, k);
 		let index = this.uiChildren.indexOf(ui);
 		this.uiChildren.splice(index, 1);
+		return ui;
+	}
+
+	pop() {
+		let ui = this.uiChildren.pop();
+		if (!ui) return;
+		super.remove(ui);
+		return ui;
 	}
 
 	addBreak() {
