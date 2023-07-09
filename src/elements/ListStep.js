@@ -4,22 +4,22 @@ class UIListStep extends UICollection {
 		this.addClass('list-step');
 		this.addClass('ui-collection');
 
-		const list = params.list;
-		let index = params.value !== undefined ? params.list.indexOf(params.value) : 0;
+		this.list = params.list;
+		this.index = params.value !== undefined ? params.list.indexOf(params.value) : 0;
 		if (params.callback) this.callback = params.callback;
 
 		this.textInput = new UIDrag({
 			value: params.value,
 			class: 'left-end',
 			drag: value => {
-				if (index + value >= 0 && index + value < list.length) {
-					index += value;
+				if (this.index + value >= 0 && this.index + value < this.list.length) {
+					this.index += value;
 				}
-				this.update(list[index]);
+				this.update(this.list[this.index]);
 			},
 			callback: value => {
 				// if (list.includes(value)) this.update(value);
-				this.update(value); // handle mis types on app end
+				this.update(this.value); // handle mis types on app end
 			}
 		});
 
@@ -27,8 +27,8 @@ class UIListStep extends UICollection {
 			text: '▼',
 			class: 'middle',
 			callback: () => {
-				if (index > 0) index -= 1;
-				this.update(list[index]);
+				if (this.index > 0) this.index -= 1;
+				this.update(this.list[this.index]);
 			}
 		});
 
@@ -36,8 +36,8 @@ class UIListStep extends UICollection {
 			text: '▲',
 			class: 'right-end',
 			callback: () => {
-				if (index < list.length - 1) index += 1;
-				this.update(list[index]);
+				if (this.index < this.list.length - 1) this.index += 1;
+				this.update(this.list[this.index]);
 			}
 		});
 
@@ -47,6 +47,7 @@ class UIListStep extends UICollection {
 	}
 
 	update(value, uiOnly) {
+		if (!this.list.includes(value)) return;
 		this.value = value; // always set value before callback
 		if (!uiOnly && this.callback) {
 			if (this.args) this.callback(value, ...this.args);
@@ -55,6 +56,8 @@ class UIListStep extends UICollection {
 	}
 
 	set value(value) {
+		if (!this.list.includes(value)) return;
+		this.index = this.list.indexOf(value);
 		this.textInput.value = value;
 	}
 
