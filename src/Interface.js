@@ -154,7 +154,7 @@ function Interface(app, params) {
 	function getLayout() { return layout; } // getter/setter?
 	function getQuickRef() { return quick; }
 
-	return { keys, faces, panels, getLayout, getQuickRef, setup, getPanel, addCallback, addCallbacks, addProp, addProps, addUI, addUIs };
+	return { keys, faces, panels, getLayout, getQuickRef, setup, getPanel, addCallback, addCallbacks, addProp, addProps, addUI, addUIs, labelFromKey };
 }
 
 UI.Interface = Interface;

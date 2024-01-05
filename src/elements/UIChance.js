@@ -2,17 +2,18 @@ class UIChance extends UICollection {
 	constructor(params) {
 		super(params);
 		this.addClass('value-bg');
-		this.step = params.step;
-		this.min = params.min;
-		this.max = params.max;
 		this.value = params.value;
-		this.total = params.max - params.min;
+		this.min = params.min ?? 0;
+		this.max = params.max ?? 1;
+		this.step = params.step ?? 0.01;
+		this.total = this.max - this.min;
 		if (params.callback) this.callback = params.callback;
 
 		this.drag = new UIDrag({
 			value: params.value,
 			drag: change => {
-				this.update(this.value + this.step * change * 10);
+				// this.update(this.value + this.step * change * 10); // why?
+				this.update(this.value + this.step * change);
 			},
 			callback: value => {
 				this.update(+value);

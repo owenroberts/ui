@@ -6,6 +6,7 @@ class UIListAdd extends UICollection {
 
 		const remove = new UIButton({
 			text: 'X',
+			class: 'left-end',
 			callback: () => {
 				if (this.list.length > 0) {
 					this.removeK('n' + (this.list.length - 1));

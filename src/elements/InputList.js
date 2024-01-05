@@ -16,6 +16,11 @@ class UIInputList extends UIListAdd {
 		this.addItems();
 	}
 
+	pushItem(value) {
+		this.list.push(value);
+		this.addItem(this.list.length - 1, value);
+	}
+
 	addItem(index, value) {
 		const n = new UIText({
 			value: value,

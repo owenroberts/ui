@@ -18,7 +18,7 @@ class UIText extends UIInput {
 		});
 
 		this.el.addEventListener('blur', ev => {
-			if (!this.value) {
+			if (this.value === undefined) {
 				this.el.placeholder = this.placeholder;
 				this.el.value = '';
 			} else if (this.value != ev.target.value && ev.target.value) {

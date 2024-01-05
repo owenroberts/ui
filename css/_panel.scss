@@ -59,7 +59,8 @@
 		}
 	}
 
-	.row label:first-child { 
+	.row label:first-child,
+	.row .break + label { 
 		margin-bottom: 0;
 		margin-right: auto;
 	}

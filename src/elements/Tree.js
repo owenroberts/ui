@@ -20,14 +20,16 @@ class UITree extends UICollection {
 
 	}
 
-	addRow(ui, k) {
+	addRow(ui, k) { // why?
 		this.append(ui);
 		if (k !== undefined) this[k] = ui;
 	}
 
-	add(ui, k) {
+	add(ui, k, addBreak) {
 		this.row.add(ui);
 		if (k !== undefined) this[k] = ui;
+		if (addBreak) this.addBreak();
+		return ui;
 	}
 
 	removeK(k) {
@@ -41,6 +43,14 @@ class UITree extends UICollection {
 
 	addBreak() {
 		this.row.addBreak();
+	}
+
+	open() {
+		this.el.open = true;
+	}
+
+	close() {
+		this.el.open = false;
 	}
 }
 

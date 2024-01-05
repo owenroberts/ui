@@ -5,6 +5,7 @@ class UINumberList extends UIListAdd {
 
 		const add = new UIButton({
 			text: '+',
+			class: 'right-end',
 			callback: () => {
 				this.list.push(0);
 				this.addItem(this.list.length - 1, 0);

@@ -13,6 +13,12 @@ class UIRow extends UICollection {
 		return ui;
 	}
 
+	add(ui, k, addBreak) {
+		this.append(ui, k);
+		if (addBreak) this.addBreak();
+		return ui;
+	}
+
 	insert(ui, ref) {
 		super.insert(ui, ref);
 		const index = this.uiChildren.indexOf(ref);

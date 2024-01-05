@@ -4,7 +4,8 @@ class UIInputSearch extends UICollection {
 
 		const input = new UIElement({
 			tag: 'input',
-			class: 'search'
+			class: 'search',
+			css: { 'min-width': '80px' }
 		});
 		input.el.setAttribute('list', params.listName);
 		
@@ -31,8 +32,8 @@ class UIInputSearch extends UICollection {
 
 		this.append(input, 'input');
 		this.append(list, 'list');
-		
 		this.setOptions(params.options || []);
+		if (params.selected) this.value = params.selected;
 	}
 
 	focus() {
