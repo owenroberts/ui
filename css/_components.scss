@@ -272,3 +272,9 @@
 		border-bottom: 1px solid black;
 	}
 }
+
+input.search,
+.panel .row input.search {
+	margin-top: -3px;
+	height: 1.75em;
+}
