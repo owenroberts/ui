@@ -37,6 +37,10 @@ class UITree extends UICollection {
 		delete this[k];
 	}
 
+	remove(ui) {
+		this.row.el.removeChild(ui.el);
+	}
+
 	clear() {
 		this.row.clear();
 	}

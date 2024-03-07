@@ -1,3 +1,12 @@
+/*
+	main interface function that handles everything else
+	need better naming conventions to make uis clear
+	add callback is for button w function
+	add prop is for something to save in local settings
+	add ui is for more complex ui types
+
+*/
+
 function Interface(app, params) {
 
 	// turn off ipad request desktop
@@ -132,7 +141,7 @@ function Interface(app, params) {
 				class: 'prop',
 			}));
 		}
-
+		
 		let ui = new UI.Elements[type](params);
 		panel.add(ui, undefined, params.k);
 

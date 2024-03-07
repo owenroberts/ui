@@ -4,6 +4,9 @@ class UIToggleCheck extends UICollection {
 		this.callback = params.callback;
 		this.addClass('ui-collection');
 
+		// console.log(params);
+		this.label = params.label;
+
 		this.check = new UIElement({
 			tag: 'input',
 			class: 'toggle-check'

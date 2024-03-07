@@ -35,6 +35,7 @@ class UIModal extends UICollection {
 
 		params.app.ui.keys['escape'] = this.cancel;
 		this.append(this.cancel);
+		this.append(new UIElement({ class: "break" }));
 
 		let x = Math.max(16, params.position.x - 100);
 		let y = Math.max(16, params.position.y - 20);
