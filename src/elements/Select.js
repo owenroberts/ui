@@ -23,10 +23,17 @@ class UISelect extends UIElement {
 		if (this.callback) this.callback(value);
 	}
 
+	clearOptions() {
+		for (let i = this.el.children.length - 1; i >= 0; i--) {
+			this.el.children[i].remove();
+		}
+	}
+
 	removeOption(value) {
 		for (let i = 0; i < this.el.children.length; i++) {
-			if (this.el.children[i].value == value)
+			if (this.el.children[i].value == value){
 				this.el.children[i].remove();
+			}
 		}
 	}
 
