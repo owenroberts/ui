@@ -3,7 +3,7 @@ class UISelect extends UIElement {
 		params.tag = "select";
 		super(params);
 		if (params.callback) this.callback = params.callback;
-		this.setOptions(params.options || []);
+		this.setOptions(params.options ?? []);
 		if (params.selected) this.value = params.selected;
 		if (params.value) this.value = params.value;
 		
