@@ -7,8 +7,7 @@
 
 */
 
-import '../lib/cool/cool.js';
-
+import { Cool } from '../../cool/cool.js';
 import { Layout } from './Layout.js';
 import { QuickRef } from './QuickRef.js';
 import { Elements } from './Elements.js';
