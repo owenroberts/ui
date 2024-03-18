@@ -3,7 +3,10 @@
 	register all callbacks, props, uis with params to either run or recreate ui 
 */
 
-function QuickRef(app) {
+import { Elements } from './Elements.js';
+const { UIModal, UIButton, UILabel, UIInputSearch, } = Elements;
+
+export function QuickRef(app) {
 
 	const reg = []; // registered uis for reference
 	const keys = []; // list of key commands for display 
@@ -25,7 +28,7 @@ function QuickRef(app) {
 			let row = panel.addRow();
 			let ui;
 			if (type === 'prop') {
-				ui = new UI.Elements[params.type](params);
+				ui = new Elements[params.type](params);
 			} else {
 				ui = new UIButton(params);
 			}

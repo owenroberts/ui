@@ -3,7 +3,10 @@
 	ui is interface
 */
 
-function Layout(app, params) {
+import { Elements } from './Elements.js';
+const { UICollection, UISection } = Elements;
+
+export function Layout(app, params) {
 
 	const container = new UICollection({ id: 'container' });
 	const sections = {}; // use this instead ... figure out usemain

@@ -1,4 +1,8 @@
-class UIListStep extends UICollection {
+import UICollection from './Collection.js';
+import UIDrag from './Drag.js';
+import UIButton from './Button.js';
+
+export default class UIListStep extends UICollection {
 	constructor(params) {
 		super(params);
 		this.addClass('list-step');
@@ -65,5 +69,3 @@ class UIListStep extends UICollection {
 		return this.textInput.value;
 	}
 }
-
-UI.Elements.UIListStep = UIListStep;

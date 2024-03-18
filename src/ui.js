@@ -1,5 +1,3 @@
-window.UI = { Elements: {} }; // make Interface, Settings, some elements available to modules
-
 /*
 	notes on using ui
 	ui modules in project connect ui to properties within the objects in the project
@@ -14,3 +12,12 @@ window.UI = { Elements: {} }; // make Interface, Settings, some elements availab
 	need to specify a panel (maybe set the current panel or something ... )
 	
 */
+
+// new jsm version bundles UI together here
+// is this normal?? idk feels like this is how they do stuff ... 
+// three js does export .. from ..., but that gets error ...
+
+import Interface from './Interface.js';
+import Settings from './Settings.js';
+import { Elements } from './Elements.js';
+export { Interface, Settings, Elements };

@@ -1,4 +1,6 @@
-class UISelect extends UIElement {
+import UIElement from './Element.js';
+
+export default class UISelect extends UIElement {
 	constructor(params) {
 		params.tag = "select";
 		super(params);
@@ -54,5 +56,3 @@ class UISelect extends UIElement {
 		}
 	}
 }
-
-UI.Elements.UISelect = UISelect;

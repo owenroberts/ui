@@ -1,4 +1,9 @@
-class UIModal extends UICollection {
+import UICollection from './Collection.js';
+import UIElement from './Element.js';
+import UIButton from './Button.js';
+import UILabel from './Label.js';
+
+export default class UIModal extends UICollection {
 	constructor(params) {
 		super({});
 		if (params.callback) this.callback = params.callback;
@@ -85,5 +90,3 @@ class UIModal extends UICollection {
 		this.el.remove();
 	}
 }
-
-UI.Elements.UIModal = UIModal;

@@ -1,4 +1,12 @@
-class UISection extends UICollection {
+import UICollection from './Collection.js';
+import UIElement from './Element.js';
+import UISelectButton from './SelectButton.js';
+import UILabel from './Label.js';
+import UINumber from './Number.js';
+import UINumberStep from './NumberStep.js';
+import UIToggleCheck from './ToggleCheck.js';
+
+export default class UISection extends UICollection {
 	constructor(params) {
 		super(params);
 		this.addClass('ui-section');
@@ -83,5 +91,3 @@ class UISection extends UICollection {
 		}
 	}
 }
-
-UI.Elements.UISection = UISection;

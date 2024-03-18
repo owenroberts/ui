@@ -1,4 +1,8 @@
-class UIChance extends UICollection {
+import UICollection from './Collection.js';
+import UIDrag from './Drag.js';
+import UILabel from './Label.js';
+
+export default class UIChance extends UICollection {
 	constructor(params) {
 		super(params);
 		this.addClass('value-bg');
@@ -41,5 +45,3 @@ class UIChance extends UICollection {
 		}
 	}
 }
-
-UI.Elements.UIChance = UIChance;

@@ -7,7 +7,14 @@
 
 */
 
-function Interface(app, params) {
+import '../lib/cool/cool.js';
+
+import { Layout } from './Layout.js';
+import { QuickRef } from './QuickRef.js';
+import { Elements } from './Elements.js';
+const { UILabel, UIPanel, UIButton } = Elements;
+
+export default function Interface(app, params) {
 
 	// turn off ipad request desktop
 	document.body.classList.add(Cool.mobilecheck() ? 'mobile' : 'desktop');
@@ -72,7 +79,7 @@ function Interface(app, params) {
 		if (params.row) panel.addRow();
 		if (params.label) panel.add(new UILabel({ text: params.label }));
 		
-		const ui = new UI.Elements[params.type || 'UIButton'](params);
+		const ui = new Elements[params.type || 'UIButton'](params);
 		panel.add(ui, params.k);
 		if (params.key) keys[params.key] = ui;
 		
@@ -93,7 +100,7 @@ function Interface(app, params) {
 		
 		const type = params.type || getType(params.value);
 		// console.log(type);
-		const ui = new UI.Elements[type](params);
+		const ui = new Elements[type](params);
 		panel.addRow();
 		if (!params.noLabel) { // any props not have a label ??
 			panel.add(new UILabel({ 
@@ -142,7 +149,7 @@ function Interface(app, params) {
 			}));
 		}
 		
-		let ui = new UI.Elements[type](params);
+		let ui = new Elements[type](params);
 		panel.add(ui, undefined, params.k);
 
 		if (params.key) keys[params.key] = ui;
@@ -165,5 +172,3 @@ function Interface(app, params) {
 
 	return { keys, faces, panels, getLayout, getQuickRef, setup, getPanel, addCallback, addCallbacks, addProp, addProps, addUI, addUIs, labelFromKey };
 }
-
-UI.Interface = Interface;

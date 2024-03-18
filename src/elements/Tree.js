@@ -1,4 +1,8 @@
-class UITree extends UICollection {
+import UICollection from './Collection.js';
+import UIElement from './Element.js';
+import UIRow from './Row.js';
+
+export default class UITree extends UICollection {
 	constructor(params) {
 		params.tag = 'details';
 		// params.id = params.title + '-tree';
@@ -57,5 +61,3 @@ class UITree extends UICollection {
 		this.el.open = false;
 	}
 }
-
-UI.Elements.UITree = UITree;

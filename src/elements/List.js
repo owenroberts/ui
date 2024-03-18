@@ -1,4 +1,6 @@
-class UIList extends UICollection {
+import UICollection from './Collection.js';
+
+export default class UIList extends UICollection {
 	constructor(params) {
 		super(params);
 	}
@@ -37,5 +39,3 @@ class UIList extends UICollection {
 		}
 	}
 }
-
-UI.Elements.UIList = UIList;

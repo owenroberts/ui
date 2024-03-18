@@ -1,4 +1,6 @@
-class UICollection extends UIElement {
+import UIElement from './Element.js';
+
+export default class UICollection extends UIElement {
 	constructor(params) {
 		super(params);
 	}
@@ -49,5 +51,3 @@ class UICollection extends UIElement {
 		return Object.keys(this).filter(k => k !== 'el').map(k => this[k]);
 	}
 }
-
-UI.Elements.UICollection = UICollection;

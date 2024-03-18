@@ -1,4 +1,6 @@
-class UIGraph extends UICollection {
+import UICollection from './Collection.js';
+
+export default class UIGraph extends UICollection {
 	constructor(params) {
 		super(params);
 
@@ -120,5 +122,3 @@ class UIGraph extends UICollection {
 		}
 	}
 }
-
-UI.Elements.UIGraph = UIGraph;

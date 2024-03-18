@@ -1,4 +1,6 @@
-class UINumber extends UIText {
+import UIText from './Text.js';
+
+export default class UINumber extends UIText {
 	constructor(params) {
 		super(params);
 		this.el.classList.add('number');
@@ -29,5 +31,3 @@ class UINumber extends UIText {
 		this.update(+prompt(this.prompt));
 	}
 }
-
-UI.Elements.UINumber = UINumber;

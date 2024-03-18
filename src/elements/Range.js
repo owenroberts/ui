@@ -1,4 +1,6 @@
-class UIRange extends UIInput {
+import UIInput from './Input.js';
+
+export default class UIRange extends UIInput {
 	constructor(params) {
 		super(params);
 		this.el.type = "range";
@@ -33,5 +35,3 @@ class UIRange extends UIInput {
 		this.el.step = step;
 	}
 }
-
-UI.Elements.UIRange = UIRange;

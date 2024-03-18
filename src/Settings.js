@@ -1,4 +1,9 @@
-function Settings(app, params) {
+/*
+	handles saving layout and property settings for reload
+	"interface" is reserved, using inteface instead
+*/
+
+export default function Settings(app, params) {
 	let { name, workspaceFields, workspaces, appLoad, appSave } = params;
 	const localStorageString = `settings-${name}`;
 
@@ -22,12 +27,12 @@ function Settings(app, params) {
 		}
 	}
 
-	function loadInterface(interface) {
-		for (const f in interface) {
+	function loadInterface(inteface) {
+		for (const f in inteface) {
 			if (f === 'palettes') continue;
 			if (f === 'quickRef') continue;
 			if (!app.ui.faces[f]) continue;
-			app.ui.faces[f].update(interface[f]);
+			app.ui.faces[f].update(inteface[f]);
 		}
 	}
 
@@ -44,15 +49,15 @@ function Settings(app, params) {
 	function save() {
 		const settings = {};
 		
-		const interface = {};
+		const inteface = {};
 		Object.keys(app.ui.faces)
 			.filter(f => !app.ui.faces[f].ignoreSettings)
 			.forEach(f => {
-				interface[f] = app.ui.faces[f].value;
+				inteface[f] = app.ui.faces[f].value;
 			});
-		// const interface = appSave ? { ...s, ...appSave() } : { ...s };
-		if (appSave) Object.assign(interface, appSave());
-		settings.interface = interface;
+		// const inteface = appSave ? { ...s, ...appSave() } : { ...s };
+		if (appSave) Object.assign(inteface, appSave());
+		settings.inteface = inteface;
 		
 		settings.panels = {};
 		for (const p in app.ui.panels) {
@@ -70,7 +75,7 @@ function Settings(app, params) {
 			const settings = JSON.parse(localStorage[localStorageString]);
 
 			loadPanels(settings.panels);
-			loadInterface(settings.interface);
+			loadInterface(settings.inteface);
 			loadLayout(settings.layout);
 
 			if (settings.quickRef) {
@@ -94,17 +99,17 @@ function Settings(app, params) {
 
 	function saveWorkspace() {
 		save();
-		const interfaceSettings = {};
+		const intefaceSettings = {};
 		workspaceFields
 			.filter(f => app.ui.faces[f])
 			.forEach(f => {
-				interfaceSettings[f] = app.ui.faces[f].value;
+				intefaceSettings[f] = app.ui.faces[f].value;
 			});
 		const savedSettings = JSON.parse(localStorage.getItem(localStorageString));
 		const jsonFile = JSON.stringify({ 
 			panels: savedSettings.panels, 
 			layout: savedSettings.layout,
-			interface: interfaceSettings,
+			inteface: intefaceSettings,
 		});
 		const fileName = prompt('Layout Name:', 'New Layout');
 		const blob = new Blob([jsonFile], { type: "application/x-download;charset=utf-8" });
@@ -117,7 +122,7 @@ function Settings(app, params) {
 			fetch(url)
 				.then(response => { return response.json() })
 				.then(settings => {
-					loadInterface(settings.interface); 
+					loadInterface(settings.inteface); 
 					loadPanels(settings.panels);
 					loadLayout(settings.layout);
 				})
@@ -135,7 +140,7 @@ function Settings(app, params) {
 						return function(e) {
 							const settings = JSON.parse(e.target.result);
 							loadPanels(settings.panels);
-							loadInterface(settings.interface);
+							loadInterface(settings.inteface);
 							loadLayout(settings.layout);
 						}
 					})(f);
@@ -173,5 +178,3 @@ function Settings(app, params) {
 
 	return { load };
 }
-
-UI.Settings = Settings;

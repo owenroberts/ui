@@ -1,4 +1,7 @@
-class UIInputSearch extends UICollection {
+import UICollection from './Collection.js';
+import UIElement from './Element.js';
+
+export default class UIInputSearch extends UICollection {
 	constructor(params) {
 		super(params);
 
@@ -64,5 +67,3 @@ class UIInputSearch extends UICollection {
 		}
 	}
 }
-
-UI.Elements.UIInputSearch = UIInputSearch;

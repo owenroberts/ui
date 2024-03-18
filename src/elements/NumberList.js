@@ -1,4 +1,8 @@
-class UINumberList extends UIListAdd {
+import UIListAdd from './ListAdd.js';
+import UIButton from './Button.js';
+import UINumberStep from './NumberStep.js';
+
+export default class UINumberList extends UIListAdd {
 	constructor(params) {
 		super(params);
 		this.addClass('number-list');
@@ -27,7 +31,4 @@ class UINumberList extends UIListAdd {
 		});
 		this.append(n, 'n' + index);
 	}
-
 }
-
-UI.Elements.UINumberList = UINumberList;

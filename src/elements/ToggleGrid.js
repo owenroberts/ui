@@ -1,4 +1,9 @@
-class UIToggleGrid extends UICollection {
+import UICollection from './Collection.js';
+import UIToggleCheck from './Toggle.js';
+import UILabel from './Label.js';
+import UIButton from './Button.js';
+
+export default class UIToggleGrid extends UICollection {
 	constructor(params) {
 		super(params);
 		this.callback = params.callback;
@@ -71,5 +76,3 @@ class UIToggleGrid extends UICollection {
 		this.updateGrid();
 	}
 }
-
-UI.Elements.UIToggleGrid = UIToggleGrid;
