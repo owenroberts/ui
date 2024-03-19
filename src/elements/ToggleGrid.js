@@ -1,5 +1,5 @@
 import { UICollection } from './Collection.js';
-import { UIToggleCheck } from './Toggle.js';
+import { UIToggleCheck } from './ToggleCheck.js';
 import { UILabel } from './Label.js';
 import { UIButton } from './Button.js';
 
