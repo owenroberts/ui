@@ -1,10 +1,10 @@
-import UICollection from './Collection.js';
-import UIRow from './Row.js';
-import UIToggle from './Toggle.js';
-import UILabel from './Label.js';
-import UIButton from './Button.js';
+import { UICollection } from './Collection.js';
+import { UIRow } from './Row.js';
+import { UIToggle } from './Toggle.js';
+import { UILabel } from './Label.js';
+import { UIButton } from './Button.js';
 
-export default class UIPanel extends UICollection {
+export class UIPanel extends UICollection {
 	constructor(params) {
 		super({ id: `${params.id}-panel` });
 		this.id = params.id;

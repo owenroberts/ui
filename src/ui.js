@@ -17,7 +17,7 @@
 // is this normal?? idk feels like this is how they do stuff ... 
 // three js does export .. from ..., but that gets error ...
 
-import Interface from './Interface.js';
-import Settings from './Settings.js';
+import { Interface } from './Interface.js';
+import { Settings } from './Settings.js';
 import { Elements } from './Elements.js';
 export { Interface, Settings, Elements };

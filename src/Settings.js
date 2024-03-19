@@ -3,7 +3,7 @@
 	"interface" is reserved, using inteface instead
 */
 
-export default function Settings(app, params) {
+export function Settings(app, params) {
 	let { name, workspaceFields, workspaces, appLoad, appSave } = params;
 	const localStorageString = `settings-${name}`;
 

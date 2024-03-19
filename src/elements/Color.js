@@ -1,6 +1,6 @@
-import UIInput from './Input.js';
+import { UIInput } from './Input.js';
 
-export default class UIColor extends UIInput {
+export class UIColor extends UIInput {
 	constructor(params) {
 		super(params);
 		this.el.type = "color";

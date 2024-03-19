@@ -1,8 +1,7 @@
-import UICollection from './Collection.js';
-import UIElement from './Element.js';
+import { UICollection } from './Collection.js';
+import { UIElement } from './Element.js';
 
-
-export default class UIRow extends UICollection {
+export class UIRow extends UICollection {
 	constructor(params) {
 		super(params);
 		this.addClass('row');

@@ -1,9 +1,9 @@
-import UICollection from './Collection.js';
-import UIToggleCheck from './Toggle.js';
-import UILabel from './Label.js';
-import UIButton from './Button.js';
+import { UICollection } from './Collection.js';
+import { UIToggleCheck } from './Toggle.js';
+import { UILabel } from './Label.js';
+import { UIButton } from './Button.js';
 
-export default class UIToggleGrid extends UICollection {
+export class UIToggleGrid extends UICollection {
 	constructor(params) {
 		super(params);
 		this.callback = params.callback;

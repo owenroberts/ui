@@ -1,6 +1,6 @@
-import UIElement from './Element.js';
+import { UIElement } from './Element.js';
 
-export default class UICollection extends UIElement {
+export class UICollection extends UIElement {
 	constructor(params) {
 		super(params);
 	}

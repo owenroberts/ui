@@ -1,8 +1,8 @@
-import UICollection from './Collection.js';
-import UIDrag from './Drag.js';
-import UILabel from './Label.js';
+import { UICollection } from './Collection.js';
+import { UIDrag } from './Drag.js';
+import { UILabel } from './Label.js';
 
-export default class UIChance extends UICollection {
+export class UIChance extends UICollection {
 	constructor(params) {
 		super(params);
 		this.addClass('value-bg');

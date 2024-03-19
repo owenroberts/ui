@@ -1,6 +1,6 @@
-import UIText from './Text.js';
+import { UIText } from './Text.js';
 
-export default class UINumber extends UIText {
+export class UINumber extends UIText {
 	constructor(params) {
 		super(params);
 		this.el.classList.add('number');

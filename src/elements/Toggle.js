@@ -1,6 +1,6 @@
-import UIButton from './Button.js';
+import { UIButton } from './Button.js';
 
-export default class UIToggle extends UIButton {
+export class UIToggle extends UIButton {
 	constructor(params) {
 		super(params);
 		this.onText = params.onText || params.text;

@@ -1,6 +1,6 @@
-import UIInput from './Input.js';
+import { UIInput } from './Input.js';
 
-export default class UIRange extends UIInput {
+export class UIRange extends UIInput {
 	constructor(params) {
 		super(params);
 		this.el.type = "range";

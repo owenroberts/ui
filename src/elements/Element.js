@@ -1,4 +1,4 @@
-export default class UIElement {
+export class UIElement {
 	constructor(params) {
 		params = params || {};
 

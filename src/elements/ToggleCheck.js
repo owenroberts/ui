@@ -1,7 +1,7 @@
-import UICollection from './Collection.js';
-import UIElement from './Element.js';
+import { UICollection } from './Collection.js';
+import { UIElement } from './Element.js';
 
-export default class UIToggleCheck extends UICollection {
+export class UIToggleCheck extends UICollection {
 	constructor(params) {
 		super(params);
 		this.callback = params.callback;

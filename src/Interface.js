@@ -13,7 +13,7 @@ import { QuickRef } from './QuickRef.js';
 import { Elements } from './Elements.js';
 const { UILabel, UIPanel, UIButton } = Elements;
 
-export default function Interface(app, params) {
+export function Interface(app, params) {
 
 	// turn off ipad request desktop
 	document.body.classList.add(Cool.mobilecheck() ? 'mobile' : 'desktop');

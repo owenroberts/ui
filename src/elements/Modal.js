@@ -1,9 +1,9 @@
-import UICollection from './Collection.js';
-import UIElement from './Element.js';
-import UIButton from './Button.js';
-import UILabel from './Label.js';
+import { UICollection } from './Collection.js';
+import { UIElement } from './Element.js';
+import { UIButton } from './Button.js';
+import { UILabel } from './Label.js';
 
-export default class UIModal extends UICollection {
+export class UIModal extends UICollection {
 	constructor(params) {
 		super({});
 		if (params.callback) this.callback = params.callback;

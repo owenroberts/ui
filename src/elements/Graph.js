@@ -1,7 +1,7 @@
-import UICollection from './Collection.js';
+import { UICollection } from './Collection.js';
 import { Cool } from '../../../cool/cool.js';
 
-export default class UIGraph extends UICollection {
+export class UIGraph extends UICollection {
 	constructor(params) {
 		super(params);
 

@@ -1,8 +1,8 @@
-import UIButton from './Button.js';
-import UIText from './Text.js';
-import UIListAdd from './ListAdd.js';
+import { UIButton } from './Button.js';
+import { UIText } from './Text.js';
+import { UIListAdd } from './ListAdd.js';
 
-export default class UIInputList extends UIListAdd {
+export class UIInputList extends UIListAdd {
 	constructor(params) {
 		super(params);
 		this.addClass('input-list');

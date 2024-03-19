@@ -1,6 +1,6 @@
-import UICollection from './Collection.js';
+import { UICollection } from './Collection.js';
 
-export default class UIList extends UICollection {
+export class UIList extends UICollection {
 	constructor(params) {
 		super(params);
 	}

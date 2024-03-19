@@ -1,6 +1,6 @@
-import UIElement from './Element.js';
+import { UIElement } from './Element.js';
 
-export default class UISelect extends UIElement {
+export class UISelect extends UIElement {
 	constructor(params) {
 		params.tag = "select";
 		super(params);

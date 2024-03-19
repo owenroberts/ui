@@ -1,6 +1,6 @@
-import UIButton from './Button.js';
+import { UIButton } from './Button.js';
 
-export default class UIDragButton extends UIButton {
+export class UIDragButton extends UIButton {
 	constructor(params) {
 		super(params);
 

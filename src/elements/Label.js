@@ -1,6 +1,6 @@
-import UIElement from './Element.js';
+import { UIElement } from './Element.js';
 
-export default class UILabel extends UIElement {
+export class UILabel extends UIElement {
 	constructor(params) {
 		params.tag = "label";
 		super(params);

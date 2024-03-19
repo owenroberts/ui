@@ -1,6 +1,6 @@
-import UICollection from './Collection.js';
+import { UICollection } from './Collection.js';
 
-export default class UINumberRange extends UICollection {
+export class UINumberRange extends UICollection {
 	constructor(params) {
 		super(params);
 
