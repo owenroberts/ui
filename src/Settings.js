@@ -116,16 +116,20 @@ export function Settings(app, params) {
 		saveAs(blob, `${fileName}.json`);
 	}
 
+	function loadSettings(settings) {
+		loadInterface(settings.inteface); 
+		loadPanels(settings.panels);
+		loadLayout(settings.layout);
+	}
+
 	function loadWorkspace(url) {
-		if (url) {
+		if (url.hasOwnProperty('interface')) {
+			loadSettings(url);
+		} else if (url) {
 			// load default file
 			fetch(url)
-				.then(response => { return response.json() })
-				.then(settings => {
-					loadInterface(settings.inteface); 
-					loadPanels(settings.panels);
-					loadLayout(settings.layout);
-				})
+				.then(response => { return response.json(); })
+				.then(settings => { loadSettings(settings); })
 				.catch(error => { console.error(error); });
 		} else {
 			// choose file to load
@@ -138,10 +142,7 @@ export function Settings(app, params) {
 					const reader = new FileReader();
 					reader.onload = (function(theFile) {
 						return function(e) {
-							const settings = JSON.parse(e.target.result);
-							loadPanels(settings.panels);
-							loadInterface(settings.inteface);
-							loadLayout(settings.layout);
+							loadSettings(JSON.parse(e.target.result))
 						}
 					})(f);
 					reader.readAsText(f);

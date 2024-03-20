@@ -1,6 +1,6 @@
 import { UICollection } from './Collection.js';
 import { UIElement } from './Element.js';
-import { Cool } from '../../../cool/cool.js';
+import * as Cool from '../../../cool/cool.js';
 
 export class UIInputSearch extends UICollection {
 	constructor(params) {
