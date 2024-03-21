@@ -8,8 +8,6 @@ function FilesIO(app, params) {
 	let fileName = undefined;
 	let titleDisplay;
 
-	
-
 	function connect() {
 
 		const panel = app.ui.getPanel('fio', { label: 'Files IO' });
@@ -21,7 +19,6 @@ function FilesIO(app, params) {
 			{ callback: listLocal, key: 'ctrl-l', text: 'List Local' },
 			{ callback: clearLocal, key: 'alt-c', text: 'Clear Local', },
 			{ callback: saveFile, key: 'alt-s', text: 'Save File' },
-
 		]);
 	}
 
