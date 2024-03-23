@@ -1,37 +1,39 @@
-import { UIInput } from './Input.js';
+import { UIElement } from './Element.js';
+import { setKey, setInput } from './Behaviors.js';
 
-export class UIRange extends UIInput {
-	constructor(params) {
-		super(params);
-		this.el.type = "range";
-		
-		const [min, max] = params.range ? [...params.range] : [params.min, params.max];
-		this.setRange(min, max);
-		
-		this.value = params.value || params.min;
-		if (params.step) this.setStep(params.step);
+export function UIRange(params={}) {
+	const ui = UIElement({ ...params, tag: 'input' });
+	const callback = params.callback;
+	const { get, set } = setInput(ui, { ...params, type: 'range' }, update);
 
-		this.el.addEventListener(params.event || 'input', ev => {
-			this.update(ev.target.value);
-		});
+	const [min, max] = params.range ? 
+		[...params.range] : 
+		[params.min, params.max];
+	setRange(min, max);
+
+	function setRange(min, max) {
+		ui.el.min = min;
+		ui.el.max = max;	
 	}
 
-	keyHandler(value) {
-		this.update(+prompt(this.prompt));
+	function update(value) {
+		ui.el.value = value;
+		ui.el.blur();
+		callback(value);
 	}
 
-	update(value) {
-		this.el.value = value;
-		this.el.blur();
-		this.callback(value);
+	function setStep(step) {
+		ui.el.step = step;
 	}
 
-	setRange(min, max) {
-		this.el.min = min;
-		this.el.max = max;	
-	}
-
-	setStep(step) {
-		this.el.step = step;
-	}
+	const { onPress } = setKey(ui, params.key, ui.getText());
+	return Object.assign(ui, {
+		get,
+		set,
+		update,
+		setRange,
+		setStep,
+		onPress,
+		keyHandler(value) { update(+prompt(params.prompt)); }
+	});
 }

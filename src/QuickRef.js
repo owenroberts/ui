@@ -32,7 +32,10 @@ export function QuickRef(app) {
 			} else {
 				ui = new UIButton(params);
 			}
-			row.append(new UILabel({ text: label, css: { 'margin-right': 'auto' } }));
+			row.append(new UILabel({ 
+				text: label,
+				css: { 'margin-right': 'auto' } 
+			}));
 			row.append(ui);
 			row.append(new UIButton({
 				text: 'x',
@@ -45,7 +48,7 @@ export function QuickRef(app) {
 		const input = new UIInputSearch({
 			listName: 'quick-menu-list',
 			options: reg.map(e => e.label),
-			escape: () => { m.clear() },
+			onEscape: () => { m.clear() },
 			callback: value => {
 				m.clear();
 				addUI(value);
@@ -74,7 +77,7 @@ export function QuickRef(app) {
 		const input = new UIInputSearch({
 			listName: 'quick-menu-list',
 			options: reg.map(e => e.label),
-			escape: () => { m.clear() },
+			onEscape: () => { m.clear() },
 			callback: value => {
 				m.clear();
 				callCallback(value);
@@ -85,13 +88,31 @@ export function QuickRef(app) {
 	}
 
 	function registerCallback(mod, label, params) {
-		reg.push({ label: `${mod} > ${label}`, params, type: 'callback' });
-		if (params.key) keys.push({ key: params.key, label: `${mod} > ${label}` });
+		reg.push({ 
+			label: `${mod} > ${label}`, 
+			params, 
+			type: 'callback' 
+		});
+
+		if (params.key) {
+			keys.push({ 
+				key: params.key, 
+				label: `${mod} > ${label}`
+			});
+		}
 	}
 
 	function registerProp(prop, mod, label, params) {
-		reg.push({ label: `${mod} > ${label}`, prop, params, type: 'prop' });
-		if (params.key) keys.push({ key: params.key, label: `${mod} > ${label}` });
+		reg.push({ 
+			label: `${mod} > ${label}`,
+			prop,
+			params, 
+			type: 'prop' 
+		});
+		
+		if (params.key) {
+			keys.push({ key: params.key, label: `${mod} > ${label}` });
+		}
 	}
 
 	function displayKeys() {
@@ -105,7 +126,10 @@ export function QuickRef(app) {
 		for (let i = 0; i < keys.length; i++) {
 			const k = keys[i];
 			// m.add(new UIRow());
-			m.add(new UILabel({ text: k.key + ' --> ' + k.label, class: 'break' }));
+			m.add(new UILabel({ 
+				text: k.key + ' --> ' + k.label,
+				class: 'break'
+			}));
 		}
 	}
 

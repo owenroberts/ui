@@ -1,34 +1,16 @@
-import { UIListAdd } from './ListAdd.js';
-import { UIButton } from './Button.js';
+import { UICollection } from './Collection.js';
 import { UINumberStep } from './NumberStep.js';
+import { setList } from './Behaviors.js';
 
-export class UINumberList extends UIListAdd {
-	constructor(params) {
-		super(params);
-		this.addClass('number-list');
+export function UINumberList(params={}) {
+	const ui = UICollection(params);
+	ui.addClass('number-list');
 
-		const add = new UIButton({
-			text: '+',
-			class: 'right-end',
-			callback: () => {
-				this.list.push(0);
-				this.addItem(this.list.length - 1, 0);
-				this.callback(this.list);
-			}
-		});
-
-		this.append(add);
-		this.addItems();
-	}
-
-	addItem(index, value) {
-		const n = new UINumberStep({
+	function getItemUI(index, value) {
+		return new UINumberStep({
 			value: value,
-			callback: value => {
-				this.list[index] = +value;
-				if (this.callback) this.callback(this.list);
-			}
 		});
-		this.append(n, 'n' + index);
 	}
+
+	return Object.assign(ui, setList(ui, params, getItemUI));
 }

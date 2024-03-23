@@ -1,64 +1,58 @@
-import { UIInput } from './Input.js';
+import { UIElement } from './Element.js';
+import { UIButton } from './Button.js';
+import { UICollection } from './Collection.js';
+import { setKey, setCallback } from './Behaviors.js';
 
-export class UIColor extends UIInput {
-	constructor(params) {
-		super(params);
-		this.el.type = "color";
-		this.colors = [];
-		this.args = params.args || [];
+export function UIColor(params={}) {
+	const ui = UIElement({ ...params, tag: 'input' });
+	ui.setType("color");
 
-		this.el.addEventListener('input', ev => {
-			this.setColor(ev.target.value);
-		});
+	const { callback } = setCallback(ui, params);
+	const colors = [];
+	const palette = new UICollection();
+	let current;
 
-		this.el.addEventListener('focus', ev => {
-			this.addColor(this.current);
-		});
+	ui.el.addEventListener('input', ev => {
+		setColor(ev.target.value);
+	});
 
-		this.palette = new UICollection();
-	}
+	ui.el.addEventListener('focus', ev => {
+		addColor(current);
+	});
 
-	addColor(color) {
-		// console.trace();
-		const self = this;
-		if (!this.colors) return; // called by value update before it exists
-		if (!this.colors.includes(color) && color) {
-			this.colors.push(color);
+	function addColor(color) {
+		if (!colors) return; // called by value update before it exists
+		if (!colors.includes(color) && color) {
+			colors.push(color);
 			const btn = new UIButton({
 				text: color,
 				css: { "background": color },
 				value: color,
-				callback: function() {
-					self.update(color);
-				}
+				callback: () => { update(color); }
 			});
-			self.palette.append(btn);
+			palette.add(btn);
 		}
 	}
 
 	/* to set color without constantly updating "current" */
-	setColor(value) {
-		this.current = value;
-		this.callback(value, ...this.args);
+	function setColor(value) {
+		current = value;
+		callback(value);
 	}
 
-	/* update for loading */
-	update(value, uiOnly) {
-		if (!uiOnly) this.setColor(value);
-		this.value = value;
-	}
+	function update(value, uiOnly) {
+		if (!uiOnly) setColor(value);
+		ui.el.value = value; // actual use of el value
+	}	
 
-	set value(_value) {
-		this.addColor(_value);
-		this.current = _value;
-		super.value = _value;
-	}
-
-	get value() {
-		return this.el.value;
-	}
-
-	get html() {
-		return [this.el, this.palette.el];
-	}
+	const { onPress } = setKey(ui, params.key, params.label);
+	return Object.assign(ui, {
+		onPress,
+		update,
+		set(val) {
+			addColor(val);
+			current = val;
+		},
+		getHTML() { return [ui.el, palette.el]; },
+	});
 }

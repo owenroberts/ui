@@ -1,16 +1,17 @@
-import { UIText } from './Text.js';
+import { UIElement } from './Element.js';
+import { setKey, setCallback } from './Behaviors.js';
 
-export class UINumber extends UIText {
-	constructor(params) {
-		super(params);
-		this.el.classList.add('number');
-		if (!this.placeholder) {
-			this.placeholder = 0;
-			this.el.placeholder = 0;
-		}
-	}
+export function UINumber(params={}) {
+	const ui = UIElement({ ...params, tag: 'input' });
+	ui.addClass('number');
+	ui.el.value = params.value ?? '';
+	ui.el.placeholder = 0;
 
-	update(value, uiOnly) {
+	// const { callback } = setCallback(ui, params, 'click');
+	const callback = params.callback;
+	const { onPress } = setKey(ui, params.key, ui.getText());
+
+	function update(value, uiOnly) {
 		if (value === undefined) return;
 		if (typeof value === 'string') {
 			if (value.match(/\D/)) {
@@ -23,11 +24,19 @@ export class UINumber extends UIText {
 			}
 		}
 		if (typeof value === 'string') value = +value;
-		this.value = value; // always set value before callback
-		if (this.callback && !uiOnly) this.callback(value);
+		ui.el.value = value; // always set value before callback
+		if (callback && !uiOnly) callback(value);
 	}
 
-	keyHandler(value) {
-		this.update(+prompt(this.prompt));
+	function keyHandler(value) {
+		update(+prompt(params.prompt));
 	}
+
+	return Object.assign(ui, {
+		update,
+		keyHandler,
+		onPress,
+		get() { return ui.el.value; },
+		set(value) { ui.el.value = value; },
+	});
 }

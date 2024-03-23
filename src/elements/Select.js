@@ -1,58 +1,58 @@
 import { UIElement } from './Element.js';
 
-export class UISelect extends UIElement {
-	constructor(params) {
-		params.tag = "select";
-		super(params);
-		if (params.callback) this.callback = params.callback;
-		this.setOptions(params.options ?? []);
-		if (params.selected) this.value = params.selected;
-		if (params.value) this.value = params.value;
-		
-		this.el.addEventListener('change', ev => {
-			if (params.callback) params.callback(ev.target.value);
-			ev.target.blur();
-		});
+export function UISelect(params={}) {
+	const ui = UIElement({ ...params, tag: 'select' });
+	const callback = params.callback;
+	setOptions(params.options ?? []);
+	if (params.selected) ui.el.value = params.selected;
+	if (params.value) ui.el.value = params.value;
+
+	ui.el.addEventListener('change', ev => {
+		if (callback) callback(ev.target.value);
+		ev.target.blur();
+	});
+
+	function getOptions() {
+		return Array.from(ui.el.options).map(o => o.value);
 	}
 
-	get options() {
-		return Array.from(this.el.options).map(o => o.value);
+	function update(value) {
+		const options = getOptions();
+		if (!options.includes(value)) addOption(value);
+		ui.el.value = value;
+		if (callback) callback(value);
 	}
 
-	update(value) {
-		if (!this.options.includes(value)) this.addOption(value)
-		this.value = value;
-		if (this.callback) this.callback(value);
-	}
-
-	clearOptions() {
-		for (let i = this.el.children.length - 1; i >= 0; i--) {
-			this.el.children[i].remove();
+	function clearOptions() {
+		for (let i = ui.el.children.length - 1; i >= 0; i--) {
+			ui.el.children[i].remove();
 		}
 	}
 
-	removeOption(value) {
-		for (let i = 0; i < this.el.children.length; i++) {
-			if (this.el.children[i].value == value){
-				this.el.children[i].remove();
+	function removeOption(value) {
+		for (let i = 0; i < ui.el.children.length; i++) {
+			if (ui.el.children[i].value == value){
+				ui.el.children[i].remove();
 			}
 		}
 	}
 
-	addOption(value, text) {
+	function addOption(value, text) {
 		const opt = document.createElement("option");
 		opt.value = opt.textContent = value;
 		if (text) opt.textContent = text;
-		this.el.appendChild(opt);
+		ui.el.appendChild(opt);
 	}
 
-	setOptions(options) {
+	function setOptions(options) {
 		for (let i = 0; i < options.length; i++) {
-			const opt = Array.from(this.el.options).map(o => o.value);
+			const opt = getOptions();
 			const { value, text } = typeof options[i] === 'string' ?
 				{ value: options[i] } :
 				options[i];
-			if (!opt.includes(value)) this.addOption(value, text);
+			if (!opt.includes(value)) addOption(value, text);
 		}
 	}
+
+	return Object.assign(ui, { update, getOptions, addOption, setOptions, clearOptions });
 }

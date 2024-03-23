@@ -1,32 +1,46 @@
-import { UIButton } from './Button.js';
+import { UIElement } from './Element.js';
+import { setKey, addCallback } from './Behaviors.js';
 
-export class UIDragButton extends UIButton {
-	constructor(params) {
-		super(params);
+export function UIDragButton(params={}) {
+	params.tag = "button";
+	const ui = UIElement(params);
+	ui.addClass(params.btnClass ?? 'btn');
+	ui.text = ui.el.textConent ?? params.text ?? params.onText;
 
-		this.down = { x: 0, y: 0 };
+	const { callback } = addCallback(ui, params, 'click');
+	const { onPress } = setKey(ui, params.key, ui.text);
 
-		this.el.addEventListener('mousemove', ev => {
-			if (this.down.x) this.dragging = true;
-		});
+	let x = 0, y = 0;
+	let dragging = false;
 
-		this.el.addEventListener('mousedown', ev => {
-			this.down.x = ev.pageX;
-		});
+	ui.el.addEventListener('mousemove', ev => {
+		if (x) dragging = true;
+	});
 
-		// this is all fucked ...
-		document.addEventListener('mouseup', ev => {
-			if (this.dragging) {
-				const delta = ev.pageX - this.down.x;
-				if (Math.abs(delta) > 10) {
-					this.callback(
-						delta > 0 ? 1 : -1, 
-						Math.abs(Math.ceil(delta / lns.timeline.frameWidth))
-					);
-				}
+	ui.el.addEventListener('mousedown', ev => {
+		x = ev.pageX;
+	});
+
+	// this is all fucked ...
+	// i don't think i use this anymore ... 
+	document.addEventListener('mouseup', ev => {
+		if (dragging) {
+			const delta = ev.pageX - x;
+			if (Math.abs(delta) > 10) {
+				callback(
+					delta > 0 ? 1 : -1, 
+					Math.abs(Math.ceil(delta / lns.timeline.frameWidth))
+				);
 			}
-			this.dragging = false;
-			this.down.x = 0;
-		});
-	}
+		}
+		this.dragging = false;
+		this.down.x = 0;
+	});
+
+	return Object.assign(ui, {
+		keyHandler() { callback() },
+		callback,
+		onPress,
+	});
 }
+

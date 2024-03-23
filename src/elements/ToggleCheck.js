@@ -1,47 +1,34 @@
 import { UICollection } from './Collection.js';
 import { UIElement } from './Element.js';
 
-export class UIToggleCheck extends UICollection {
-	constructor(params) {
-		super(params);
-		this.callback = params.callback;
-		this.addClass('ui-collection');
+export function UIToggleCheck(params={}) {
+	const ui = UICollection(params);
+	const callback = params.callback;
 
-		// console.log(params);
-		this.label = params.label;
+	const check = new UIElement({
+		tag: 'input',
+		class: 'toggle-check'
+	});
+	check.setType('checkbox');
+	check.el.checked = params.isOn ?? params.value ?? false;
+	ui.el.appendChild(check.el); // why?
 
-		this.check = new UIElement({
-			tag: 'input',
-			class: 'toggle-check'
-		});
+	check.el.addEventListener('change', ev => {
+		callback(ev.target.checked);
+		check.el.blur();
+	});
 
-		// if (params.label) {
-		// 	this.append(new UILabel({
-		// 		text: params.label,
-		// 	}));
-		// }
-
-		this.check.el.type = 'checkbox';
-		this.check.el.checked = params.isOn || params.value || false;
-		this.check.el.addEventListener('change', ev => {
-			if (this.callback) this.callback(ev.target.checked);
-			this.check.el.blur();
-		});
-
-		this.el.appendChild(this.check.el);
+	function update(value) {
+		if (value !== undefined) check.el.checked = !value;
+		callback(value); // fuck what?
 	}
 
-	get value() {
-		return this.check.el.checked;
-	}
-
-	keyHandler(value) {
-		this.update(value !== undefined ? value : !this.value);
-	}
-
-	update(value) {
-		if (value === undefined) value = !this.value; // it is a toggle ...
-		this.check.el.checked = value;
-		if (this.callback) this.callback(value);
-	}
+	return Object.assign(ui, {
+		update,
+		get() { return check.el.checked; },
+		keyHandler(value) { update(value) },
+	});
 }
+
+
+

@@ -3,90 +3,84 @@ import { UIElement } from './Element.js';
 import { UIButton } from './Button.js';
 import { UILabel } from './Label.js';
 
-export class UIModal extends UICollection {
-	constructor(params) {
-		super({});
-		if (params.callback) this.callback = params.callback;
-		this.addClass('modal');
-		if (params.class) this.addClass(params.class);
-		this.append(new UILabel({ text: params.title }));
+export function UIModal(params={}) {
+	const ui = UICollection(params);
+	ui.addClass('modal');
+	const callback = params.callback;
+	if (params.class) ui.addClass(params.class);
+	ui.add(new UILabel({ text: params.title }));
 
-		// better way to do this ?? 
-		document.getElementById('container').appendChild(this.el);
-		
-		const self = this;
+	// better way to do this ?? 
+	document.getElementById('container').appendChild(ui.el);
 
-		this.break = new UIElement({ class: 'break' });
-		this.append(this.break);
+	const titleBreak = ui.add(new UIElement({ class: 'break' }));
 
-		this.submit = new UIButton({
-			text: "Submit",
-			callback: function() {
-				if (params.callback) params.callback();
-				self.clear();
-			}
-		});
+	const submit = ui.add(new UIButton({
+		text: "Submit",
+		callback: function() {
+			if (params.callback) params.callback();
+			clear();
+		}
+	}));
+	params.app.ui.keys['enter'] = submit;
 
-		this.append(this.submit);
-		params.app.ui.keys['enter'] = this.submit; /* not modular ... */
+	const cancel = ui.add(new UIButton({
+		text: "x",
+		callback: ev => {
+			clear();
+			if (params.onClear) params.onClear(); // used ???
+		}
+	}));
+	params.app.ui.keys['escape'] = cancel;
 
-		this.cancel = new UIButton({
-			text: "x",
-			callback: ev => {
-				this.clear();
-				if (params.onClear) params.onClear();
-			}
-		});
+	ui.add(new UIElement({ class: "break" }));
 
-		params.app.ui.keys['escape'] = this.cancel;
-		this.append(this.cancel);
-		this.append(new UIElement({ class: "break" }));
+	let x = Math.max(16, params.position.x - 100);
+	let y = Math.max(16, params.position.y - 20);
 
-		let x = Math.max(16, params.position.x - 100);
-		let y = Math.max(16, params.position.y - 20);
+	ui.setProp('left', `${x}px`);
+	ui.setProp('top', `${y}px`);
 
-		this.el.style.left = `${x}px`;
-		this.el.style.top = `${y}px`;
-	}
-
-	adjustPosition() {
-		let x = parseInt(this.el.style.left);
-		let y = parseInt(this.el.style.top);
-		let w = parseInt(this.el.clientWidth);
-		let h = parseInt(this.el.clientHeight);
+	function adjustPosition() {
+		let x = parseInt(ui.el.style.left);
+		let y = parseInt(ui.el.style.top);
+		let w = parseInt(ui.el.clientWidth);
+		let h = parseInt(ui.el.clientHeight);
 
 		if (x + w > window.innerWidth) {
-			this.el.style.left = `${window.innerWidth - w - 20}px`;
+			ui.el.style.left = `${window.innerWidth - w - 20}px`;
 		}
 
 		if (y + h > window.innerHeight) {
-			this.el.style.top = `${window.innerHeight - h - 20}px`;
+			ui.el.style.top = `${window.innerHeight - h - 20}px`;
 		}
 	}
 
-	add(component) {
+	function add(component) {
 		if (Array.isArray(component.html)) {
 			component.html.forEach(el => {
-				this.el.insertBefore(el, this.break.el);
+				ui.el.insertBefore(el, titleBreak.el);
 			});
 		} else {
-			this.el.insertBefore(component.el, this.break.el);
+			ui.el.insertBefore(component.el, titleBreak.el);
 		}
-		this.adjustPosition();
+		adjustPosition();
 	}
 
-	addBreak(label) {
-		this.add(new UIElement({ class: "break" }));
-		if (label) this.addLabel(label);
-		this.adjustPosition();
+	function addBreak(label) {
+		ui.add(new UIElement({ class: "break" }));
+		if (label) addLabel(label);
+		adjustPosition();
 	}
 
-	addLabel(labelText) {
-		this.add(new UILabel({ text: labelText }));
-		this.adjustPosition();
+	function addLabel(labelText) {
+		ui.add(new UILabel({ text: labelText }));
+		adjustPosition();
 	}
 
-	clear() {
-		this.el.remove();
+	function clear() {
+		ui.el.remove();
 	}
+
+	return Object.assign(ui, { clear, add, addBreak, addLabel });
 }

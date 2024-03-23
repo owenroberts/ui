@@ -4,168 +4,149 @@ import { UIToggle } from './Toggle.js';
 import { UILabel } from './Label.js';
 import { UIButton } from './Button.js';
 
-export class UIPanel extends UICollection {
-	constructor(params) {
-		super({ id: `${params.id}-panel` });
-		this.id = params.id;
-		this.isPanel = true;
-		this.addClass("panel");
-		this.addClass("undocked");
-		this.gridArea = 'default';
-		
-		this.rows = [];
+export function UIPanel(params={}) {
+	const ui = UICollection({ ...params, id: `${params.id}-panel` });
+	ui.addClass("panel");
+	ui.addClass("undocked");
+	ui.gridArea = 'default';
+	ui.isPanel = true;
 
-		this.header = new UIRow();
-		this.header.addClass('header');
-		this.append(this.header);
+	const rows = [];
+	const header = ui.add(new UIRow({ class: "header" }));
 
-		this.open = new UIToggle({
-			onText: "－",
-			offText: "＋",
-			class: "toggle",
-			isOn: true, // default open
-			callback: isOn => {
-				if (!isOn) this.addClass('closed');
-				else this.removeClass('closed');
-			}
-		});
-		this.header.append(this.open);
+	const open = header.add(new UIToggle({
+		onText: "－",
+		offText: "＋",
+		class: "toggle",
+		isOn: true, // default open
+		callback: isOn => {
+			if (!isOn) ui.addClass('closed');
+			else ui.removeClass('closed');
+		}
+	}));
 
-		this.header.append(new UILabel({ text: params.label }));
+	header.add(new UILabel({ text: params.label }));
+	header.add(new UIButton({
+		text: 'X',
+		class: 'undock-btn',
+		callback: undock,
+	}));
 
-		this.header.append(new UIButton({
-			text: 'X',
-			class: 'undock-btn',
-			callback: this.undock.bind(this)
-		}));
+	const orderBtn = header.add(new UIButton({
+		text: this.order ?? "0",
+		class: "order-btn",
+		callback: () => {
+			ui.el.style.order = +ui.el.style.order + 1;
+			orderBtn.setText(ui.el.style.order);
+		}
+	}));
 
-		this.orderBtn = new UIButton({
-			text: this.order || "0",
-			class: "order-btn",
-			callback: () => {
-				this.order = +this.el.style.order + 1;
-				this.orderBtn.text = this.order;
-			}
-		});
-		this.header.append(this.orderBtn);
+	header.add(new UIButton({
+		text: "[]",
+		class: "block-btn",
+		callback: () =>  {
+			if (ui.hasClass('block')) ui.removeClass('block');
+			else ui.addClass('block');
+		}	
+	}));
 
-		this.header.append(new UIButton({
-			text: "[]",
-			class: "block-btn",
-			callback: () =>  {
-				if (this.el.classList.contains('block')) 
-					this.el.classList.remove('block');
-				else 
-					this.el.classList.add('block');
-			}	
-		}));
+	header.add(new UIButton({
+		text: "<",
+		class: "headless-btn",
+		callback: () => {
+			if (ui.hasClass('headless')) ui.removeClass('headless');
+			else ui.addClass('headless');
+		}
+	}));
 
-		this.header.append(new UIButton({
-			text: "<",
-			class: "headless-btn",
-			callback: () => {
-				if (this.el.classList.contains('headless')) 
-					this.el.classList.remove('headless');
-				else 
-					this.el.classList.add('headless');
-			}
-		}));
+	function close() {
+		ui.addClass('closed');
+		open.set(false);
 	}
 
-	set order(n) {
-		this.orderBtn.text = n || "0";
-		this.el.style.order = n;
+	function block() {
+		ui.addClass('block');
 	}
 
-	get order() {
-		return this.el.style.order;
+	function headless() {
+		ui.addClass('headless');
 	}
 
-	get isDocked() {
-		return !this.el.classList.contains('undocked');
+	function dock() {
+		ui.removeClass('undocked');
 	}
 
-	get isBlock() {
-		return this.el.classList.contains('block');
+	function undock() {
+		ui.addClass('undocked');
 	}
 
-	get isHeadless() {
-		return this.el.classList.contains('headless');
-	}
-
-	get isOpen() {
-		return this.open.value;
-	}
-
-	get settings() {
-		return {
-			open: this.isOpen,
-			docked: this.isDocked,
-			order: this.order,
-			block: this.isBlock,
-			headless: this.isHeadless,
-			gridArea: this.gridArea,
-		};
-	}
-
-	get lastRow() {
-		if (this.rows.length === 0) return this.addRow();
-		return this.rows[this.rows.length - 1];
-	}
-
-	close() {
-		this.addClass('closed');
-		this.open.set(false);
-	}
-
-	block() {
-		this.el.classList.add('block');
-	}
-
-	headless() {
-		this.el.classList.add('headless');
-	}
-
-	dock() {
-		this.removeClass('undocked');
-	}
-
-	undock() {
-		this.addClass('undocked');
-	}
-
-	addRow(k, className) {
-		const row = new UIRow({ id: k, class: className,  });
-		this.append(row, k);
-		this.rows.push(row);
+	function addRow(k, className) {
+		const row = new UIRow({ id: k, class: className, });
+		ui.append(row, k);
+		rows.push(row);
 		return row;
 	}
 
-	removeRow(row) {
-		const index = this.rows.indexOf(row);
-		this.rows.splice(index, 1);
-		this.remove(row);
-	}
-
-	add(ui, k, _row) { // flip row and k?
-		// if (ui.prompt == "Go To Frame") console.log(ui)
-		let row = _row 
-			|| this.rows[this.rows.length - 1]
-			|| this.addRow();
-		row.append(ui, k);
+	function removeRow(row) {
+		const index = rows.indexOf(row);
+		rows.splice(index, 1);
+		ui.remove(row);
 		return ui;
 	}
 
-	setup(settings) {
-		if (settings.docked) this.dock();
-		else this.undock();
-		
-		if (!settings.open) this.close();
-		
-		if (settings.block) this.block();
-		if (settings.headless) this.headless();
-		
-		this.order = settings.order;
-		this.gridArea = settings.gridArea;
+	function add(child, k, row) {
+		if (!row) row = rows[rows.length - 1];
+		if (!row) row = addRow();
+		row.add(child, k);
+		return child;
 	}
+
+	function setup(settings) {
+		if (settings.docked) dock();
+		else undock();
+		
+		if (!settings.open) close();
+		
+		if (settings.block) block();
+		if (settings.headless) headless();
+		
+		ui.el.style.order = settings.order;
+		ui.gridArea = settings.gridArea;
+	}
+
+	return Object.assign(ui, {
+		add, addRow, setup,
+		close, block, headless, dock, undock,
+		isDocked() { return !ui.hasClass('undocked'); },
+		isBlock() { return ui.hasClass('block'); },
+		isHeadless() { return ui.hasClass('headless'); },
+		isOpen() { return open.get(); },
+
+		// need both?
+		
+		getSettings() {
+			return {
+				open: open.get(),
+				docked: !ui.hasClass('undocked'),
+				order: ui.el.style.order,
+				block: ui.hasClass('block'),
+				headless: ui.hasClass('headless'),
+				gridArea: ui.gridArea,
+			};
+		},
+
+		// use this??
+		getLastRow() {
+			if (rows.length === 0) return ui.addRow();
+			return rows[rows.length - 1];
+		}
+
+		// don't know if i need these
+		// get order() { return ui.el.style.order; },
+		// set order(n) {
+		// 	orderBtn.setText(n ?? "0");
+		// 	ui.el.style.order = n;
+		// },
+	});
 }
+

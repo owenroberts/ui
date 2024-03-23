@@ -1,54 +1,58 @@
-import { UIButton } from './Button.js';
+import { UIElement } from './Element.js';
+import { setKey, setCallback } from './Behaviors.js';
 
-export class UIToggle extends UIButton {
-	constructor(params) {
-		super(params);
-		this.onText = params.onText || params.text;
-		this.offText = params.offText || params.text;
-		this.isOn = params.isOn || params.value || false;
-		if (this.isOn) this.on();
-		// if (params.isOn) this.toggle();
-		super.text = this.isOn ? this.onText : this.offText;
-		this.addClass('toggle');
+export function UIToggle(params={}) {
+	const ui = UIElement({ ...params, tag: 'button' });
+	ui.addClass(params.btnClass ?? 'btn');
+	ui.addClass('toggle');
+	ui.setText(ui.el.textContent ?? params.text ?? params.onText);
+
+	// callback issue for toggle ??? 
+	const { callback } = setCallback(ui, params, 'click', update);
+	const { onPress } = setKey(ui, params.key, ui.getText());
+
+	const onText = params.onText ?? params.text;
+	const offText = params.offText ?? params.text;
+	let isOn = params.isOn ?? params.value ?? false;
+	if (isOn) on();
+
+	function on() {
+		ui.setText(onText);
+		ui.addClass('on');
 	}
 
-	update(isOn, uiOnly) {
+	function off() {
+		ui.setText(offText);
+		ui.removeClass('on');
+	}
 
-		if (isOn !== this.isOn) {
-			if (this.isOn === undefined) this.isOn = isOn;
-			if (!uiOnly) this.callback(isOn);
-			this.set(isOn);
+	function set(setOn) {
+		isOn = setOn
+		if (isOn) on();
+		else off();
+	}
+
+	function toggle() {
+		isOn = !isOn;
+		if (isOn) on();
+		else off();
+	}
+
+	function update(setOn, uiOnly) {
+		if (setOn !== isOn) {
+			if (isOn === undefined) isOn = setOn;
+			if (!uiOnly) callback(isOn);
+			set(isOn);
 		}
 	}
 
-	keyHandler() {
-		this.set(!this.isOn);
-		this.callback(this.value);
+	function keyHandler() {
+		set(!isOn);
+		callback(isOn);
 	}
 
-	set(isOn) {
-		this.isOn = isOn;
-		if (isOn) this.on();
-		else this.off();
-	}
-
-	toggle() {
-		this.isOn = !this.isOn;
-		if (this.isOn) this.on();
-		else this.off();
-	}
-
-	on() {
-		this.text = this.onText;
-		this.addClass('on');
-	}
-
-	off() {
-		this.text = this.offText;
-		this.removeClass('on');
-	}
-
-	get value() {
-		return this.isOn;
-	}
+	return Object.assign(ui, {
+		set, toggle, update, keyHandler,
+	});
 }
+

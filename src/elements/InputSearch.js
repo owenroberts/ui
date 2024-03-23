@@ -2,69 +2,63 @@ import { UICollection } from './Collection.js';
 import { UIElement } from './Element.js';
 import * as Cool from '../../../cool/cool.js';
 
-export class UIInputSearch extends UICollection {
-	constructor(params) {
-		super(params);
+export function UIInputSearch(params={}) {
+	const ui = UICollection(params);
+	const callback = params.callback;
 
-		const input = new UIElement({
-			tag: 'input',
-			class: 'search',
-			css: { 'min-width': '80px' }
+	const input = new UIElement({
+		tag: 'input',
+		class: 'search',
+		css: { 'min-width': '80px' }
+	});
+	input.el.setAttribute('list', params.listName);
+
+	function changeHandler(ev) {
+		input.el.blur();
+		callback(input.value);
+	}
+	input.el.addEventListener('change', changeHandler);
+
+	if (params.onEscape) {
+		input.el.addEventListener('keydown', ev => {
+			if (Cool.keys[ev.which] === 'escape') {
+				input.el.removeEventListener('change', changeHandler);
+				params.onEscape();
+			}
 		});
-		input.el.setAttribute('list', params.listName);
-		
-		function changeHandler(ev) {
-			input.el.blur();
-			if (params.callback) params.callback(this.value);
-		}
-		// const boundHandler = changeHandler.bind(this);
-		input.el.addEventListener('change', changeHandler);
-		
-		if (params.escape) {
-			input.el.addEventListener('keydown', ev => {
-				if (Cool.keys[ev.which] === 'escape') {
-					input.el.removeEventListener('change', changeHandler);
-					params.escape();
-				}
-			});
-		}
-
-		const list = new UIElement({
-			tag: 'datalist',
-			id: params.listName
-		});
-
-		this.append(input, 'input');
-		this.append(list, 'list');
-		this.setOptions(params.options || []);
-		if (params.selected) this.value = params.selected;
 	}
 
-	focus() {
-		this.input.el.focus();
-	}
+	const list = new UIElement({
+		tag: 'datalist',
+		id: params.listName
+	});
 
-	get value() {
-		return this.input.el.value;
-	}
+	ui.add(input, 'input');
+	ui.add(list, 'list');
+	setOptions(params.options ?? []);
+	if (params.selected) input.value = params.selected;
 
-	set value(value) {
-		this.input.value = value;
-	}
-
-	addOption(value, text) {
-		const opt = document.createElement("option");
-		opt.value = opt.textContent = value;
-		if (text) opt.textContent = text;
-		this.list.el.appendChild(opt);
-	}
-
-	setOptions(options) {
+	function setOptions(options) {
 		for (let i = 0; i < options.length; i++) {
-			const opt = Array.from(this.list.el.options).map(o => o.value);
+			const opt = Array.from(list.el.options).map(o => o.value);
 			if (!opt.includes(options[i])) {
-				this.addOption(options[i]);
+				addOption(options[i]);
 			}
 		}
 	}
+
+	function addOption(value, text) {
+		const opt = document.createElement("option");
+		opt.value = opt.textContent = value;
+		if (text) opt.textContent = text;
+		list.el.appendChild(opt);
+	}
+
+	return Object.assign(ui, { 
+		setOptions,
+		addOption,
+		focus() { input.el.focus(); },
+		get() { return input.el.value; },
+		set(value) { input.el.value = value; },
+	});
 }

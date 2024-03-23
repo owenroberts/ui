@@ -1,81 +1,79 @@
-export class UIElement {
-	constructor(params) {
-		params = params || {};
+/*
+	writing new jsm, comp version of classes
+	try to make it so it works the same exact way first
+	take notes about what to modify ... 
+*/
 
-		this.el = document.getElementById(params.id) ?
-				document.getElementById(params.id) :
-				document.createElement(params.tag || "div");
+export function UIElement(params={}) {
 
-		for (const prop in params.css) {
-			this.el.style[prop] = params.css[prop];
-		}
+	const el = document.getElementById(params.id) ??
+		document.createElement(params.tag ?? "div");
 
-		if (params.id !== undefined) this.el.id = params.id;
-		if (params.class) this.addClass(params.class); // list?
-		if (params.text) this.el.textContent = params.text;
-
-		// if (params.type) this.el.type = params.type; -- get rid of type used for buttons
+	for (const prop in params.css) { // rename css style??
+		el.style[prop] = params.css[prop];
 	}
 
-	set text(_text) {
-		this.el.textContent = _text;
+	if (params.id !== undefined) el.id = params.id;
+	if (params.class) addClass(params.class); // list?
+	if (params.text) el.textContent = params.text;
+
+	function addClass(val) { 
+		el.classList.add(val); 
 	}
 
-	set value(_value) {
-		this.el.value = _value;
+	function removeClass(val) { 
+		el.classList.remove(val); 
 	}
 
-	get value() {
-		return this.el.value;
+	function hasClass(val) {
+		return el.classList.contains(val);
 	}
 
-	get position() {
-		return { x: this.el.getBoundingClientRect().x, y: this.el.getBoundingClientRect().y };
+	// function setKey(key, text) {
+	// 	el.title = `${text ? text : ''} ~ ${key}`;
+
+	// 	// no this ... need to figure this one out .... 
+	// 	el.addEventListener('mouseenter', onPress);
+	// 	el.addEventListener('mouseleave', onRelease);
+	// }
+
+	// function onPress(triggerRelease) {
+	// 	// uh oh .... how to access tooltip ... maybe in interface ... just get title . 
+	// 	ToolTip.text = `${el.title}`; 
+	// 	ToolTip.addClass('visible');
+	// 	addClass('triggered');
+	// 	if (triggerRelease === true) setTimeout(onRelease, 400);
+	// }
+
+	// function onRelease() {
+	// 	ToolTip.removeClass('visible');
+	// 	removeClass('triggered');
+	// }
+
+	return {
+		el, addClass, removeClass, hasClass,
+		// setKey,
+		// get value() { return el.value },
+		// set value(val) { el.value = val },
+		// get text() { return el.textContent; },
+		// set text(val) { el.textContent = val; },
+		getPosition() { 
+			return {
+				x: el.getBoundingClientRect().x, 
+				y: el.getBoundingClientRect().y
+			};
+		},
+		setText(val) { el.textContent = val; },
+		getText() { return el.textContent; },
+		getTitle() { return el.title; },
+		setTitle(val) { el.title = val; },
+		setType(val) { el.type = val; },
+
+		// set style prop? set css prop?
+		setProp(prop, value) { el.style.setProperty(prop, value); },
+		// getProp(prop) { return el.style.getPropertyValue(prop); }, // used??
+		
+		remove() { el.remove(); }
 	}
 
-	getPosition() {
-		return { x: this.el.getBoundingClientRect().x, y: this.el.getBoundingClientRect().y };
-	}
-
-	setProp(prop, value) {
-		this.el.style.setProperty(prop, value);
-	}
-
-	getProp(prop) {
-		return this.el.style.getPropertyValue(prop); 
-	}
-
-	keyHandler() {
-		this.callback();
-	}
-
-	addClass(_class) {
-		this.el.classList.add(_class);
-	}
-
-	removeClass(_class) {
-		this.el.classList.remove(_class);
-	}
-
-	setKey(key, text) {
-		this.el.title = `${text ? text : ''} ~ ${key}`;
-		this.el.addEventListener('mouseenter', this.onPress.bind(this));
-		this.el.addEventListener('mouseleave', this.onRelease.bind(this));
-	}
-
-	onPress(triggerRelease) {
-		ToolTip.text = `${this.el.title}`;
-		ToolTip.addClass('visible');
-		this.addClass('triggered');
-		if (triggerRelease === true) setTimeout(this.onRelease.bind(this), 400);
-	}
-
-	onRelease() {
-		ToolTip.removeClass('visible');
-		this.removeClass('triggered');
-	}
-
-	remove() {
-		this.el.remove();
-	}
 }

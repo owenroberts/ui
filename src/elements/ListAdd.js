@@ -1,44 +1,44 @@
 import { UICollection } from './Collection.js';
 import { UIButton } from './Button.js';
 
-export class UIListAdd extends UICollection {
-	constructor(params) {
-		super(params);
-		this.list = [...params.list];
-		if (params.callback) this.callback = params.callback;
+export function UIListAdd(params={}) {
+	const ui = UICollection(params);
 
-		const remove = new UIButton({
-			text: 'X',
-			class: 'left-end',
-			callback: () => {
-				if (this.list.length > 0) {
-					this.removeK('n' + (this.list.length - 1));
-					this.list.pop();
-				}
-				this.callback(this.list);
+	const list = [...params.list] ?? [];
+	const callback = params.callback;
+
+	const remove = new UIButton({
+		text: 'X',
+		class: 'left-end',
+		callback: () => {
+			if (list.length > 0) {
+				ui.removeK('n' + (list.length - 1));
+				list.pop();
 			}
-		});
+			callback(list);
+		}
+	});
 
-		this.append(remove);
-
-		
-	}
-
-	addItems() {
-		for (let i = 0; i < this.list.length; i++) {
-			this.addItem(i, this.list[i]);
+	function addItems() {
+		for (let i = 0; i < list.length; i++) {
+			addItem(i, list[i]); // wtf is this? deprecate???
+			// used by InputList, which inherits this .... 
 		}
 	}
 
-	set(list) {
-		for (let i = this.list.length - 1; i >= 0; i--) {
-			this.removeK('n' + i);
+	function set(newList) {
+		for (let i = list.length - 1; i >= 0; i--) {
+			ui.removeK('n' + i);
 		}
 
-		this.list = list;
+		list = [...newList];
 
-		for (let i = 0; i < this.list.length; i++) {
-			this.addItem(i, this.list[i]);
+		for (let i = 0; i < list.length; i++) {
+			addItem(i, list[i]);
 		}
 	}
+
+	ui.add(remove);
+
+	return Object.assign(ui, { addItems, set });
 }

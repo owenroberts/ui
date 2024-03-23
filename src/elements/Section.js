@@ -6,88 +6,94 @@ import { UINumber } from './Number.js';
 import { UINumberStep } from './NumberStep.js';
 import { UIToggleCheck } from './ToggleCheck.js';
 
-export class UISection extends UICollection {
-	constructor(params) {
-		super(params);
-		this.addClass('ui-section');
+export function UISection(params={}) {
+	const ui = UICollection(params);
+	ui.addClass("ui-section");
 
-		// id necessary ??
-		this.panels = new UICollection({ id: params.id + '-panels', class: 'panels' });
-		this.panels.append(new UIElement({ class: 'break' })); // break between panels
+	// id necessary ??
+	const panels = new UICollection({ 
+		id: params.id + '-panels',
+		class: 'panels'
+	});
+	// break between panels
+	panels.addBreak();
 
-		const header = new UICollection({ id: params.id + '-header', class: 'section-header' });
+	const header = new UICollection({
+		id: params.id + '-header', 
+		class: 'section-header',
+	});
 
-		this.selector = new UISelectButton({ 
-			class: 'selector',
-			callback: value => {
-				params.addPanelToSection(value, this, params.gridArea);
-			}
-		});
-		header.append(this.selector);
-		this.append(header);
-		this.append(this.panels);
+	const selector = header.add(new UISelectButton({ 
+		class: 'selector',
+		callback: value => {
+			params.addPanelToSection(value, ui, params.gridArea);
+		}
+	}));
 
-		const widthCollection = new UICollection({ class: 'width-collection' });
-		header.append(widthCollection);
-		widthCollection.append(new UILabel({ text: 'Width' }));
-		this.maxWidth = new UINumber({
-			value: 500,
-			callback: value => {
-				this.setProp('--max-width', value);
-			}
-		});
-		widthCollection.append(this.maxWidth);
-		this.maxWidthToggle = new UIToggleCheck({
-			callback: value => {
-				if (value) this.addClass('max-width');
-				else this.removeClass('max-width');
-			}
-		});
-		widthCollection.append(this.maxWidthToggle);
+	ui.append(header);
+	ui.append(panels);
 
-		this._isVisible = true;
+	const wc = header.append(new UICollection({ class: 'width-collection' }));
+	wc.append(new UILabel({ text: 'Width' }));
+	const maxWidth = wc.append(new UINumber({
+		value: 500,
+		callback: value => {
+			ui.setProp('--max-width', value);
+		}
+	}));
+	const maxWidthToggle = wc.append(new UIToggleCheck({
+		callback: value => {
+			if (value) ui.addClass('max-width');
+			else ui.removeClass('max-width');
+		}
+	}));
 
-		const scaleCollection = new UICollection({ 'class': 'scale-collection' });
-		header.append(scaleCollection);
-		scaleCollection.append(new UILabel({ text: 'Scale' }));
-		this.baseFontSize = new UINumberStep({
-			value: 11,
-			min: 10,
-			max: 40,
-			callback: value => {
-				this.panels.setProp('--ui-scale', +value);
-			}
-		});
-		scaleCollection.append(this.baseFontSize);
-	}
+	const sc = new header.append(UICollection({ 'class': 'scale-collection' }));
+	sc.append(new UILabel({ text: 'Scale' }));
+	const baseFontSize = sc.append(new UINumberStep({
+		value: 11,
+		min: 10,
+		max: 40,
+		callback: value => {
+			panels.setProp('--ui-scale', +value);
+		}
+	}));
 
-	addSelectorOptions(panelList) {
+	function addSelectorOptions(panelList) {
 		panelList.forEach(p => {
 			const [option, label] = p;
-			this.selector.select.addOption(option, label);
+			selector.addOption(option, label);
 		});
 	}
 
-	addSelectorOption(key, label) {
-		this.selector.select.addOption(key, label);
+	function addSelectorOption(key, label) {
+		selector.addOption(key, label);
 	}
 
-	get isVisible() {
-		return this._isVisible;
-	}
-
-	set isVisible(value) {
-		this._isVisible = value;
-		if (!value) this.addClass('hidden');
-		else this.removeClass('hidden');
-	}
-
-	get settings() {
-		return {
-			maxWidthToggle: this.maxWidthToggle.value,
-			maxWidth: this.maxWidth.value,
-			isVisible: this.isVisible,
-			baseFontSize: this.baseFontSize.value,
+	return Object.assign(ui, {
+		addSelectorOption,
+		addSelectorOptions,
+		load(settings) {
+			maxWidth.update(settings.maxWidth);
+			maxWidthToggle.update(settings.maxWidthToggle);
+			if (settings.isVisible !== undefined) {
+				if (settings.isVisible) ui.removeClass('hidden');
+				else ui.addClass('hidden');
+			}
+		},
+		get panels() { return panels; },
+		// get isVisible() { return !ui.hasClass('hidden'); },
+		// set isVisible(value) {
+		// 	if (value) ui.removeClass('hidden');
+		// 	else ui.addClass('hidden');
+		// },
+		get settings() {
+			return {
+				maxWidthToggle: maxWidthToggle.get(),
+				maxWidth: maxWidth.get(),
+				isVisible: !ui.hasClass('hidden'),
+				baseFontSize: baseFontSize.get(),
+			};
 		}
-	}
+	});
 }

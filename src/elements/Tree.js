@@ -2,62 +2,30 @@ import { UICollection } from './Collection.js';
 import { UIElement } from './Element.js';
 import { UIRow } from './Row.js';
 
-export class UITree extends UICollection {
-	constructor(params) {
-		params.tag = 'details';
-		// params.id = params.title + '-tree';
-		super(params);
-		this.addClass('tree');
-		this.addClass('row');
-		// this.addClass('break-line-up');
+export function UITree(params={}) {
+	const ui = UICollection({ ...params, tag: 'details' });
+	ui.addClass("tree");
+	ui.addClass("row");
+	ui.isTree = true;
 
-		const summary = new UIElement({
-			tag: 'summary',
-			text: params.title,
-		});
-		// this.add(summary);
-		this.el.appendChild(summary.el);
+	const summary = new UIElement({
+		tag: 'summary',
+		text: params.title,
+	});
+	ui.el.appendChild(summary.el);
 
-		this.row = new UIRow();
-		// this.add(this.row);
-		this.el.appendChild(this.row.el);
+	const row = new UIRow();
+	ui.el.appendChild(row.el); // idk why but doesn't use add
 
+	// this rewrote a bunch of shit but idk why, seems to be fine with out it???
+
+	function open() {
+		ui.el.open = true;
 	}
 
-	addRow(ui, k) { // why?
-		this.append(ui);
-		if (k !== undefined) this[k] = ui;
+	function close() {
+		ui.el.open = false;
 	}
 
-	add(ui, k, addBreak) {
-		this.row.add(ui);
-		if (k !== undefined) this[k] = ui;
-		if (addBreak) this.addBreak();
-		return ui;
-	}
-
-	removeK(k) {
-		this.row.el.removeChild(this[k].el);
-		delete this[k];
-	}
-
-	remove(ui) {
-		this.row.el.removeChild(ui.el);
-	}
-
-	clear() {
-		this.row.clear();
-	}
-
-	addBreak() {
-		this.row.addBreak();
-	}
-
-	open() {
-		this.el.open = true;
-	}
-
-	close() {
-		this.el.open = false;
-	}
+	return Object.assign(ui, { open, close });
 }

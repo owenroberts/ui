@@ -23,6 +23,7 @@ export function Interface(app, params) {
 	const panels = {};
 	let quick, layout, settings;
 	let currentPanel;
+	const toolTip = new UILabel({ id: 'tool-tip' });
 
 	/* key commands */
 	function keyDown(ev) {
@@ -41,9 +42,16 @@ export function Interface(app, params) {
 
 		keys[k].keyHandler(ev.target.value);
 		keys[k].onPress(true);
+		// if title ?? 
+		toolTip.text = `${ keys[k].title }`;
+		toolTip.addClass('visible');
+		setTimeout(() => {
+			toolTip.removeClass('visible');
+		}, 400);
+
 	}
 	document.addEventListener("keydown", keyDown, false);
-	window.ToolTip = new UILabel({ id: 'tool-tip' });
+	
 
 	function labelFromKey(key) {
 		let label = key[0].toUpperCase() + key.substring(1);
@@ -100,7 +108,9 @@ export function Interface(app, params) {
 		const type = params.type || getType(params.value);
 		// console.log(type);
 		const ui = new Elements[type](params);
-		panel.addRow();
+
+		// panel add with row implied kidna confusing ... 
+		panel.addRow(); // add row for each prop by default 
 		if (!params.noLabel) { // any props not have a label ??
 			panel.add(new UILabel({ 
 				text: params.label || labelFromKey(prop),
@@ -161,6 +171,7 @@ export function Interface(app, params) {
 
 	function setup() {
 		layout = new Layout(app, params);
+		layout.default.append(toolTip);
 		quick = new QuickRef(app);
 		layout.connect();
 		quick.connect();

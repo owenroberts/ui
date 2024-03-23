@@ -1,20 +1,17 @@
 import { UIElement } from './Element.js';
+import { setKey, setCallback } from './Behaviors.js';
 
-export class UIButton extends UIElement {
-	constructor(params) {
-		params.tag = "button";
-		super(params);
-		this.addClass(params.btnClass || "btn"); /* for diff types of button */
-		this.text = this.el.textContent || params.text || params.onText;
-		this.callback = params.callback;
-		this.args = params.args || [];
-		this.el.addEventListener('click', this.keyHandler.bind(this));
-		if (params.key) this.setKey(params.key, `${ this.el.textContent }`);
-	}
-	
-	keyHandler() {
-		this.callback(...this.args); 
-		// buttons don' have values ... but args still confusing here ...
-		// next frame -- have to know button is calling
-	}
+export function UIButton(params={}) {
+	const ui = UIElement({ ...params, tag: 'button' });
+	ui.addClass(params.btnClass ?? 'btn');
+	ui.setText(ui.el.textContent ?? params.text);
+
+	const { callback } = setCallback(ui, params, 'click');
+	const { onPress } = setKey(ui, params.key, ui.getText());
+
+	return Object.assign(ui, {
+		keyHandler() { callback() },
+		callback,
+		onPress,
+	});
 }

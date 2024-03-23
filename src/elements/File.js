@@ -1,17 +1,21 @@
-import { UIButton } from './Button.js';
+import { UIElement } from './Element.js';
+import { setKey } from './Behaviors.js';
 
-export class UIFile extends UIButton {
-	constructor(params) {
-		super(params);
-		this.multiple = params.multiple || false;
-		this.promptDefault = params.promptDefault;
-		this.fileType = params.fileType || 'application/json';
-	}
+export function UIFile(params={}) {
+	const ui = UIElement({ ...params, tag: 'button' });
+	ui.addClass(params.btnClass ?? 'btn');
+	ui.setText(ui.getText() ?? params.text);
+
+	const { onPress } = setKey(ui, params.key, ui.getText());
+	ui.el.addEventListener('click', loadFile);
+
+	const multiple = params.multiple ?? false;
+	const promptDefault = params.promptDefault ?? '';
+	const fileType = params.fileType ?? 'application/json';
 
 	/* bc button doesn't have an update func */
-	keyHandler() {
-		const { callback, promptDefault, multiple, fileType } = this;
-		
+	function loadFile() {
+		// const { callback, promptDefault, multiple, fileType } = this;
 		function readFile(files, directoryPath) {
 			for (let i = 0, f; f = files[i]; i++) {
 				if (!f.type.match(fileType)) continue;
@@ -23,7 +27,7 @@ export class UIFile extends UIButton {
 						let data;
 						if (fileType === 'application/json') data = JSON.parse(e.target.result);
 						else data = e.target.result;
-						callback(data, fileName, filePath);
+						params.callback(data, fileName, filePath);
 					};
 				})(f);
 				reader.readAsText(f);
@@ -39,4 +43,10 @@ export class UIFile extends UIButton {
 			readFile(openFile.files, directoryPath);
 		};
 	}
+
+	return Object.assign(ui, {
+		callback: loadFile,
+		keyHandler: loadFile,
+		onPress,
+	});
 }
