@@ -29,34 +29,8 @@ export function UIElement(params={}) {
 		return el.classList.contains(val);
 	}
 
-	// function setKey(key, text) {
-	// 	el.title = `${text ? text : ''} ~ ${key}`;
-
-	// 	// no this ... need to figure this one out .... 
-	// 	el.addEventListener('mouseenter', onPress);
-	// 	el.addEventListener('mouseleave', onRelease);
-	// }
-
-	// function onPress(triggerRelease) {
-	// 	// uh oh .... how to access tooltip ... maybe in interface ... just get title . 
-	// 	ToolTip.text = `${el.title}`; 
-	// 	ToolTip.addClass('visible');
-	// 	addClass('triggered');
-	// 	if (triggerRelease === true) setTimeout(onRelease, 400);
-	// }
-
-	// function onRelease() {
-	// 	ToolTip.removeClass('visible');
-	// 	removeClass('triggered');
-	// }
-
 	return {
 		el, addClass, removeClass, hasClass,
-		// setKey,
-		// get value() { return el.value },
-		// set value(val) { el.value = val },
-		// get text() { return el.textContent; },
-		// set text(val) { el.textContent = val; },
 		getPosition() { 
 			return {
 				x: el.getBoundingClientRect().x, 
