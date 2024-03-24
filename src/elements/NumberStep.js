@@ -80,6 +80,7 @@ export function UINumberStep(params={}) {
 		getHTML() { return ui.el },
 		get() { return numberInput.get() },
 		set(val) { numberInput.set(val); },
+		get value() { return numberInput.get(); },
+		set value(val) { numberInput.set(val); }.
 	});
-
 }
