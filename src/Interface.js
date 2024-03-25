@@ -108,7 +108,6 @@ export function Interface(app, params) {
 			}));
 		}
 		panel.add(ui);
-		if (prop === 'bpm') console.trace();
 		faces[prop] = ui;
 		if (params.key) keys[params.key] = ui;
 
@@ -161,6 +160,7 @@ export function Interface(app, params) {
 
 	function setup() {
 		layout = new Layout(app, params);
+		layout.default.append(window.ToolTip);
 		quick = new QuickRef(app);
 		layout.connect();
 		quick.connect();

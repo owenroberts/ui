@@ -4,48 +4,44 @@ export class UIDrag extends UIText {
 	constructor(params) {
 		super(params);
 		this.addClass('drag');
-		const self = this;
 
-		const drag = { 
-			x: 0, // position when clicked
-			y: 0, 
-			timeout: 5, 
-			timer: 0, // timeout so it doesn't go nuts
-			prev: 0, // -1 or 1
-			active: false,
-		}; 
+		let x = 0; // position when clicked
+		let y = 0; 
+		let timeout = 5; 
+		let timer = 0; // timeout so it doesn't go nuts
+		let prev = 0; // -1 or 1
+		let active = false;
 
 		function mouseDown(ev) {
-			drag.x = ev.pageX;
-			drag.y = ev.pageY;
-			drag.active = true;
+			x = ev.pageX;
+			y = ev.pageY;
+			active = true;
 			document.addEventListener('mousemove', mouseMove);
 			document.addEventListener('mouseup', mouseUp);
 		}
 
 		function mouseMove(ev) {
-			if (!drag.active) return;
+			if (!active) return;
 
-			const delta = { x: ev.pageX - drag.x, y: ev.pageY - drag.y };
+			const delta = { x: ev.pageX - x, y: ev.pageY - y };
 			const dir = Math.abs(delta.x) > Math.abs(delta.y) ? 'x' : 'y';
 
-			if (Math.abs(delta[dir]) > 10 && drag.timer === 0) {
+			if (Math.abs(delta[dir]) > 10 && timer === 0) {
 				const m = dir === 'x' ? 1 : -1; // multiplier for x/y
-				if (params.drag) params.drag(m * Math.sign(delta[dir]));
-				drag.timer = drag.timeout;
-				drag.x = ev.pageX;
-				drag.y = ev.pageY;
-			} else if (drag.timer > 0) {
-				drag.timer--;
+				params.onDrag(m * Math.sign(delta[dir]));
+				timer = timeout;
+				x = ev.pageX;
+				y = ev.pageY;
+			} else if (timer > 0) {
+				timer--;
 			}
 		}
 
 		function mouseUp(ev) {
-			if (!drag.active) return;
-			drag.active = false;
-			drag.x = 0;
-			drag.y = 0;
-			// self.el.blur();
+			if (!active) return;
+			active = false;
+			x = 0;
+			y = 0;
 			document.removeEventListener('mousemove', mouseMove);
 			document.removeEventListener('mouseup', mouseUp);
 		}

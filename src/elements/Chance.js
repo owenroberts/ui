@@ -15,7 +15,7 @@ export class UIChance extends UICollection {
 
 		this.drag = new UIDrag({
 			value: params.value,
-			drag: change => {
+			onDrag: change => {
 				// this.update(this.value + this.step * change * 10); // why?
 				this.update(this.value + this.step * change);
 			},
@@ -30,7 +30,7 @@ export class UIChance extends UICollection {
 
 		this.append(label);
 		this.append(this.drag);
-		this.setProp('--value-percent', Math.round((this.value - this.min) / this.total * 100));
+		this.setStyle('--value-percent', Math.round((this.value - this.min) / this.total * 100));
 	}
 
 	update(value, uiOnly) {
@@ -38,7 +38,7 @@ export class UIChance extends UICollection {
 		if (value > this.max) value = this.max;
 		this.value = +value.toFixed(3);
 		this.drag.value = this.value;
-		this.setProp('--value-percent', Math.round((this.value - this.min) / this.total * 100));
+		this.setStyle('--value-percent', Math.round((this.value - this.min) / this.total * 100));
 		if (!uiOnly) {
 			if (this.args) this.callback(value, ...this.args);
 			else this.callback(value);

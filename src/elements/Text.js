@@ -3,7 +3,9 @@ import { UIInput } from './Input.js';
 export class UIText extends UIInput {
 	constructor(params) {
 		super(params);
-		this.el.type = "text";
+		this.el.type = "text"; // set type?
+
+		// prob simplify this
 		this.placeholder = this.el.placeholder || params.placeholder || params.text || params.value || '';
 		this.el.placeholder = this.placeholder;
 
@@ -30,7 +32,6 @@ export class UIText extends UIInput {
 	}
 
 	keyHandler(value) {
-		// this.update(value !== undefined ? +value : prompt(this.prompt));
 		this.update(prompt(this.prompt));
 	}
 
@@ -43,13 +44,12 @@ export class UIText extends UIInput {
 	}
 
 	set value(value) {
-		this._value = value;
 		this.placeholder = value;
 		this.el.placeholder = value;
 		this.el.value = '';
 	}
 
 	get value() {
-		return this._value || this.placeholder;
+		return this.placeholder;
 	}
 }

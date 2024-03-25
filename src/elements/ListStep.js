@@ -15,7 +15,7 @@ export class UIListStep extends UICollection {
 		this.textInput = new UIDrag({
 			value: params.value,
 			class: 'left-end',
-			drag: value => {
+			onDrag: value => {
 				if (this.index + value >= 0 && this.index + value < this.list.length) {
 					this.index += value;
 				}

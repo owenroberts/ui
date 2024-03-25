@@ -21,7 +21,7 @@ export class UINumberStep extends UICollection {
 		this.numberInput = new UIDrag({
 			...params,
 			class: 'middle',
-			drag: value => {
+			onDrag: value => {
 				this.update(this.value + this.step * value);
 			},
 			callback: value => {

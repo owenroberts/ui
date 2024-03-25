@@ -3,13 +3,19 @@ import { UIButton } from './Button.js';
 export class UIFile extends UIButton {
 	constructor(params) {
 		super(params);
+		this.callback = params.callback;
 		this.multiple = params.multiple || false;
 		this.promptDefault = params.promptDefault;
 		this.fileType = params.fileType || 'application/json';
+
+		this.el.addEventListener('click', () => {
+			this.keyhandler();
+		});
 	}
 
 	/* bc button doesn't have an update func */
-	keyHandler() {
+	callback() {
+		console.log('file key')
 		const { callback, promptDefault, multiple, fileType } = this;
 		
 		function readFile(files, directoryPath) {

@@ -33,7 +33,7 @@ export class UISection extends UICollection {
 		this.maxWidth = new UINumber({
 			value: 500,
 			callback: value => {
-				this.setProp('--max-width', value);
+				this.setStyle('--max-width', value);
 			}
 		});
 		widthCollection.append(this.maxWidth);
@@ -55,7 +55,7 @@ export class UISection extends UICollection {
 			min: 10,
 			max: 40,
 			callback: value => {
-				this.panels.setProp('--ui-scale', +value);
+				this.panels.setStyle('--ui-scale', +value);
 			}
 		});
 		scaleCollection.append(this.baseFontSize);

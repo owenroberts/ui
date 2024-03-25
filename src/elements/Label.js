@@ -2,8 +2,7 @@ import { UIElement } from './Element.js';
 
 export class UILabel extends UIElement {
 	constructor(params) {
-		params.tag = "label";
-		super(params);
+		super({ ...params, tag: "label" });
 		this.text = params.text;
 	}
 }

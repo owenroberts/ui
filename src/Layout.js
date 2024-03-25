@@ -19,8 +19,6 @@ export function Layout(app, params) {
 	
 	const main = new UISection({ id: 'main', gridArea: 'main', addPanelToSection });
 
-	defaultUI.append(ToolTip);
-
 	function addPanelToSection(panelName, section, gridArea) {
 		const panel = app.ui.panels[panelName];
 		section.panels.append(panel);

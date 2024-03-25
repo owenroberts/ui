@@ -48,8 +48,8 @@ export class UIToggleGrid extends UICollection {
 
 	updateGrid() {
 		this.grid.clear();
-		this.grid.setProp('--rows', this.value.length);
-		this.grid.setProp('--cols', this.value[0].length);
+		this.grid.setStyle('--rows', this.value.length);
+		this.grid.setStyle('--cols', this.value[0].length);
 
 		for (let i = 0; i < this.value.length; i++) {
 			for (let j = 0; j < this.value[i].length; j++) {

@@ -5,13 +5,15 @@ export class UIRange extends UIInput {
 		super(params);
 		this.el.type = "range";
 		
-		const [min, max] = params.range ? [...params.range] : [params.min, params.max];
+		const [min, max] = params.range ? 
+			[...params.range] : 
+			[params.min, params.max];
 		this.setRange(min, max);
 		
-		this.value = params.value || params.min;
+		this.el.value = params.value || params.min;
 		if (params.step) this.setStep(params.step);
 
-		this.el.addEventListener(params.event || 'input', ev => {
+		this.el.addEventListener(params.event ?? 'input', ev => {
 			this.update(ev.target.value);
 		});
 	}

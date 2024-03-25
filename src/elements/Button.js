@@ -1,20 +1,27 @@
 import { UIElement } from './Element.js';
+import { KeyMixins } from './Behaviors.js';
 
 export class UIButton extends UIElement {
 	constructor(params) {
-		params.tag = "button";
-		super(params);
-		this.addClass(params.btnClass || "btn"); /* for diff types of button */
-		this.text = this.el.textContent || params.text || params.onText;
-		this.callback = params.callback;
-		this.args = params.args || [];
-		this.el.addEventListener('click', this.keyHandler.bind(this));
-		if (params.key) this.setKey(params.key, `${ this.el.textContent }`);
-	}
-	
-	keyHandler() {
-		this.callback(...this.args); 
-		// buttons don' have values ... but args still confusing here ...
-		// next frame -- have to know button is calling
+		super({ ...params, tag: "button"});
+		this.addClass(params.btnClass ?? "btn"); /* for diff types of button */
+
+		// either figure our args or don't inherit button
+		// or make callback button type, like input tyep ... 
+		// or make it a mixin somehow ... 
+
+		const args = params.args ?? [];
+		function callback() {
+			params.callback(...args);
+		}
+		this.el.addEventListener('click', callback);
+
+		if (params.key) {
+			Object.assign(this, KeyMixins);
+			this.setKey(params.key, this.text);
+			
+			// sometimes keyhandler is different than callback
+			this.keyHandler = callback;
+		}
 	}
 }

@@ -19,8 +19,6 @@ export class UIColor extends UIInput {
 	}
 
 	addColor(color) {
-		// console.trace();
-		const self = this;
 		if (!this.colors) return; // called by value update before it exists
 		if (!this.colors.includes(color) && color) {
 			this.colors.push(color);
@@ -28,11 +26,11 @@ export class UIColor extends UIInput {
 				text: color,
 				css: { "background": color },
 				value: color,
-				callback: function() {
-					self.update(color);
+				callback: () => {
+					this.update(color);
 				}
 			});
-			self.palette.append(btn);
+			this.palette.append(btn);
 		}
 	}
 
@@ -47,15 +45,15 @@ export class UIColor extends UIInput {
 		if (!uiOnly) this.setColor(value);
 		this.value = value;
 	}
-
-	set value(_value) {
-		this.addColor(_value);
-		this.current = _value;
-		super.value = _value;
-	}
-
+	
 	get value() {
 		return this.el.value;
+	}
+
+	set value(value) {
+		this.addColor(value);
+		this.current = value;
+		super.value = value; // super again??
 	}
 
 	get html() {

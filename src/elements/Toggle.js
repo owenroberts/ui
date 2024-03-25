@@ -1,19 +1,32 @@
-import { UIButton } from './Button.js';
+import { UIElement } from './Element.js';
+import { KeyMixins } from './Behaviors.js';
 
-export class UIToggle extends UIButton {
+export class UIToggle extends UIElement {
 	constructor(params) {
-		super(params);
-		this.onText = params.onText || params.text;
-		this.offText = params.offText || params.text;
-		this.isOn = params.isOn || params.value || false;
-		if (this.isOn) this.on();
-		// if (params.isOn) this.toggle();
-		super.text = this.isOn ? this.onText : this.offText;
+		super({ ...params, tag: 'button' });
+		this.addClass('btn');
 		this.addClass('toggle');
+
+		this.callback = params.callback;
+		this.onText = params.onText ?? params.text;
+		this.offText = params.offText ?? params.text;
+		this.isOn = params.isOn ?? params.value ?? false;
+		if (this.isOn) this.on();
+
+		// why super??
+		super.text = this.isOn ? this.onText : this.offText;
+
+		this.el.addEventListener('click', () => {
+			this.keyHandler();
+		});
+
+		if (params.key) {
+			Object.assign(this, KeyMixins);
+			this.setKey(params.key, this.text);
+		}
 	}
 
 	update(isOn, uiOnly) {
-
 		if (isOn !== this.isOn) {
 			if (this.isOn === undefined) this.isOn = isOn;
 			if (!uiOnly) this.callback(isOn);
@@ -22,8 +35,9 @@ export class UIToggle extends UIButton {
 	}
 
 	keyHandler() {
+		// key press/click is a toggle
 		this.set(!this.isOn);
-		this.callback(this.value);
+		this.callback(this.isOn);
 	}
 
 	set(isOn) {
@@ -50,5 +64,9 @@ export class UIToggle extends UIButton {
 
 	get value() {
 		return this.isOn;
+	}
+
+	set value(value) {
+		this.set(value);
 	}
 }
