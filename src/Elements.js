@@ -6,10 +6,9 @@ import { UILabel } from './elements/Label.js';
 import { UIButton } from './elements/Button.js';
 import { UIToggle } from './elements/Toggle.js';
 import { UISelect } from './elements/Select.js';
-
-// inherits button
 import { UIFile } from './elements/File.js';
-// toggle ??
+
+// toggle and file used to inherit button, some overlap but different callback styles ... 
 
 // inherits Input (input not used)
 import { UIText } from './elements/Text.js';

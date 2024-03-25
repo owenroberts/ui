@@ -60,7 +60,7 @@ export class UIElement {
 	}
 
 	hasClass(value) {
-		return this.el.classList.includes('value');
+		return this.el.classList.contains(value);
 	}
 
 	remove() {

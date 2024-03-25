@@ -85,10 +85,6 @@ export class UINumberStep extends UICollection {
 		}
 	}
 
-	get html() {
-		return this.el;
-	}
-
 	set value(value) {
 		this.numberInput.value = +value;
 	}

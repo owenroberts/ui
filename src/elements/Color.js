@@ -15,7 +15,7 @@ export class UIColor extends UIInput {
 			this.addColor(this.current);
 		});
 
-		this.palette = new UICollection();
+		this.palette = this.add(new UICollection());
 	}
 
 	addColor(color) {
@@ -54,9 +54,5 @@ export class UIColor extends UIInput {
 		this.addColor(value);
 		this.current = value;
 		super.value = value; // super again??
-	}
-
-	get html() {
-		return [this.el, this.palette.el];
 	}
 }

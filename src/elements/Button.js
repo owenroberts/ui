@@ -6,10 +6,6 @@ export class UIButton extends UIElement {
 		super({ ...params, tag: "button"});
 		this.addClass(params.btnClass ?? "btn"); /* for diff types of button */
 
-		// either figure our args or don't inherit button
-		// or make callback button type, like input tyep ... 
-		// or make it a mixin somehow ... 
-
 		const args = params.args ?? [];
 		function callback() {
 			params.callback(...args);

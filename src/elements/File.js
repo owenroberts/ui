@@ -1,21 +1,28 @@
-import { UIButton } from './Button.js';
+import { UIElement } from './Element.js';
+import { KeyMixins } from './Behaviors.js';
 
-export class UIFile extends UIButton {
+export class UIFile extends UIElement {
 	constructor(params) {
-		super(params);
+		super({ ...params, tag: 'button' });
+		this.addClass('btn');
+
 		this.callback = params.callback;
 		this.multiple = params.multiple || false;
 		this.promptDefault = params.promptDefault;
 		this.fileType = params.fileType || 'application/json';
 
 		this.el.addEventListener('click', () => {
-			this.keyhandler();
+			this.keyHandler();
 		});
+
+		if (params.key) {
+			Object.assign(this, KeyMixins);
+			this.setKey(params.key, this.text);
+		}
 	}
 
 	/* bc button doesn't have an update func */
-	callback() {
-		console.log('file key')
+	keyHandler() {
 		const { callback, promptDefault, multiple, fileType } = this;
 		
 		function readFile(files, directoryPath) {

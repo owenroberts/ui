@@ -6,70 +6,72 @@ import { UIButton } from './Button.js';
 
 export class UIPanel extends UICollection {
 	constructor(params) {
-		super({ id: `${params.id}-panel` });
+		super({ ...params, id: `${params.id}-panel` });
 		this.id = params.id;
 		this.isPanel = true;
 		this.addClass("panel");
 		this.addClass("undocked");
-		this.gridArea = 'default';
+		this.gridArea = "default";
 		
 		this.rows = [];
 
-		this.header = new UIRow();
-		this.header.addClass('header');
-		this.append(this.header);
+		const header = this.append(new UIRow({ class: "header" }));
+		// header.addClass('header');
 
-		this.open = new UIToggle({
+		this.open = header.append(new UIToggle({
 			onText: "－",
 			offText: "＋",
-			class: "toggle",
 			isOn: true, // default open
 			callback: isOn => {
 				if (!isOn) this.addClass('closed');
 				else this.removeClass('closed');
 			}
-		});
-		this.header.append(this.open);
-
-		this.header.append(new UILabel({ text: params.label }));
-
-		this.header.append(new UIButton({
-			text: 'X',
-			class: 'undock-btn',
-			callback: this.undock.bind(this)
 		}));
 
-		this.orderBtn = new UIButton({
+		header.append(new UILabel({ text: params.label }));
+
+		header.append(new UIButton({
+			text: 'X',
+			class: 'undock-btn',
+			callback: () => { this.undock(); },
+		}));
+
+		this.orderBtn = header.append(new UIButton({
 			text: this.order || "0",
 			class: "order-btn",
 			callback: () => {
 				this.order = +this.el.style.order + 1;
 				this.orderBtn.text = this.order;
 			}
-		});
-		this.header.append(this.orderBtn);
+		}));
 
-		this.header.append(new UIButton({
+		header.append(new UIButton({
 			text: "[]",
 			class: "block-btn",
 			callback: () =>  {
-				if (this.el.classList.contains('block')) 
-					this.el.classList.remove('block');
-				else 
-					this.el.classList.add('block');
+				if (this.hasClass('block')) {
+					this.removeClass('block');
+				} else {
+					this.addClass('block');
+				}
 			}	
 		}));
 
-		this.header.append(new UIButton({
+		header.append(new UIButton({
 			text: "<",
 			class: "headless-btn",
 			callback: () => {
-				if (this.el.classList.contains('headless')) 
-					this.el.classList.remove('headless');
-				else 
-					this.el.classList.add('headless');
+				if (this.hasClass('headless')) {
+					this.removeClass('headless');
+				} else {
+					this.addClass('headless');
+				}
 			}
 		}));
+	}
+	
+	get order() {
+		return this.el.style.order;
 	}
 
 	set order(n) {
@@ -77,40 +79,15 @@ export class UIPanel extends UICollection {
 		this.el.style.order = n;
 	}
 
-	get order() {
-		return this.el.style.order;
-	}
-
-	get isDocked() {
-		return !this.el.classList.contains('undocked');
-	}
-
-	get isBlock() {
-		return this.el.classList.contains('block');
-	}
-
-	get isHeadless() {
-		return this.el.classList.contains('headless');
-	}
-
-	get isOpen() {
-		return this.open.value;
-	}
-
 	get settings() {
 		return {
-			open: this.isOpen,
-			docked: this.isDocked,
+			open: this.open.value,
+			docked: !this.hasClass('undocked'),
+			block: this.hasClass('block'),
+			headless: this.hasClass('headless'),
 			order: this.order,
-			block: this.isBlock,
-			headless: this.isHeadless,
 			gridArea: this.gridArea,
 		};
-	}
-
-	get lastRow() {
-		if (this.rows.length === 0) return this.addRow();
-		return this.rows[this.rows.length - 1];
 	}
 
 	close() {
@@ -119,11 +96,11 @@ export class UIPanel extends UICollection {
 	}
 
 	block() {
-		this.el.classList.add('block');
+		this.addClass('block');
 	}
 
 	headless() {
-		this.el.classList.add('headless');
+		this.addClass('headless');
 	}
 
 	dock() {
@@ -135,7 +112,7 @@ export class UIPanel extends UICollection {
 	}
 
 	addRow(k, className) {
-		const row = new UIRow({ id: k, class: className,  });
+		const row = new UIRow({ id: k, class: className });
 		this.append(row, k);
 		this.rows.push(row);
 		return row;
@@ -145,15 +122,14 @@ export class UIPanel extends UICollection {
 		const index = this.rows.indexOf(row);
 		this.rows.splice(index, 1);
 		this.remove(row);
+		return row;
 	}
 
-	add(ui, k, _row) { // flip row and k?
-		// if (ui.prompt == "Go To Frame") console.log(ui)
-		let row = _row 
-			|| this.rows[this.rows.length - 1]
-			|| this.addRow();
-		row.append(ui, k);
-		return ui;
+	add(child, k, row) {
+		if (!row) row = this.rows[this.rows.length - 1];
+		if (!row) row = this.addRow();
+		row.append(child, k);
+		return child;
 	}
 
 	setup(settings) {

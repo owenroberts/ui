@@ -7,15 +7,15 @@ export class UINumberRange extends UICollection {
 		this.callback = params.callback;
 		this.args = params.args || [];
 
-		this.numberInput = new UINumber({
+		this.numberInput = this.add(new UINumber({
 			...params,
 			callback: this.update.bind(this)
-		});
+		}));
 
-		this.range = new UIRange({
+		this.range = this.add(new UIRange({
 			...params,
 			callback: this.update.bind(this)
-		});
+		}));
 
 		if (params.event === 'change') {
 			this.range.el.addEventListener('input', ev => {
@@ -24,10 +24,6 @@ export class UINumberRange extends UICollection {
 		}
 
 		if (params.value !== undefined) this.value = params.value;
-	}
-
-	get html() {
-		return [this.numberInput.el, this.range.el];
 	}
 
 	keyHandler(value) {
