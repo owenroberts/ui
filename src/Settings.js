@@ -38,11 +38,7 @@ export function Settings(app, params) {
 
 	function loadLayout(layout) {
 		for (const section in layout) {
-			app.ui.getLayout()[section].maxWidth.update(layout[section].maxWidth);
-			app.ui.getLayout()[section].maxWidthToggle.update(layout[section].maxWidthToggle);
-			if (layout[section].isVisible !== undefined) {
-				app.ui.getLayout()[section].isVisible = layout[section].isVisible;
-			}
+			app.ui.getLayout()[section].load(layout[section]);
 		}
 	}
 

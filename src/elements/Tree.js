@@ -4,36 +4,23 @@ import { UIRow } from './Row.js';
 
 export class UITree extends UICollection {
 	constructor(params) {
-		params.tag = 'details';
-		// params.id = params.title + '-tree';
-		super(params);
+		super({ ...params, tag: 'details' });
 		this.addClass('tree');
 		this.addClass('row');
-		// this.addClass('break-line-up');
 
-		const summary = new UIElement({
+		const summary = this.append(new UIElement({
 			tag: 'summary',
 			text: params.title,
-		});
-		// this.add(summary);
-		this.el.appendChild(summary.el);
+		}));
 
-		this.row = new UIRow();
-		// this.add(this.row);
-		this.el.appendChild(this.row.el);
-
+		this.row = this.append(new UIRow());
 	}
 
-	addRow(ui, k) { // why?
-		this.append(ui);
-		if (k !== undefined) this[k] = ui;
-	}
-
-	add(ui, k, addBreak) {
-		this.row.add(ui);
-		if (k !== undefined) this[k] = ui;
+	add(child, k, addBreak) {
+		this.row.add(child); // goes in row, not el
+		if (k !== undefined) this[k] = child;
 		if (addBreak) this.addBreak();
-		return ui;
+		return child;
 	}
 
 	removeK(k) {
@@ -41,8 +28,8 @@ export class UITree extends UICollection {
 		delete this[k];
 	}
 
-	remove(ui) {
-		this.row.el.removeChild(ui.el);
+	remove(child) {
+		this.row.el.removeChild(ui.child);
 	}
 
 	clear() {

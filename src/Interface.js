@@ -82,6 +82,7 @@ export function Interface(app, params) {
 		panel.add(ui, params.k);
 		if (params.key) keys[params.key] = ui;
 		
+		// error with type file ... 
 		quick.registerCallback(labelFromKey(panel.id), labelFromKey(params.text || params.label), params);
 		
 		return ui;

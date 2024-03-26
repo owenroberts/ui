@@ -6,7 +6,6 @@ import { UILabel } from './Label.js';
 export class UIModal extends UICollection {
 	constructor(params) {
 		super({});
-		if (params.callback) this.callback = params.callback;
 		this.addClass('modal');
 		if (params.class) this.addClass(params.class);
 		this.append(new UILabel({ text: params.title }));
@@ -14,39 +13,34 @@ export class UIModal extends UICollection {
 		// better way to do this ?? 
 		document.getElementById('container').appendChild(this.el);
 		
-		const self = this;
+		this.break = this.append(new UIElement({ class: 'break' }));
 
-		this.break = new UIElement({ class: 'break' });
-		this.append(this.break);
-
-		this.submit = new UIButton({
+		const submit = this.append(new UIButton({
 			text: "Submit",
-			callback: function() {
+			key: 'enter',
+			callback: () => {
 				if (params.callback) params.callback();
-				self.clear();
+				this.clear();
 			}
-		});
+		}));
+		params.app.ui.keys['enter'] = submit; /* not modular ... */
 
-		this.append(this.submit);
-		params.app.ui.keys['enter'] = this.submit; /* not modular ... */
-
-		this.cancel = new UIButton({
+		const cancel = this.append(new UIButton({
 			text: "x",
+			key: "escape", // have to add keyHandler ... 
 			callback: ev => {
 				this.clear();
 				if (params.onClear) params.onClear();
 			}
-		});
-
-		params.app.ui.keys['escape'] = this.cancel;
-		this.append(this.cancel);
-		this.append(new UIElement({ class: "break" }));
+		}));
+		params.app.ui.keys['escape'] = cancel;
+		this.addBreak();
 
 		let x = Math.max(16, params.position.x - 100);
 		let y = Math.max(16, params.position.y - 20);
 
-		this.el.style.left = `${x}px`;
-		this.el.style.top = `${y}px`;
+		this.setStyle('left', `${x}px`);
+		this.setStyle('top', `${y}px`);
 	}
 
 	adjustPosition() {
@@ -56,22 +50,16 @@ export class UIModal extends UICollection {
 		let h = parseInt(this.el.clientHeight);
 
 		if (x + w > window.innerWidth) {
-			this.el.style.left = `${window.innerWidth - w - 20}px`;
+			this.setStyle('left', `${window.innerWidth - w - 20}px`);
 		}
 
 		if (y + h > window.innerHeight) {
-			this.el.style.top = `${window.innerHeight - h - 20}px`;
+			this.setStyle('top', `${window.innerHeight - h - 20}px`);
 		}
 	}
 
-	add(component) {
-		if (Array.isArray(component.html)) {
-			component.html.forEach(el => {
-				this.el.insertBefore(el, this.break.el);
-			});
-		} else {
-			this.el.insertBefore(component.el, this.break.el);
-		}
+	add(child) {
+		this.insert(child, this.break);
 		this.adjustPosition();
 	}
 

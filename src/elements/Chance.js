@@ -6,6 +6,7 @@ export class UIChance extends UICollection {
 	constructor(params) {
 		super(params);
 		this.addClass('value-bg');
+
 		this.value = params.value;
 		this.min = params.min ?? 0;
 		this.max = params.max ?? 1;
@@ -13,7 +14,11 @@ export class UIChance extends UICollection {
 		this.total = this.max - this.min;
 		if (params.callback) this.callback = params.callback;
 
-		this.drag = new UIDrag({
+		const label = this.append(new UILabel({
+			text: params.label
+		}));
+
+		this.drag = this.append(new UIDrag({
 			value: params.value,
 			onDrag: change => {
 				// this.update(this.value + this.step * change * 10); // why?
@@ -22,15 +27,14 @@ export class UIChance extends UICollection {
 			callback: value => {
 				this.update(+value);
 			}
-		});
+		}));
 
-		const label = new UILabel({
-			text: params.label
-		});
+		this.updateStyle();
+	}
 
-		this.append(label);
-		this.append(this.drag);
-		this.setStyle('--value-percent', Math.round((this.value - this.min) / this.total * 100));
+	updateStyle() {
+		const pct = Math.round((this.value - this.min) / this.total * 100);
+		this.setStyle('--value-percent', pct);
 	}
 
 	update(value, uiOnly) {
@@ -38,7 +42,7 @@ export class UIChance extends UICollection {
 		if (value > this.max) value = this.max;
 		this.value = +value.toFixed(3);
 		this.drag.value = this.value;
-		this.setStyle('--value-percent', Math.round((this.value - this.min) / this.total * 100));
+		this.updateStyle()
 		if (!uiOnly) {
 			if (this.args) this.callback(value, ...this.args);
 			else this.callback(value);

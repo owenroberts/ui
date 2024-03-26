@@ -20,11 +20,11 @@ export class UIInputSearch extends UICollection {
 		// const boundHandler = changeHandler.bind(this);
 		input.el.addEventListener('change', changeHandler);
 		
-		if (params.escape) {
+		if (params.onEscape) {
 			input.el.addEventListener('keydown', ev => {
 				if (Cool.keys[ev.which] === 'escape') {
 					input.el.removeEventListener('change', changeHandler);
-					params.escape();
+					params.onEscape();
 				}
 			});
 		}
