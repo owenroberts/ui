@@ -1,22 +1,14 @@
 import { UIButton } from './Button.js';
 import { UIText } from './Text.js';
-import { UIListAdd } from './ListAdd.js';
+import { UICollection } from './Collection.js';
+import { ListMixins } from './Behaviors.js';
 
-export class UIInputList extends UIListAdd {
+export class UIInputList extends UICollection {
 	constructor(params) {
 		super(params);
 		this.addClass('input-list');
-
-		const add = new UIButton({
-			text: '+',
-			callback: () => {
-				this.list.push('');
-				this.addItem(this.list.length - 1, 0);
-				this.callback(this.list);
-			}
-		});
-
-		this.append(add);
+		Object.assign(this, ListMixins);
+		this.setup(params) // creates list, ui
 		this.addItems();
 	}
 
@@ -26,13 +18,12 @@ export class UIInputList extends UIListAdd {
 	}
 
 	addItem(index, value) {
-		const n = new UIText({
+		const n = this.append(new UIText({
 			value: value,
 			callback: value => {
 				this.list[index] = value;
-				if (this.callback) this.callback(this.list);
+				this.callback(this.list);
 			}
-		});
-		this.append(n, 'n' + index);
+		}),'n' + index);
 	}
 }

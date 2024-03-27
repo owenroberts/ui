@@ -4,20 +4,21 @@ export class UIDragButton extends UIButton {
 	constructor(params) {
 		super(params);
 
-		this.down = { x: 0, y: 0 };
+		let x = 0, y = 0;
+		let dragging = false;
 
 		this.el.addEventListener('mousemove', ev => {
-			if (this.down.x) this.dragging = true;
+			if (x) dragging = true;
 		});
 
 		this.el.addEventListener('mousedown', ev => {
-			this.down.x = ev.pageX;
+			x = ev.pageX;
 		});
 
 		// this is all fucked ...
 		document.addEventListener('mouseup', ev => {
 			if (this.dragging) {
-				const delta = ev.pageX - this.down.x;
+				const delta = ev.pageX - down.x;
 				if (Math.abs(delta) > 10) {
 					this.callback(
 						delta > 0 ? 1 : -1, 
@@ -25,8 +26,8 @@ export class UIDragButton extends UIButton {
 					);
 				}
 			}
-			this.dragging = false;
-			this.down.x = 0;
+			dragging = false;
+			x = 0;
 		});
 	}
 }

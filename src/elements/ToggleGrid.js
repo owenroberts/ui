@@ -6,13 +6,13 @@ import { UIButton } from './Button.js';
 export class UIToggleGrid extends UICollection {
 	constructor(params) {
 		super(params);
+		
 		this.callback = params.callback;
 		this.value = params.value;
-		this.addClass('ui-collection');
 
 		const label = new UILabel({ text: params.text ?? 'Grid' });
 
-		const subCol = new UIButton({
+		const subCol = this.add(new UIButton({
 			text: '-',
 			class: 'left-end',
 			callback: () => {
@@ -21,9 +21,9 @@ export class UIToggleGrid extends UICollection {
 				}
 				this.updateGrid();
 			}
-		});
+		}));
 
-		const addCol = new UIButton({
+		const addCol = this.add(new UIButton({
 			text: '+',
 			class: 'right-end',
 			callback: () => {
@@ -32,16 +32,11 @@ export class UIToggleGrid extends UICollection {
 				}
 				this.updateGrid();
 			}
-		});
+		}));
 
-		this.grid = new UICollection({
-			// class: 'break',
+		this.grid = this.add(new UICollection({
 			id: 'sequence-grid'
-		});
-
-		this.add(subCol);
-		this.add(addCol);
-		this.add(this.grid);
+		}));
 
 		this.updateGrid();
 	}
@@ -60,13 +55,11 @@ export class UIToggleGrid extends UICollection {
 						'grid-column': `${j + 1}/${j + 1}`,
 					},
 					callback: value => {
-						// console.log(i, j, value);
 						this.value[i][j] = value;
 						this.callback(this.value);
 					}
 				});
 				this.grid.add(toggle);
-				// console.log(i, j, toggle);
 			}
 		}
 	}

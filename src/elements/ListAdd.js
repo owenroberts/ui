@@ -4,8 +4,9 @@ import { UIButton } from './Button.js';
 export class UIListAdd extends UICollection {
 	constructor(params) {
 		super(params);
+		
 		this.list = [...params.list];
-		if (params.callback) this.callback = params.callback;
+		this.callback = params.callback;
 
 		const remove = new UIButton({
 			text: 'X',

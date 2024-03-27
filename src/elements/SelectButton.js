@@ -5,27 +5,23 @@ import { UIButton } from './Button.js';
 export class UISelectButton extends UICollection {
 	constructor(params) {
 		super(params);
-		if (params.callback) this.callback = params.callback;
-		this.addClass('ui-collection');
+		
+		const callback = params.callback;
 
-
-		const select = new UISelect({
+		const select = this.append(new UISelect({
 			options: params.options,
 			callback: function() {
 				// do nothing ? to prevent error 
 			}
-		});
+		}), 'select');
 
-		const btn = new UIButton({
+		const btn = this.append(new UIButton({
 			text: "+",
 			css: { 'margin-left': '1px' },
 			callback: () => {
-				if (this.callback) this.callback(select.value);
+				callback(select.value);
 			}
-		});
-
-		this.append(select, 'select');
-		this.append(btn);
+		}));
 
 		if (params.btns) {
 			params.btns.forEach(btn => {
@@ -39,6 +35,5 @@ export class UISelectButton extends UICollection {
 				this.append(b);
 			});
 		}
-
 	}
 }

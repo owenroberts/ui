@@ -6,11 +6,12 @@ export class UIListStep extends UICollection {
 	constructor(params) {
 		super(params);
 		this.addClass('list-step');
-		this.addClass('ui-collection');
 
-		this.list = params.list;
-		this.index = params.value !== undefined ? params.list.indexOf(params.value) : 0;
-		if (params.callback) this.callback = params.callback;
+		this.list = params.list ?? [];
+		this.index = params.value !== undefined ? 
+			params.list.indexOf(params.value) : 
+			0;
+		this.callback = params.callback;
 
 		this.textInput = new UIDrag({
 			value: params.value,
@@ -22,7 +23,6 @@ export class UIListStep extends UICollection {
 				this.update(this.list[this.index]);
 			},
 			callback: value => {
-				// if (list.includes(value)) this.update(value);
 				this.update(this.value); // handle mis types on app end
 			}
 		});

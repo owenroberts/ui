@@ -1,25 +1,16 @@
 import { UICollection } from './Collection.js';
 import { UIElement } from './Element.js';
+import { KeyMixins } from './Behaviors.js';
 
 export class UIToggleCheck extends UICollection {
 	constructor(params) {
 		super(params);
+		
 		this.callback = params.callback;
-		this.addClass('ui-collection');
-
-		// console.log(params);
-		this.label = params.label;
-
-		this.check = new UIElement({
+		this.check = this.add(new UIElement({
 			tag: 'input',
 			class: 'toggle-check'
-		});
-
-		// if (params.label) {
-		// 	this.append(new UILabel({
-		// 		text: params.label,
-		// 	}));
-		// }
+		}));
 
 		this.check.el.type = 'checkbox';
 		this.check.el.checked = params.isOn || params.value || false;
@@ -28,11 +19,20 @@ export class UIToggleCheck extends UICollection {
 			this.check.el.blur();
 		});
 
-		this.el.appendChild(this.check.el);
+		if (params.key) {
+			Object.assign(this, KeyMixins);
+			this.setKey(params.key, params.label);
+		}
 	}
+
+	/* get set more consistent, maybe chance later ... */
 
 	get value() {
 		return this.check.el.checked;
+	}
+
+	set value(value) {
+		this.check.el.checked = false;
 	}
 
 	keyHandler(value) {
@@ -41,7 +41,7 @@ export class UIToggleCheck extends UICollection {
 
 	update(value) {
 		if (value === undefined) value = !this.value; // it is a toggle ...
-		this.check.el.checked = value;
+		this.value = value;
 		if (this.callback) this.callback(value);
 	}
 }
