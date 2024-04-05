@@ -1,5 +1,9 @@
 import { UICollection } from './Collection.js';
-import { Cool } from '../../../cool/cool.js';
+import { UIButton } from './Button.js';
+import { UINumberStep } from './NumberStep.js';
+import { UILabel } from './Label.js';
+import { UIModal } from './Modal.js';
+import * as Cool from '../../../cool/cool.js';
 
 export class UIGraph extends UICollection {
 	constructor(params) {

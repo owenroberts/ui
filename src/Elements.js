@@ -38,13 +38,15 @@ import { UIInputList } from './elements/InputList.js';
 import { UIListStep } from './elements/ListStep.js';
 import { UIInputSearch } from './elements/InputSearch.js';
 import { UINumberRange } from './elements/NumberRange.js';
+import { UIGraph } from './elements/Graph.js';
+
 
 // deprecated ??
 // import { UIDragButton } from './elements/DragButton.js';
 // import { UIList } from './elements/List.js';
 
 
-const Elements = { UIChance, UIText, UIToggle, UIToggleCheck, UISelect, UISelectButton, UIRow, UISection, UINumberStep, UIPanel, UIRange, UINumberList, UIModal, UINumber, UIListStep, UILabel, UIInputList, UIFile, UIElement, UIDrag, UIColor, UICollection, UIButton, UIToggleGrid, UIInputSearch, UINumberRange, UITree };
+const Elements = { UIChance, UIText, UIToggle, UIToggleCheck, UISelect, UISelectButton, UIRow, UISection, UINumberStep, UIPanel, UIRange, UINumberList, UIModal, UINumber, UIListStep, UILabel, UIInputList, UIFile, UIElement, UIDrag, UIColor, UICollection, UIButton, UIToggleGrid, UIInputSearch, UINumberRange, UITree, UIGraph };
 
 export { Elements };
 

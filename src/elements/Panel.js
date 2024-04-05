@@ -90,6 +90,10 @@ export class UIPanel extends UICollection {
 		};
 	}
 
+	isOpen() {
+		return this.open.value;
+	}
+
 	close() {
 		this.addClass('closed');
 		this.open.set(false);

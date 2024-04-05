@@ -5,6 +5,7 @@ export class UIToggle extends UIElement {
 	constructor(params) {
 		super({ ...params, tag: 'button' });
 		this.addClass(params.btnClass ?? "btn"); /* for diff types of button */
+		this.addClass('toggle');
 
 		this.callback = params.callback;
 		this.onText = params.onText ?? params.text;
