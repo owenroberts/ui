@@ -1,4 +1,6 @@
 import { UICollection } from './Collection.js';
+import { UINumber } from './Number.js';
+import { UIRange } from './Range.js';
 
 export class UINumberRange extends UICollection {
 	constructor(params) {

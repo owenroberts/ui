@@ -99,7 +99,6 @@ export function Interface(app, params) {
 		if (!panel.isPanel) panel = getPanel(panel);
 		
 		const type = params.type || getType(params.value);
-		// console.log(type);
 		const ui = new Elements[type](params);
 		panel.addRow();
 		if (!params.noLabel) { // any props not have a label ??

@@ -4,8 +4,7 @@ import { KeyMixins } from './Behaviors.js';
 export class UIToggle extends UIElement {
 	constructor(params) {
 		super({ ...params, tag: 'button' });
-		this.addClass('btn');
-		this.addClass('toggle');
+		this.addClass(params.btnClass ?? "btn"); /* for diff types of button */
 
 		this.callback = params.callback;
 		this.onText = params.onText ?? params.text;

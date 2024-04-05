@@ -6,7 +6,8 @@ export class UIElement {
 				document.createElement(params.tag || "div");
 
 		for (const prop in params.css) {
-			this.setStyle(prop, params.css[prop]);
+			// this.setStyle(prop, params.css[prop]);
+			this.el.style[prop] = params.css[prop];
 		}
 
 		if (params.id !== undefined) this.el.id = params.id;

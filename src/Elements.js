@@ -37,15 +37,14 @@ import { UINumberList } from './elements/NumberList.js';
 import { UIInputList } from './elements/InputList.js';
 import { UIListStep } from './elements/ListStep.js';
 import { UIInputSearch } from './elements/InputSearch.js';
-
+import { UINumberRange } from './elements/NumberRange.js';
 
 // deprecated ??
-// import { UINumberRange } from './elements/NumberRange.js';
 // import { UIDragButton } from './elements/DragButton.js';
 // import { UIList } from './elements/List.js';
 
 
-const Elements = { UIChance, UIText, UIToggle, UIToggleCheck, UISelect, UISelectButton, UIRow, UISection, UINumberStep, UIPanel, UIRange, UINumberList, UIModal, UINumber, UIListStep, UILabel, UIInputList, UIFile, UIElement, UIDrag, UIColor, UICollection, UIButton, UIToggleGrid, UIInputSearch, UITree };
+const Elements = { UIChance, UIText, UIToggle, UIToggleCheck, UISelect, UISelectButton, UIRow, UISection, UINumberStep, UIPanel, UIRange, UINumberList, UIModal, UINumber, UIListStep, UILabel, UIInputList, UIFile, UIElement, UIDrag, UIColor, UICollection, UIButton, UIToggleGrid, UIInputSearch, UINumberRange, UITree };
 
 export { Elements };
 

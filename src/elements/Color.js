@@ -1,8 +1,10 @@
 import { UIInput } from './Input.js';
+import { UIButton } from './Button.js';
+import { UICollection } from './Collection.js';
 
 export class UIColor extends UIInput {
 	constructor(params) {
-		super(params);
+	super(params);
 		this.el.type = "color";
 		this.colors = [];
 		this.args = params.args || [];
@@ -15,7 +17,7 @@ export class UIColor extends UIInput {
 			this.addColor(this.current);
 		});
 
-		this.palette = this.add(new UICollection());
+		this.palette = new UICollection();
 	}
 
 	addColor(color) {
