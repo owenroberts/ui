@@ -32,7 +32,7 @@ export class UIToggleCheck extends UICollection {
 	}
 
 	set value(value) {
-		this.check.el.checked = false;
+		this.check.el.checked = value;
 	}
 
 	keyHandler(value) {

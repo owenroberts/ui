@@ -53,7 +53,9 @@ export function Layout(app, params) {
 				type: 'UIToggleCheck', // remove UI eventually ??
 				value: true,
 				label: 'Timeline',
-				callback: value => { timeline.isVisible = value; }
+				callback: value => { 
+					timeline.isVisible = value;
+				}
 			},
 
 			'rightLayout': {

@@ -45,8 +45,6 @@ export class UISection extends UICollection {
 			}
 		}));
 
-		this._isVisible = true;
-
 		const sc = header.append(new UICollection({ 'class': 'scale-collection' }));
 		sc.append(new UILabel({ text: 'Scale' }));
 		this.baseFontSize = sc.append(new UINumberStep({
@@ -77,6 +75,15 @@ export class UISection extends UICollection {
 			if (settings.isVisible) this.removeClass('hidden');
 			else this.addClass('hidden');
 		}
+	}
+
+	get isVisible() {
+		return !this.hasClass('hidden');
+	}
+
+	set isVisible(value) {
+		if (!value) this.addClass('hidden');
+		else this.removeClass('hidden');
 	}
 
 	get settings() {

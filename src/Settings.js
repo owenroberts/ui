@@ -69,10 +69,9 @@ export function Settings(app, params) {
 	function load() {
 		if (localStorage[localStorageString]) {
 			const settings = JSON.parse(localStorage[localStorageString]);
-
+			loadLayout(settings.layout);
 			loadPanels(settings.panels);
 			loadInterface(settings.inteface);
-			loadLayout(settings.layout);
 
 			if (settings.quickRef) {
 				app.ui.getQuickRef().list = settings.quickRef;
@@ -113,9 +112,9 @@ export function Settings(app, params) {
 	}
 
 	function loadSettings(settings) {
+		loadLayout(settings.layout);
 		loadInterface(settings.inteface); 
 		loadPanels(settings.panels);
-		loadLayout(settings.layout);
 	}
 
 	function loadWorkspace(url) {
