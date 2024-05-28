@@ -15,7 +15,7 @@ export class UIInputSearch extends UICollection {
 		
 		function changeHandler(ev) {
 			input.el.blur();
-			params.callback(this.value);
+			if (params.callback) params.callback(this.value);
 		}
 		input.el.addEventListener('change', changeHandler);
 		

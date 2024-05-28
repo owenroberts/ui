@@ -4,12 +4,12 @@
 */
 
 import { Elements } from './Elements.js';
-const { UIModal, UIButton, UILabel, UIInputSearch, } = Elements;
+const { UIModal, UIButton, UILabel, UIInputSearch, UITree, UIRow } = Elements;
 
 export function QuickRef(app) {
 
 	const reg = []; // registered uis for reference
-	const keys = []; // list of key commands for display 
+	const keys = {}; // list of key commands for display 
 	const list = []; // list of uis added to interfaces
 	const defaultFontSize = 11;
 	let panel;
@@ -96,12 +96,7 @@ export function QuickRef(app) {
 			type: 'callback'
 		});
 
-		if (params.key) {
-			keys.push({
-				key: params.key,
-				label: `${mod} > ${label}`,
-			});
-		}
+		if (params.key) addToKeys(mod, label, params);
 	}
 
 	// lol also not DRY
@@ -113,9 +108,14 @@ export function QuickRef(app) {
 			type: 'prop'
 		});
 		
-		if (params.key) {
-			keys.push({ key: params.key, label: `${mod} > ${label}` });
-		}
+		if (params.key) addToKeys(mod, label, params);
+	}
+
+	function addToKeys(mod, label, params) {
+		// keys.push({ key: params.key, label: `${mod} > ${label}` });
+		// console.log('add', mod, label, params);
+		if (!keys[mod]) keys[mod] = [];
+		keys[mod].push({ key: params.key, label, letter: params.key.split('-').pop() });
 	}
 
 	function displayKeys() {
@@ -126,13 +126,56 @@ export function QuickRef(app) {
 			position: { x: 200, y: 120 },
 		});
 
-		for (let i = 0; i < keys.length; i++) {
-			const k = keys[i];
-			m.add(new UILabel({ 
-				text: k.key + ' --> ' + k.label, 
-				class: 'break',
-			}));
+		const keyRow = m.add(new UIRow());
+
+		console.log(keys);
+
+		const alphas = {};
+		const alphaTree = m.add(new UITree({ title: 'Alphabetical' }));
+		keyRow.add(alphaTree);
+
+		const modules = {};
+		const modTree = m.add(new UITree({ title: 'Module' }));
+		keyRow.add(modTree);
+		
+		const alphaLetters = [];
+
+		for (let mod in keys) {
+
+			if (!modules[mod]) {
+				modules[mod] = new UITree({ title: mod });
+			}
+
+			for (let i = 0; i < keys[mod].length; i++) {
+				const k = keys[mod][i];
+				if (!alphas[k.letter]) {
+
+					alphas[k.letter] = new UITree({ title: k.letter.toUpperCase() });
+					alphaLetters.push(k.letter);
+				}
+
+				const text = `${k.key} -- ${mod} > ${k.label}`;
+					
+				modules[mod].add(new UILabel({ text, class: 'key-command-label' }));
+				modules[mod].addBreak();
+
+				alphas[k.letter].add(new UILabel({ text, class: 'key-command-label' }));
+				alphas[k.letter].addBreak();
+			}
 		}
+
+		alphaLetters.sort();
+		for (let i = 0; i < alphaLetters.length; i++) {
+			const letter = alphaLetters[i];
+			alphaTree.add(alphas[letter]);
+		}
+
+		const modAlphas = Object.keys(keys).sort();
+		for (let i = 0; i < modAlphas.length; i++) {
+			modTree.add(modules[modAlphas[i]]);
+		}
+
+
 	}
 
 	function connect() {

@@ -2,6 +2,7 @@ import { UICollection } from './Collection.js';
 import { UIDrag } from './Drag.js';
 import { UIButton } from './Button.js';
 import { NumberMixins } from './Behaviors.js';
+import { KeyMixins } from './Behaviors.js';
 
 export class UINumberStep extends UICollection {
 	constructor(params) {
@@ -54,6 +55,11 @@ export class UINumberStep extends UICollection {
 				this.update(this.value + step);
 			}
 		}));
+
+		if (params.key) {
+			Object.assign(this, KeyMixins);
+			this.setKey(params.key, this.text);
+		}
 	}
 
 	keyHandler(value) {

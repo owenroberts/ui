@@ -20,6 +20,7 @@ export class UISelect extends UIElement {
 
 	set value(value) {
 		this.el.value = value;
+		this.el.selected = value;
 	}
 
 	get options() {
@@ -27,7 +28,8 @@ export class UISelect extends UIElement {
 	}
 
 	update(value) {
-		if (!this.options.includes(value)) this.addOption(value)
+		// what is this?
+		// if (!this.options.includes(value)) this.addOption(value);
 		this.value = value;
 		if (this.callback) this.callback(value);
 	}
@@ -55,9 +57,10 @@ export class UISelect extends UIElement {
 
 	setOptions(options) {
 		for (let i = 0; i < options.length; i++) {
-			const { value, text } = typeof options[i] === 'string' ?
-				{ value: options[i] } :
-				options[i];
+			const { value, text } = typeof options[i] === 'object' ?
+				options[i] : // wtf? -- this is confusing
+				{ value: options[i] } ;
+				// basically, if the optoins are all strings, make that into the value
 			if (!this.options.includes(value)) {
 				this.addOption(value, text);
 			}

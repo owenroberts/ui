@@ -61,6 +61,7 @@ export class UIModal extends UICollection {
 	add(child) {
 		this.insert(child, this.break);
 		this.adjustPosition();
+		return child;
 	}
 
 	addBreak(label) {

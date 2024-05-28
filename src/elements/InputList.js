@@ -15,6 +15,7 @@ export class UIInputList extends UICollection {
 	pushItem(value) {
 		this.list.push(value);
 		this.addItem(this.list.length - 1, value);
+		this.callback(this.list);
 	}
 
 	addItem(index, value) {

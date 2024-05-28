@@ -40,6 +40,7 @@ export function Interface(app, params) {
 		ev.preventDefault();
 
 		keys[k].keyHandler(ev.target.value);
+		// if (!keys[k].onPresss) console.log(k, keys[k]);
 		keys[k].onPress(true);
 	}
 	document.addEventListener("keydown", keyDown, false);
@@ -154,7 +155,9 @@ export function Interface(app, params) {
 		if (params.face) {
 			faces[params.face] = ui;
 			ui.ignoreSettings = true;
+			// quick.registerCallback(labelFromKey(panel.id), labelFromKey(params.face), params);
 		}
+
 		return ui;
 	}
 
