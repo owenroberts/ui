@@ -1,3 +1,6 @@
+@use "_colors" as *;
+@use "_mixins" as *;
+
 .btn {
 
 	--progress-percent: 0;
