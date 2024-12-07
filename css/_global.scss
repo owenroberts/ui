@@ -31,9 +31,10 @@ body {
 
 body.mobile { overflow: hidden; }
 
-select, input {
+select, input, button {
 	color: $text-color;
 	font-size: inherit;
+	height: 22px;
 }
 
 button:focus, 

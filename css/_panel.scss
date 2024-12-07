@@ -10,13 +10,19 @@
 	order: 0;
 
 	background-color: $bg-color;
-	border-radius: 3px;
+	&:hover {
+		background-color: darken($bg-color, 2%);
+	}
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
 
 	padding: 0.25rem;
 	overflow: hidden;
 	position: relative;
 	height: auto;
-	margin-bottom: 0.5rem;
+	// margin-bottom: 0.5rem;
+	margin-bottom: 1px;
+	min-width: 148px;
 
 	// margin: 0 0.5em 0.5em 0;
 
@@ -79,7 +85,7 @@
 
 	.btn {
 		padding: 0 0.25em;
-		margin-right: 3px;
+		// margin-right: 3px;
 		// margin-top: 0.5em;
 		transition: background-color 100ms ease-in-out;
 		// height: 1.125rem;
@@ -173,7 +179,12 @@
 				margin-left: auto;
 				font-size: 10px;
 			}
-		}	
+		}
+
+		&:last-child {
+			border-bottom-left-radius: 3px;
+			border-bottom-right-radius: 3px;
+		}
 	}
 
 	&.block .row {
@@ -183,5 +194,11 @@
 			overflow: initial;
 			margin-top: 0.5em;
 		}
+	}
+
+	.ui-collection {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 2px;
 	}
 }

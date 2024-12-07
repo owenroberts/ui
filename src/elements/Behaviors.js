@@ -68,6 +68,7 @@ const ListMixins = {
 
 		const add = this.append(new UIButton({
 			text: '+',
+			class: 'right-end',
 			callback: () => {
 				this.list.push('');
 				this.addItem(this.list.length - 1, 0);

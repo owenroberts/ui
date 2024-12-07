@@ -15,14 +15,15 @@ export class UINumberStep extends UICollection {
 		this.args = params.args; // use this ??
 		
 		const step = +params.step || 1;
-		
-		this.min = params.range ? 
-			+params.range[0] :
-			+(params.min ?? 0);
-		this.max = params.range ? 
-			+params.range[1] :
-			+(params.max ?? 1000);
 
+		if (params.range || params.min) {
+			this.min = params.range ? +params.range[0] : +(params.min);
+		}
+
+		if (params.range || params.max) {
+			this.max = params.range ? +params.range[1] : +(params.max);
+		}
+		
 		// constrain range?
 		
 		this.numberInput = new UIDrag({
