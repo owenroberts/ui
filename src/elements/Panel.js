@@ -19,8 +19,8 @@ export class UIPanel extends UICollection {
 		// header.addClass('header');
 
 		this.open = header.append(new UIToggle({
-			onText: "－",
-			offText: "＋",
+			onText: "▿",
+			offText: "▹",
 			isOn: true, // default open
 			callback: isOn => {
 				if (!isOn) this.addClass('closed');
@@ -46,7 +46,7 @@ export class UIPanel extends UICollection {
 		}));
 
 		header.append(new UIButton({
-			text: "[]",
+			text: "▢",
 			class: "block-btn",
 			callback: () =>  {
 				if (this.hasClass('block')) {
@@ -62,9 +62,11 @@ export class UIPanel extends UICollection {
 			class: "headless-btn",
 			callback: () => {
 				if (this.hasClass('headless')) {
+					this.removeClass('block');
 					this.removeClass('headless');
 				} else {
 					this.addClass('headless');
+					this.addClass('block');
 				}
 			}
 		}));

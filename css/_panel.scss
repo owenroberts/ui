@@ -56,7 +56,7 @@
 		}
 
 		.row .btn {
-			align-self: flex-end;
+			// align-self: flex-end;
 			margin-bottom: 0;
 		}
 
@@ -126,13 +126,15 @@
 			cursor: pointer;
 			font-size: 1.0625em;
 			padding: 1px;
+			color: black;
 			// align-self: baseline;
 
 			border-top: 2px solid transparent;
 			border-radius: 0;
 
 			&.on { background-color: inherit; }
-			&:hover { background: $ui-select; }
+			// &:hover { background: $ui-select; }
+			&:hover { color: white; }
 		}
 
 		.order-btn, 
@@ -141,8 +143,8 @@
 		.headless-btn {
 
 			&:hover {
-				background-color: $ui-color;
-				border-top: 2px solid $ui-select;
+				// background-color: $ui-color;
+				// border-top: 2px solid $ui-select;
 			}
 		}
 
@@ -162,13 +164,9 @@
 		border-radius: 0;
 		margin: 0;
 
-		label, .headless-btn {
-			// align-self: baseline;
-		}
-
 		.header {
 			margin-bottom: 0;
-			height: 0px;
+			height: 12px;
 			.toggle, 
 			.order-btn, 
 			.undock-btn, 
@@ -177,6 +175,10 @@
 			}
 			label {
 				margin-left: auto;
+				font-size: 10px;
+			}
+			.headless-btn {
+				margin-top: -4px;
 				font-size: 10px;
 			}
 		}
@@ -192,7 +194,7 @@
 
 		&.header {
 			overflow: initial;
-			margin-top: 0.5em;
+			// margin-top: 1em;
 		}
 	}
 

@@ -32,7 +32,7 @@ body {
 body.mobile { overflow: hidden; }
 
 select, input, button {
-	color: $text-color;
+	// color: $text-color;
 	font-size: inherit;
 	height: 22px;
 }
@@ -43,8 +43,8 @@ select:focus {
 }
 
 select {
-	vertical-align: middle;
-	height: 1.75em;
+	// vertical-align: middle;
+	// height: 1.75em;
 }
 
 #tool-tip {
