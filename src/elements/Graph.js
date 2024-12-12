@@ -38,12 +38,16 @@ export class UIGraph extends UICollection {
 
 		this.add(new UILabel({ text: 'Value count' }));
 		this.add(count);
+		this.addBreak();
 		this.add(new UILabel({ text: 'Min' }));
 		this.add(min);
+		this.addBreak();
 		this.add(new UILabel({ text: 'Max' }));
 		this.add(max);
+		this.addBreak();
 		this.add(new UILabel({ text: 'Step' }));
 		this.add(step);
+		this.addBreak();
 		this.add(editBtn);
 
 		function returnGraph() {
