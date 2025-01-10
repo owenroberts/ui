@@ -69,7 +69,7 @@ export function QuickRef(app) {
 		function callCallback(label) {
 			const ui = reg.find(e => e.label === label);
 			if (!ui) return;
-			console.log(label, ui);
+			// console.log(label, ui);
 			if (ui.type === 'prop') app.ui.faces[ui.prop].update();
 			// test other types ...
 			else ui.params.callback();
@@ -128,7 +128,7 @@ export function QuickRef(app) {
 
 		const keyRow = m.add(new UIRow());
 
-		console.log(keys);
+		// console.log(keys);
 
 		const alphas = {};
 		const alphaTree = m.add(new UITree({ title: 'Alphabetical' }));

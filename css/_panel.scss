@@ -167,19 +167,23 @@
 		.header {
 			margin-bottom: 0;
 			height: 12px;
+
 			.toggle, 
 			.order-btn, 
 			.undock-btn, 
 			.block-btn {
 				display: none;
 			}
+
 			label {
 				margin-left: auto;
 				font-size: 10px;
 			}
+
 			.headless-btn {
 				margin-top: -4px;
 				font-size: 10px;
+				display: unset;
 			}
 		}
 

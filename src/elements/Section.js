@@ -11,12 +11,10 @@ export class UISection extends UICollection {
 		super(params);
 		this.addClass('ui-section');
 
-		// id necessary ??
 		this.panels = new UICollection({ 
 			id: params.id + '-panels', 
 			class: 'panels'
 		});
-		this.panels.addBreak();
 
 		const header = this.append(new UICollection({ id: params.id + '-header', class: 'section-header' }));
 

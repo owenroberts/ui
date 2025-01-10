@@ -57,16 +57,17 @@ export class UIPanel extends UICollection {
 			}	
 		}));
 
-		header.append(new UIButton({
-			text: "<",
+		header.append(new UIToggle({
+			onText: "▿",
+			offText: "◃",
 			class: "headless-btn",
-			callback: () => {
-				if (this.hasClass('headless')) {
-					this.removeClass('block');
-					this.removeClass('headless');
-				} else {
+			callback: isOn => {
+				if (isOn) {
 					this.addClass('headless');
 					this.addClass('block');
+				} else {
+					this.removeClass('block');
+					this.removeClass('headless');
 				}
 			}
 		}));

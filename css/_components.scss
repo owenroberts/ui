@@ -80,7 +80,6 @@
 .panel .row,
 .modal,
 .section-header {
-	// label { line-height: 1.5; }\
 
 	button {
 		padding: 0 0.25em;
@@ -91,9 +90,6 @@
 	input, 
 	select {
 		white-space: nowrap;
-		// margin-right: 0.25em;
-		// margin-top: 0.25em;
-		// flex: 0 1 12%;
 		&.block {
 			flex: auto;
 			text-align: left;
@@ -154,8 +150,6 @@
 	input[type=text] {
 		border: none;
 		background-color: $ui-color;
-		// padding-right: 0.25em;
-		// height: 1.125rem;
 
 		text-align: left;
 		vertical-align: bottom;
@@ -176,7 +170,6 @@
 		&.right-end { 
 			text-align: center;
 			width: calc(var(--base-font-size) * 3 * 1px);
-			// margin: 0;
 		}
 
 		&.left-end { @include left-end; }
@@ -188,7 +181,6 @@
 	input.drag {
 		text-align: right;
 		vertical-align: bottom;
-		// line-height: 1.6;
 	}
 
 	input[type=checkbox].toggle-check {
@@ -200,11 +192,6 @@
 
 	input[type=file] {
 		flex: 100%;
-	}
-
-	.ui-collection {
-		// padding-right: 0.25em;
-		
 	}
 }
 
