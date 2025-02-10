@@ -13,14 +13,14 @@ export class UINumberStep extends UICollection {
 		this.prompt = params.prompt;
 		this.callback = params.callback;
 		this.args = params.args; // use this ??
-		
-		const step = +params.step || 1;
 
-		if (params.range || params.min) {
+		const step = +(params.step ?? 1);
+
+		if (params.hasOwnProperty('range') || params.hasOwnProperty('min')) {
 			this.min = params.range ? +params.range[0] : +(params.min);
 		}
 
-		if (params.range || params.max) {
+		if (params.hasOwnProperty('range') || params.hasOwnProperty('max')) {
 			this.max = params.range ? +params.range[1] : +(params.max);
 		}
 		
@@ -79,6 +79,7 @@ export class UINumberStep extends UICollection {
 		if (value < this.min) value = this.min;
 		if (value > this.max) value = this.max;
 		this.value = this.formatNumberInput(value);
+
 		// always set value before callback
 		if (!uiOnly) {
 			if (this.args) this.callback(value, ...this.args);

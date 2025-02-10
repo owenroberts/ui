@@ -39,7 +39,7 @@ export class UIModal extends UICollection {
 		let x = Math.max(16, params.position.x - 100);
 		let y = Math.max(16, params.position.y - 20);
 
-		console.log('modal x, y', x, y);
+		// console.log('modal x, y', x, y);
 
 		this.setStyle('left', `${x}px`);
 		this.setStyle('top', `${y}px`);

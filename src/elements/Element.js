@@ -13,6 +13,7 @@ export class UIElement {
 		if (params.id !== undefined) this.el.id = params.id;
 		if (params.class) this.addClass(params.class); // list?
 		if (params.text) this.text = params.text;
+		if (params.debug) this.debug = true;
 	}
 
 	get text() {

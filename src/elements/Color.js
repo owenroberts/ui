@@ -4,7 +4,7 @@ import { UICollection } from './Collection.js';
 
 export class UIColor extends UIInput {
 	constructor(params) {
-	super(params);
+		super(params);
 		this.el.type = "color";
 		this.colors = [];
 		this.args = params.args || [];
