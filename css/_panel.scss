@@ -1,6 +1,6 @@
 @use "_colors" as *;
 @use "_mixins" as *;
-
+@use "sass:color";
 
 .break { flex-basis: 100%; }
 .panel {
@@ -11,7 +11,8 @@
 
 	background-color: $bg-color;
 	&:hover {
-		background-color: darken($bg-color, 2%);
+		// background-color: darken($bg-color, 2%);
+		background-color: color.adjust($bg-color, $lightness: -2%);
 	}
 	border-bottom-left-radius: 3px;
 	border-bottom-right-radius: 3px;
