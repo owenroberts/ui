@@ -6,7 +6,7 @@ export class UIInput extends UIElement {
 		super({ ...params, tag: 'input' });
 		this.callback = params.callback;
 		// this.args = params.args || [];
-		if (params.value) this.value = params.value;
+		if (typeof params.value !== 'undefined') this.value = params.value;
 
 		if (params.key) {
 			Object.assign(this, KeyMixins);
