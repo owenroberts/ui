@@ -1,6 +1,6 @@
 import { UICollection } from './Collection.js';
 import { UIElement } from './Element.js';
-import * as Cool from '../../../cool/cool.js';
+import { whichKeyMap } from '../../../cool/cool.js';
 
 export class UIInputSearch extends UICollection {
 	constructor(params) {
@@ -21,7 +21,7 @@ export class UIInputSearch extends UICollection {
 		
 		if (params.onEscape) {
 			input.el.addEventListener('keydown', ev => {
-				if (Cool.keys[ev.which] === 'escape') {
+				if (whichKeyMap[ev.which] === 'escape') {
 					input.el.removeEventListener('change', changeHandler);
 					params.onEscape();
 				}

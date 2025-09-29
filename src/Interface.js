@@ -26,7 +26,7 @@ export function Interface(app, params) {
 
 	/* key commands */
 	function keyDown(ev) {
-		let k = Cool.keys[ev.which];
+		let k = Cool.whichKeyMap[ev.which];
 		if (k === "space") ev.preventDefault();
 		k = ev.shiftKey ? "shift-" + k : k;
 		k = ev.ctrlKey ? "ctrl-" + k : k;
