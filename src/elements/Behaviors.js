@@ -71,7 +71,12 @@ const ListMixins = {
 			text: '+',
 			class: 'right-end',
 			callback: () => {
-				this.list.push(this?.options[0] ?? 'New item');
+				// console.log(this);
+				if (this.options) {
+					this.list.push(this.options[0] ?? 'New item');
+				} else {
+					this.list.push('New item');
+				}
 				this.addItem(this.list.length - 1, 0);
 				this.callback(this.list);
 			}

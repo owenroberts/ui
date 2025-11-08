@@ -118,6 +118,10 @@ export class UIPanel extends UICollection {
 		this.addClass('undocked');
 	}
 
+	addBreak() {
+		this.append(new UIRow({ class: 'break' }));
+	}
+
 	addRow(k, className) {
 		const row = new UIRow({ id: k, class: className });
 		this.append(row, k);
@@ -133,6 +137,7 @@ export class UIPanel extends UICollection {
 	}
 
 	add(child, k, row) {
+		if (this.debug) console.log(child, k, row);
 		if (!row) row = this.rows[this.rows.length - 1];
 		if (!row) row = this.addRow();
 		row.append(child, k);

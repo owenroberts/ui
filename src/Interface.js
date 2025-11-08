@@ -13,6 +13,12 @@ import { QuickRef } from './QuickRef.js';
 import { Elements } from './Elements.js';
 const { UILabel, UIPanel, UIButton } = Elements;
 
+export function labelFromKey(key) {
+	let label = key[0].toUpperCase() + key.substring(1);
+	label = label.replace(/(?<=[a-z])(?=[A-Z])/g, ' ');
+	return label;
+}
+
 export function Interface(app, params) {
 
 	// turn off ipad request desktop
@@ -21,11 +27,14 @@ export function Interface(app, params) {
 	const keys = {}; // all short cut keys
 	const faces = {}; // all interfaces that need to be saved/updated -- make this all interfaces?
 	const panels = {};
+	const mousePosition = { x: 0, y: 0 };
+
 	let quick, layout, settings;
 	let currentPanel;
 
 	/* key commands */
 	function keyDown(ev) {
+
 		let k = Cool.whichKeyMap[ev.which];
 		if (k === "space") ev.preventDefault();
 		k = ev.shiftKey ? "shift-" + k : k;
@@ -44,13 +53,14 @@ export function Interface(app, params) {
 		keys[k].onPress(true);
 	}
 	document.addEventListener("keydown", keyDown, false);
-	window.ToolTip = new UILabel({ id: 'tool-tip' });
+	window.ToolTip = new UILabel({ id: 'tool-tip' }); // should be app ... 
 
-	function labelFromKey(key) {
-		let label = key[0].toUpperCase() + key.substring(1);
-		label = label.replace(/(?<=[a-z])(?=[A-Z])/g, ' ');
-		return label;
+	// track mouse for modal
+	function mouseMove(ev) {
+		mousePosition.x = ev.clientX;
+		mousePosition.y = ev.clientY;
 	}
+	document.addEventListener("mousemove", mouseMove, false);
 
 	function getType(value, type) {
 		if (typeof value === 'string') return 'UIText';
@@ -172,5 +182,5 @@ export function Interface(app, params) {
 	function getLayout() { return layout; } // getter/setter?
 	function getQuickRef() { return quick; }
 
-	return { keys, faces, panels, getLayout, getQuickRef, setup, getPanel, addCallback, addCallbacks, addProp, addProps, addUI, addUIs, labelFromKey };
+	return { keys, faces, panels, mousePosition, getLayout, getQuickRef, setup, getPanel, addCallback, addCallbacks, addProp, addProps, addUI, addUIs, labelFromKey };
 }

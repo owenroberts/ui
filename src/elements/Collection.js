@@ -11,6 +11,7 @@ export class UICollection extends UIElement {
 
 	// k is the key value in the interface object
 	append(child, k) {
+		if (this.debug) console.log('append', child);
 		if (k !== undefined) this[k] = child; // remove this ?? 
 		if (k !== undefined) this.children[k] = child;
 		this.childList.push(child);

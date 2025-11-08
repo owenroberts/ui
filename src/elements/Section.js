@@ -28,7 +28,7 @@ export class UISection extends UICollection {
 		this.append(this.panels);
 
 		const wc = header.append(new UICollection({ class: 'width-collection' }));
-		wc.append(new UILabel({ text: 'Width' }));
+		wc.append(new UILabel({ text: '⧦' }));
 		this.maxWidth = wc.append(new UINumber({
 			value: 500,
 			callback: value => {
@@ -44,7 +44,7 @@ export class UISection extends UICollection {
 		}));
 
 		const sc = header.append(new UICollection({ 'class': 'scale-collection' }));
-		sc.append(new UILabel({ text: 'Scale' }));
+		sc.append(new UILabel({ text: '◰' }));
 		this.baseFontSize = sc.append(new UINumberStep({
 			value: 11,
 			min: 10,

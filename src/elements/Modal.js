@@ -36,10 +36,9 @@ export class UIModal extends UICollection {
 		params.app.ui.keys['escape'] = cancel;
 		this.addBreak();
 
-		let x = Math.max(16, params.position.x - 100);
-		let y = Math.max(16, params.position.y - 20);
-
-		// console.log('modal x, y', x, y);
+		// see fucking stupid
+		let x = Math.max(16, params.app.ui.mousePosition.x - 100);
+		let y = Math.max(16, params.app.ui.mousePosition.y - 24);
 
 		this.setStyle('left', `${x}px`);
 		this.setStyle('top', `${y}px`);

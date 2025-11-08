@@ -48,7 +48,7 @@ export class UIInputSearch extends UICollection {
 	}
 
 	set value(value) {
-		this.input.value = value;
+		this.input.el.value = value;
 	}
 
 	addOption(value, text) {

@@ -63,7 +63,6 @@ export function QuickRef(app) {
 		const m = new UIModal({
 			title: "Quick Menu",
 			app: app,
-			position: { x: window.innerWidth / 2, y: window.innerHeight / 2 },
 		});
 
 		function callCallback(label) {
@@ -123,7 +122,6 @@ export function QuickRef(app) {
 			title: "Key Commands",
 			app: app,
 			class: 'key-command-list',
-			position: { x: 200, y: 120 },
 		});
 
 		const keyRow = m.add(new UIRow());
@@ -174,8 +172,6 @@ export function QuickRef(app) {
 		for (let i = 0; i < modAlphas.length; i++) {
 			modTree.add(modules[modAlphas[i]]);
 		}
-
-
 	}
 
 	function connect() {
@@ -183,9 +179,9 @@ export function QuickRef(app) {
 		panel = app.ui.getPanel('quick', { label: 'Quick Ref' });
 
 		app.ui.addCallbacks([
-			{ callback: open, text: "Menu", key: "ctrl-space" },
+			{ callback: open, text: "Menu", key: "q" },
 			{ callback: add, text: "+" },
-			{ callback: displayKeys, text: 'Key Commands', key: 'ctrl-,' }
+			{ callback: displayKeys, text: 'Key Commands', key: 'alt-k' }
 		]);
 
 		app.ui.addProp('quickRefScale', {
