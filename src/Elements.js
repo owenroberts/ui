@@ -7,6 +7,7 @@ import { UIButton } from './elements/Button.js';
 import { UIToggle } from './elements/Toggle.js';
 import { UISelect } from './elements/Select.js';
 import { UIFile } from './elements/File.js';
+import { UIInput } from './elements/Input.js';
 
 // toggle and file used to inherit button, some overlap but different callback styles ... 
 
@@ -38,15 +39,14 @@ import { UIInputSearch } from './elements/InputSearch.js';
 import { UINumberRange } from './elements/NumberRange.js';
 import { UIGraph } from './elements/Graph.js';
 
-
 // deprecated ??
 // import { UIDragButton } from './elements/DragButton.js';
 
 
 // why not export?? -- i think because of that goofy type thing ... 
-const Elements = { UIChance, UIText, UIToggle, UIToggleCheck, UISelect, UISelectButton, UIRow, UISection, UINumberStep, UIPanel, UIRange, UIModal, UINumber, UIInputStep, UILabel, UIFile, UIElement, UIDrag, UIColor, UICollection, UIButton, UIToggleGrid, UIInputSearch, UINumberRange, UITree, UIGraph, UIList };
+export { UIChance, UIText, UIToggle, UIToggleCheck, UISelect, UISelectButton, UIRow, UISection, UINumberStep, UIPanel, UIRange, UIModal, UINumber, UIInputStep, UILabel, UIFile, UIElement, UIDrag, UIColor, UICollection, UIButton, UIToggleGrid, UIInputSearch, UINumberRange, UITree, UIGraph, UIList, UIInput };
 
-export { Elements };
+// export { Elements };
 
 /*
 	some notes

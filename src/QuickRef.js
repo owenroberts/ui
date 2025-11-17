@@ -3,8 +3,7 @@
 	register all callbacks, props, uis with params to either run or recreate ui 
 */
 
-import { Elements } from './Elements.js';
-const { UIModal, UIButton, UILabel, UIInputSearch, UITree, UIRow } = Elements;
+import { UIModal, UIButton, UILabel, UIInputSearch, UITree, UIRow } from './UI.js';
 
 export function QuickRef(app) {
 

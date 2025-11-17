@@ -10,8 +10,8 @@
 import * as Cool from '../../cool/cool.js';
 import { Layout } from './Layout.js';
 import { QuickRef } from './QuickRef.js';
-import { Elements } from './Elements.js';
-const { UILabel, UIPanel, UIButton } = Elements;
+import { UILabel, UIPanel, UIButton } from './UI.js';
+import * as Elements from './Elements.js';
 
 export function labelFromKey(key) {
 	let label = key[0].toUpperCase() + key.substring(1);

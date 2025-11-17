@@ -3,8 +3,7 @@
 	ui is interface
 */
 
-import { Elements } from './Elements.js';
-const { UICollection, UISection } = Elements;
+import { UICollection, UISection } from './UI.js';
 
 export function Layout(app, params) {
 

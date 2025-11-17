@@ -19,5 +19,6 @@
 
 import { Interface, labelFromKey } from './Interface.js';
 import { Settings } from './Settings.js';
-import { Elements } from './Elements.js';
-export { Interface, Settings, Elements, labelFromKey };
+import { UIChance, UIText, UIToggle, UIToggleCheck, UISelect, UISelectButton, UIRow, UISection, UINumberStep, UIPanel, UIRange, UIModal, UINumber, UIInputStep, UILabel, UIFile, UIElement, UIDrag, UIColor, UICollection, UIButton, UIToggleGrid, UIInputSearch, UINumberRange, UITree, UIGraph, UIList, UIInput } from './Elements.js';
+
+export { Interface, Settings, labelFromKey, UIChance, UIText, UIToggle, UIToggleCheck, UISelect, UISelectButton, UIRow, UISection, UINumberStep, UIPanel, UIRange, UIModal, UINumber, UIInputStep, UILabel, UIFile, UIElement, UIDrag, UIColor, UICollection, UIButton, UIToggleGrid, UIInputSearch, UINumberRange, UITree, UIGraph, UIList, UIInput };
