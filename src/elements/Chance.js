@@ -25,6 +25,10 @@ export class UIChance extends UICollection {
 				this.update(this.value + this.step * change);
 			},
 			callback: value => {
+				if (!Number.isFinite(+value)) {
+					this.update(this.value);
+					return;
+				}
 				this.update(+value);
 			}
 		}));

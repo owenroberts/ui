@@ -3,24 +3,31 @@ import { UIElement } from './Element.js';
 import { UIRow } from './Row.js';
 
 export class UITree extends UICollection {
-	constructor(params) {
+	constructor(params={}) {
 		super({ ...params, tag: 'details' });
+		if (params.isOpen) this.el.open = true;
 		this.addClass('tree');
 		this.addClass('row');
 
 		const summary = this.append(new UIElement({
 			tag: 'summary',
-			text: params.title,
+			text: params.title ?? 'tree',
 		}));
 
 		this.row = this.append(new UIRow());
+		this.treeList = [];
 	}
 
 	add(child, k, addBreak) {
 		this.row.add(child); // goes in row, not el
+		this.treeList.push(child);
 		if (k !== undefined) this[k] = child;
 		if (addBreak) this.addBreak();
 		return child;
+	}
+
+	pop() {
+		this.remove(this.treeList.pop());
 	}
 
 	removeK(k) {
@@ -29,7 +36,8 @@ export class UITree extends UICollection {
 	}
 
 	remove(child) {
-		this.row.el.removeChild(ui.child);
+		// this.row.el.removeChild(ui.child); // ????
+		this.row.el.removeChild(child.el);
 	}
 
 	clear() {

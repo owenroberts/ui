@@ -2,14 +2,14 @@ import { UICollection } from './Collection.js';
 import { UIDrag } from './Drag.js';
 import { UIButton } from './Button.js';
 
-export class UIListStep extends UICollection {
+export class UIInputStep extends UICollection {
 	constructor(params) {
 		super(params);
-		this.addClass('list-step');
+		this.addClass('input-step');
 
-		this.list = params.list ?? [];
+		this.options = params.options ?? [];
 		this.index = params.value !== undefined ? 
-			params.list.indexOf(params.value) : 
+			params.options.indexOf(params.value) : 
 			0;
 		this.callback = params.callback;
 
@@ -17,10 +17,10 @@ export class UIListStep extends UICollection {
 			value: params.value,
 			class: 'left-end',
 			onDrag: value => {
-				if (this.index + value >= 0 && this.index + value < this.list.length) {
+				if (this.index + value >= 0 && this.index + value < this.options.length) {
 					this.index += value;
 				}
-				this.update(this.list[this.index]);
+				this.update(this.options[this.index]);
 			},
 			callback: value => {
 				this.update(this.value); // handle mis types on app end
@@ -32,7 +32,7 @@ export class UIListStep extends UICollection {
 			class: 'middle',
 			callback: () => {
 				if (this.index > 0) this.index -= 1;
-				this.update(this.list[this.index]);
+				this.update(this.options[this.index]);
 			}
 		});
 
@@ -40,8 +40,8 @@ export class UIListStep extends UICollection {
 			text: '▲',
 			class: 'right-end',
 			callback: () => {
-				if (this.index < this.list.length - 1) this.index += 1;
-				this.update(this.list[this.index]);
+				if (this.index < this.options.length - 1) this.index += 1;
+				this.update(this.options[this.index]);
 			}
 		});
 
@@ -51,7 +51,7 @@ export class UIListStep extends UICollection {
 	}
 
 	update(value, uiOnly) {
-		if (!this.list.includes(value)) return;
+		if (!this.options.includes(value)) return;
 		this.value = value; // always set value before callback
 		if (!uiOnly && this.callback) {
 			if (this.args) this.callback(value, ...this.args);
@@ -60,8 +60,8 @@ export class UIListStep extends UICollection {
 	}
 
 	set value(value) {
-		if (!this.list.includes(value)) return;
-		this.index = this.list.indexOf(value);
+		if (!this.options.includes(value)) return;
+		this.index = this.options.indexOf(value);
 		this.textInput.value = value;
 	}
 

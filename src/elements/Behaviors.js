@@ -4,8 +4,9 @@
 */
 
 import { UIButton } from './Button.js';
+import { UITree } from './Tree.js';
 
-const KeyMixins = {
+export const KeyMixins = {
 	setKey(key, title) {
 		// console.log('set key this', this);
 		this.title = `${ title ? title : '' } ~ ${ key }`;
@@ -33,7 +34,7 @@ const KeyMixins = {
 };
 
 // this does not need to be mixin at all ... if not this, not mixin ... 
-const NumberMixins = {
+export const NumberMixins = {
 	formatNumberInput(value) {
 		if (typeof value === 'string') {
 			if (value.match(/\D/)) {
@@ -48,56 +49,3 @@ const NumberMixins = {
 		return value;
 	}
 };
-
-const ListMixins = {
-	setup(params) {
-		
-		this.list = [...params.list];
-		this.callback = params.callback;
-		
-		const remove = this.append(new UIButton({
-			text: 'X',
-			class: 'left-end',
-			callback: () => {
-				if (this.list.length > 0) {
-					this.removeK('n' + (this.list.length - 1));
-					this.list.pop();
-				}
-				this.callback(this.list);
-			}
-		}));
-
-		const add = this.append(new UIButton({
-			text: '+',
-			class: 'right-end',
-			callback: () => {
-				// console.log(this);
-				if (this.options) {
-					this.list.push(this.options[0] ?? 'New item');
-				} else {
-					this.list.push('New item');
-				}
-				this.addItem(this.list.length - 1, 0);
-				this.callback(this.list);
-			}
-		}));
-	},
-	addItems() {
-		for (let i = 0; i < this.list.length; i++) {
-			this.addItem(i, this.list[i]);
-		}
-	},
-	set(list) {
-		for (let i = this.list.length - 1; i >= 0; i--) {
-			this.removeK('n' + i);
-		}
-
-		this.list = list;
-
-		for (let i = 0; i < this.list.length; i++) {
-			this.addItem(i, this.list[i]);
-		}
-	}
-};
-
-export { KeyMixins, NumberMixins, ListMixins };

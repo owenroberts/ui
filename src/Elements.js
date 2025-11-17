@@ -19,13 +19,13 @@ import { UIColor } from './elements/Color.js';
 import { UINumber } from './elements/Number.js';
 import { UIDrag } from './elements/Drag.js';
 
-
 // inherit UICollection -- layout elems
 import { UIPanel } from './elements/Panel.js';
 import { UIRow } from './elements/Row.js';
 import { UISection } from './elements/Section.js';
 import { UITree } from './elements/Tree.js';
 import { UIModal } from './elements/Modal.js';
+import { UIList } from './elements/List.js';
 
 // inherit UICollection -- prop elems
 import { UIChance } from './elements/Chance.js';
@@ -33,10 +33,7 @@ import { UIToggleGrid } from './elements/ToggleGrid.js';
 import { UIToggleCheck } from './elements/ToggleCheck.js';
 import { UISelectButton } from './elements/SelectButton.js';
 import { UINumberStep } from './elements/NumberStep.js';
-import { UINumberList } from './elements/NumberList.js';
-import { UIInputList } from './elements/InputList.js';
-import { UISelectList } from './elements/SelectList.js';
-import { UIListStep } from './elements/ListStep.js';
+import { UIInputStep } from './elements/InputStep.js';
 import { UIInputSearch } from './elements/InputSearch.js';
 import { UINumberRange } from './elements/NumberRange.js';
 import { UIGraph } from './elements/Graph.js';
@@ -44,10 +41,10 @@ import { UIGraph } from './elements/Graph.js';
 
 // deprecated ??
 // import { UIDragButton } from './elements/DragButton.js';
-// import { UIList } from './elements/List.js';
+
 
 // why not export?? -- i think because of that goofy type thing ... 
-const Elements = { UIChance, UIText, UIToggle, UIToggleCheck, UISelect, UISelectButton, UIRow, UISection, UINumberStep, UIPanel, UIRange, UINumberList, UIModal, UINumber, UIListStep, UILabel, UIInputList, UIFile, UIElement, UIDrag, UIColor, UICollection, UIButton, UIToggleGrid, UIInputSearch, UINumberRange, UITree, UIGraph, UISelectList };
+const Elements = { UIChance, UIText, UIToggle, UIToggleCheck, UISelect, UISelectButton, UIRow, UISection, UINumberStep, UIPanel, UIRange, UIModal, UINumber, UIInputStep, UILabel, UIFile, UIElement, UIDrag, UIColor, UICollection, UIButton, UIToggleGrid, UIInputSearch, UINumberRange, UITree, UIGraph, UIList };
 
 export { Elements };
 
