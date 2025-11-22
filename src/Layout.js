@@ -12,6 +12,7 @@ export function Layout(app, params) {
 	
 	const defaultUI = new UISection({ id: 'ui', gridArea: 'default', addPanelToSection });
 	container.append(defaultUI);
+	console.log(defaultUI)
 	
 	const timeline = new UISection({ id: 'ui-timeline', gridArea: 'timeline', addPanelToSection });
 	container.append(timeline);

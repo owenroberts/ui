@@ -78,6 +78,15 @@
 		margin-right: auto;
 	}
 
+	.list-group {
+		/*margin-top: -8px;*/
+		/*margin-left: auto;*/
+	}
+
+	.row label:has(~ .list-group) {
+		margin-right: unset;
+	}
+
 	.row {
 		margin-bottom: 0.25em;
 		display: flex;

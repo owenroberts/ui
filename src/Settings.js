@@ -16,14 +16,13 @@ export function Settings(app, params) {
 	];
 
 	function loadPanels(panels) {
-		const layout = app.ui.getLayout();
 		for (const p in panels) {
 			if (p === 'el') continue;
 			if (!app.ui.panels[p]) continue;
 			app.ui.panels[p].setup(panels[p]);
 			let panel = app.ui.panels[p];
 			let settings = panels[p];
-			layout[panel.gridArea || 'default'].panels.append(panel);
+			app.ui.layout[panel.gridArea || 'default'].panels.append(panel);
 		}
 	}
 
@@ -38,7 +37,7 @@ export function Settings(app, params) {
 
 	function loadLayout(layout) {
 		for (const section in layout) {
-			app.ui.getLayout()[section].load(layout[section]);
+			app.ui.layout[section].load(layout[section]);
 		}
 	}
 
@@ -74,7 +73,7 @@ export function Settings(app, params) {
 			loadInterface(settings.inteface);
 
 			if (settings.quickRef) {
-				app.ui.getQuickRef().list = settings.quickRef;
+				app.ui.quick.list = settings.quickRef;
 				settings.quickRef.forEach(ref => {
 					// app.ui.createUI(ref, ref.mod, ref.sub, app.ui.panels.quickRef);
 					console.log(ref);

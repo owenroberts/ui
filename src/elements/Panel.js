@@ -1,42 +1,31 @@
-import { UICollection } from './Collection.js';
-import { UIRow } from './Row.js';
-import { UIToggle } from './Toggle.js';
-import { UILabel } from './Label.js';
-import { UIButton } from './Button.js';
+import * as Elements from '../Elements.js';
 
-export class UIPanel extends UICollection {
+export class UIPanel extends Elements.UICollection {
 	constructor(params) {
 		super({ ...params, id: `${params.id}-panel` });
+		this.ui = params.ui;
 		this.id = params.id;
 		this.isPanel = true;
 		this.addClass("panel");
 		this.addClass("undocked");
 		this.gridArea = "default";
+
+		// this.ui.addPanel(this);
 		
 		this.rows = [];
 
-		const header = this.append(new UIRow({ class: "header" }));
+		const header = this.append(new Elements.UIRow({ class: "header" }));
 		// header.addClass('header');
 
-		this.open = header.append(new UIToggle({
-			onText: "▿",
-			offText: "▹",
-			isOn: true, // default open
-			callback: isOn => {
-				if (!isOn) this.addClass('closed');
-				else this.removeClass('closed');
-			}
-		}));
+		header.append(new Elements.UILabel({ text: params.label ?? params.id }));
 
-		header.append(new UILabel({ text: params.label }));
-
-		header.append(new UIButton({
+		header.append(new Elements.UIButton({
 			text: 'X',
 			class: 'undock-btn',
 			callback: () => { this.undock(); },
 		}));
 
-		this.orderBtn = header.append(new UIButton({
+		this.orderBtn = header.append(new Elements.UIButton({
 			text: this.order || "0",
 			class: "order-btn",
 			callback: () => {
@@ -45,19 +34,7 @@ export class UIPanel extends UICollection {
 			}
 		}));
 
-		header.append(new UIButton({
-			text: "▢",
-			class: "block-btn",
-			callback: () =>  {
-				if (this.hasClass('block')) {
-					this.removeClass('block');
-				} else {
-					this.addClass('block');
-				}
-			}	
-		}));
-
-		header.append(new UIToggle({
+		header.append(new Elements.UIToggle({
 			onText: "▿",
 			offText: "◃",
 			class: "headless-btn",
@@ -119,12 +96,13 @@ export class UIPanel extends UICollection {
 	}
 
 	addBreak() {
-		this.append(new UIRow({ class: 'break' }));
+		this.addRow({ class: 'break' });
+		this.addRow();
 	}
 
-	addRow(k, className) {
-		const row = new UIRow({ id: k, class: className });
-		this.append(row, k);
+	addRow(params={}) {
+		const row = new Elements.UIRow({ id: params.id, class: params.class });
+		this.append(row, params.id);
 		this.rows.push(row);
 		return row;
 	}
@@ -134,6 +112,20 @@ export class UIPanel extends UICollection {
 		this.rows.splice(index, 1);
 		this.remove(row);
 		return row;
+	}
+
+	addRef(params) {
+		if (!params.noRow) this.addRow();
+		const type = params.type ?? this.ui.getUIType(params);
+		const id = params.id ?? params.ref;
+		const ui = new Elements[type](params);
+		this.add(new Elements.UILabel({ text: params.label ?? id }));
+		this.add(ui, id);
+		if (params.key) this.ui.keys[params.key] = ui;
+		if (!params.ignore) {
+			this.ui.faces[id] = ui; // or just loop through children later?
+		}
+		return ui;
 	}
 
 	add(child, k, row) {

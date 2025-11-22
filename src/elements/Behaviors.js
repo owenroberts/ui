@@ -3,9 +3,6 @@
 	need to be things that aren't in base types (element, collection) but are in different inheritence trees
 */
 
-import { UIButton } from './Button.js';
-import { UITree } from './Tree.js';
-
 export const KeyMixins = {
 	setKey(key, title) {
 		// console.log('set key this', this);

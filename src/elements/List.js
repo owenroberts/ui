@@ -6,34 +6,38 @@ export class UIList extends UICollection {
 	constructor(params) {
 		super(params);
 
-		// clone? maybe change if doing pass by ref later
-		this.list = [...params.list];
+		this.obj = params.obj;
+		this.ref = params.ref;		
+		this.callback = params.callback;
+
+		this.list = params.list ?? params.obj[params.ref];
 		this.options = params.options ?? []; // maybe better default
 		this.itemClass = params.itemClass ?? UIInput;
 		if (params.class) this.addClass(params.class);
-		this.callback = params.callback;
+
+		const listGroup = this.add(new UICollection({ class: 'list-group' }));
 
 		// add or append ??
-		this.append(new UIButton({
+		listGroup.add(new UIButton({
 			text: 'x',
 			class: 'left-end',
 			callback: () => {
 				this.set([]);
-				this.callback(this.list);
+				this.update();
 			}
 		}));
 
-		this.append(new UIButton({
+		listGroup.add(new UIButton({
 			text: '*',
 			class: 'middle',
 			callback: () => {
 				if (this.options.length === 0) return;
 				this.set([...this.options]);
-				this.callback(this.list);
+				this.update();
 			}
 		}));
 
-		this.append(new UIButton({
+		listGroup.add(new UIButton({
 			text: '-',
 			class: 'middle',
 			callback: () => {
@@ -41,23 +45,27 @@ export class UIList extends UICollection {
 					this.tree.pop();
 					this.list.pop();
 				}
-				this.callback(this.list);
+				this.update();
 			}
 		}));
 
-		this.append(new UIButton({
+		listGroup.add(new UIButton({
 			text: '+',
 			class: 'right-end',
 			callback: () => {
 				this.addItem(this.options?.[0] ?? 0);
-				this.callback(this.list);
+				this.update();
 			}
 		}));
 
 		this.addBreak();
 		this.tree = this.add(new UITree({ title: "Items", isOpen: true }));
-
 		this.addItemUIs();
+	}
+
+	update() {
+		if (this.callback) this.callback(this.list);
+		if (this.obj && this.ref) this.obj[this.ref] = this.list;
 	}
 
 	set(list) {
@@ -74,7 +82,7 @@ export class UIList extends UICollection {
 	addItem(value) {
 		this.list.push(value);
 		this.addItemUI(this.list.length - 1, value);
-		this.callback(this.list);
+		this.update();
 	}
 
 	addItemUI(index, value) {
@@ -83,7 +91,7 @@ export class UIList extends UICollection {
 			options: this.options,
 			callback: value => {
 				this.list[index] = value;
-				this.callback(this.list);
+				this.update();
 			}
 		}), 'n' + index );
 	}

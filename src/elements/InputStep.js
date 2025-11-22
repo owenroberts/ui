@@ -7,65 +7,52 @@ export class UIInputStep extends UICollection {
 		super(params);
 		this.addClass('input-step');
 
+		this.obj = params.obj;
+		this.ref = params.ref;
 		this.options = params.options ?? [];
-		this.index = params.value !== undefined ? 
-			params.options.indexOf(params.value) : 
-			0;
+		this.index = params.options.indexOf(this.obj[this.ref]); 
 		this.callback = params.callback;
 
-		this.textInput = new UIDrag({
-			value: params.value,
+		this.textInput = this.add(new UIDrag({
+			value: this.options[this.index],
 			class: 'left-end',
 			onDrag: value => {
-				if (this.index + value >= 0 && this.index + value < this.options.length) {
-					this.index += value;
-				}
-				this.update(this.options[this.index]);
+				if (this.index + value < 0) return;
+				if (this.index + value > this.options.length) return;
+				this.index += value;
+				this.update();
 			},
 			callback: value => {
-				this.update(this.value); // handle mis types on app end
+				this.update();
+				// this.update(this.value); // handle mis types on app end
 			}
-		});
+		}));
 
-		const stepDown = new UIButton({
+		this.add(this.textInput);
+
+		this.add(new UIButton({
 			text: '▼',
 			class: 'middle',
 			callback: () => {
-				if (this.index > 0) this.index -= 1;
-				this.update(this.options[this.index]);
+				if (this.index === 0) return; 
+				this.index -= 1;
+				this.update();
 			}
-		});
+		}));
 
-		const stepUp = new UIButton({
+		this.add(new UIButton({
 			text: '▲',
 			class: 'right-end',
 			callback: () => {
-				if (this.index < this.options.length - 1) this.index += 1;
-				this.update(this.options[this.index]);
+				if (this.index === this.options.length - 1) return; 
+				this.index += 1;
+				this.update();
 			}
-		});
-
-		this.append(this.textInput);
-		this.append(stepDown);
-		this.append(stepUp);
+		}));
 	}
 
-	update(value, uiOnly) {
-		if (!this.options.includes(value)) return;
-		this.value = value; // always set value before callback
-		if (!uiOnly && this.callback) {
-			if (this.args) this.callback(value, ...this.args);
-			else this.callback(value);
-		}
-	}
-
-	set value(value) {
-		if (!this.options.includes(value)) return;
-		this.index = this.options.indexOf(value);
-		this.textInput.value = value;
-	}
-
-	get value() {
-		return this.textInput.value;
+	update() {
+		this.obj[this.ref] = this.options[this.index];
+		this.textInput.value = this.options[this.index];
 	}
 }
