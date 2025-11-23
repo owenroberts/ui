@@ -29,14 +29,13 @@ export class UIModal extends UICollection {
 			text: "x",
 			key: "escape", // have to add keyHandler ... 
 			callback: ev => {
-				this.clear();
 				if (params.onClear) params.onClear();
+				this.clear();
 			}
 		}));
 		params.app.ui.keys['escape'] = cancel;
 		this.addBreak();
 
-		// see fucking stupid
 		let x = Math.max(16, params.app.ui.mousePosition.x - 100);
 		let y = Math.max(16, params.app.ui.mousePosition.y - 24);
 

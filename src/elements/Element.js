@@ -24,21 +24,13 @@ export class UIElement {
 		this.el.textContent = value;
 	}
 
-	// idk ... 
-	get title() {
-		return this.el.title;
-	}
-
-	set title(value) {
-		this.el.title = value;
-	}
-
-	// set value(_value) {
-	// 	this.el.value = _value;
+	// idk ... why ... 
+	// get title() {
+	// 	return this.el.title;
 	// }
 
-	// get value() {
-	// 	return this.el.value;
+	// set title(value) {
+	// 	this.el.title = value;
 	// }
 
 	get position() {

@@ -1,5 +1,5 @@
 import { assert } from '../../../cool/cool.js';
-import { UICollection, UIInput, UIInputStep, UINumberStep, UISelect, UIButton, UITree } from '../UI.js';
+import { UICollection, UIInput, UIInputStep, UINumberStep, UISelect, UIButton, UITree } from '../oi.js';
 
 export class UIList extends UICollection {
 	

@@ -8,10 +8,16 @@
 */
 
 import { mobilecheck, whichKeyMap } from '../../cool/cool.js';
-import { Layout } from './Layout.js';
-import { QuickRef } from './QuickRef.js';
-import { UILabel, UIPanel, UIButton } from './UI.js';
-import * as Elements from './Elements.js';
+import { Layout } from './layout.js';
+import { Settings } from './settings.js';
+import { QuickMenu } from './quick.js';
+import { UILabel, UIPanel, UIButton } from './elements.js';
+import * as Elements from './elements.js';
+
+import { LayoutPanel } from './panels/layout-panel.js';
+import { SettingsPanel } from './panels/settings-panel.js';
+import { WorkspacesPanel } from './panels/workspaces-panel.js';
+import { QuickPanel } from './panels/quick-panel.js';
 
 // move to cool.js? or oi/helpers?
 export function labelFromKey(key) {
@@ -19,6 +25,20 @@ export function labelFromKey(key) {
 	label = label.replace(/(?<=[a-z])(?=[A-Z])/g, ' ');
 	return label;
 }
+
+export function getUIType(params) {
+	const value = params.value ?? params.obj[params.ref]
+	// options is either select or steppers
+	if (params.options) {
+		if (typeof value[0] === 'string') return 'UISelect';
+	} else {
+		if (typeof value === 'string') return 'UIText';
+		if (typeof value === 'number') return 'UINumberStep';
+		if (typeof value === 'boolean') return 'UIToggleCheck';
+		if (Array.isArray(value)) return 'UIList';
+	}
+}
+
 
 export class Interface {
 
@@ -32,10 +52,18 @@ export class Interface {
 		this.panels = {};
 		this.mousePosition = { x: 0, y: 0 };
 
-		window.ToolTip = new UILabel({ id: 'tool-tip' }); // should be app ... 
+		this.toolTip = new UILabel({ id: 'tool-tip' }); // should be app ... 
 		this.layout = new Layout(app, params);
-		this.layout.default.append(window.ToolTip);
-		this.quick = new QuickRef(app);
+		this.layout.default.append(this.toolTip);
+
+		this.quick = new QuickMenu(app);
+		this.settings = new Settings(this, params.settings);
+		
+		this.addPanel(new LayoutPanel({ ui: this }));
+		this.addPanel(new SettingsPanel({ ui: this }));
+		this.addPanel(new WorkspacesPanel({ ui: this }));
+		this.addPanel(new QuickPanel({ ui: this }));
+
 		// this.layout.connect();
 		// this.quick.connect();
 
@@ -70,7 +98,7 @@ export class Interface {
 		ev.preventDefault();
 
 		this.keys[k].keyHandler(ev.target.value);
-		this.keys[k].onPress(true);
+		this.onKeyPress(this.keys[k], true);
 	}
 
 	getType(value, type) {
@@ -90,6 +118,34 @@ export class Interface {
 			if (typeof value === 'boolean') return 'UIToggleCheck';
 			if (Array.isArray(value)) return 'UIList';
 		}
+	}
+
+	addKey(key, ui) {
+		this.keys[key] = ui;
+		ui.el.title = `${ ui.text ?? ui.ref ?? ui.id } ~ ${ key }`;
+		ui.el.addEventListener('mouseenter', () => { 
+			this.onKeyPress(ui, false);
+		});
+		ui.el.addEventListener('mouseleave', () => {
+			this.onKeyRelease(ui); 
+		});
+	}
+
+	onKeyPress(ui, triggerRelease) {
+		ui.addClass('triggered');
+		this.toolTip.text = `${ ui.el.title }`;
+		this.toolTip.addClass('visible');
+		
+		if (triggerRelease === true) {
+			setTimeout(() => { 
+				this.onKeyRelease(ui); 
+			}, 400);
+		}
+	}
+
+	onKeyRelease(ui) {
+		ui.removeClass('triggered');
+		this.toolTip.removeClass('visible');
 	}
 
 	getPanel(key, params={}) {

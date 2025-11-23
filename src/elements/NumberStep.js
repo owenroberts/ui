@@ -2,7 +2,6 @@ import { UICollection } from './Collection.js';
 import { UIDrag } from './Drag.js';
 import { UIButton } from './Button.js';
 import { NumberMixins } from './Behaviors.js';
-import { KeyMixins } from './Behaviors.js';
 
 export class UINumberStep extends UICollection {
 	constructor(params) {
@@ -13,7 +12,8 @@ export class UINumberStep extends UICollection {
 		this.obj = params.obj;
 		this.ref = params.ref;
 		this.prompt = params.prompt;
-		this.callback = params.callback;
+		// this.callback = params.callback;
+		this.onChange = params.onChange;
 		this.value = params.value ?? this.obj[this.ref];
 
 		const step = +(params.step ?? 1);
@@ -63,11 +63,6 @@ export class UINumberStep extends UICollection {
 				this.update(this.value + step);
 			}
 		}));
-
-		if (params.key) {
-			Object.assign(this, KeyMixins);
-			this.setKey(params.key, this.text);
-		}
 	}
 
 	keyHandler(value) {
@@ -92,6 +87,6 @@ export class UINumberStep extends UICollection {
 		this.value = this.formatNumberInput(value);
 		this.numberInput.value = this.value;
 		if (this.obj && this.ref) this.obj[this.ref] = this.value;
-		if (this.callback) this.callback(this.value);
+		if (this.onUpdate) this.onUpdate(this.value);
 	}
 }

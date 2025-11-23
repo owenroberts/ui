@@ -1,5 +1,4 @@
 import { UIElement } from './Element.js';
-import { KeyMixins } from './Behaviors.js';
 
 export class UIFile extends UIElement {
 	constructor(params) {
@@ -14,11 +13,6 @@ export class UIFile extends UIElement {
 		this.el.addEventListener('click', () => {
 			this.keyHandler();
 		});
-
-		if (params.key) {
-			Object.assign(this, KeyMixins);
-			this.setKey(params.key, this.text);
-		}
 	}
 
 	/* bc button doesn't have an update func */

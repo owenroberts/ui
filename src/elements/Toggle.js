@@ -1,5 +1,4 @@
 import { UIElement } from './Element.js';
-import { KeyMixins } from './Behaviors.js';
 
 export class UIToggle extends UIElement {
 	constructor(params) {
@@ -19,11 +18,6 @@ export class UIToggle extends UIElement {
 		this.el.addEventListener('click', () => {
 			this.keyHandler();
 		});
-
-		if (params.key) {
-			Object.assign(this, KeyMixins);
-			this.setKey(params.key, this.text);
-		}
 	}
 
 	update(isOn, uiOnly) {

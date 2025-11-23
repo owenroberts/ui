@@ -1,17 +1,17 @@
-import * as Elements from '../Elements.js';
+import * as Elements from '../elements.js';
+import { getUIType } from '../interface.js';
 
 export class UIPanel extends Elements.UICollection {
 	constructor(params) {
 		super({ ...params, id: `${params.id}-panel` });
+		
 		this.ui = params.ui;
+		
 		this.id = params.id;
 		this.isPanel = true;
 		this.addClass("panel");
 		this.addClass("undocked");
 		this.gridArea = "default";
-
-		// this.ui.addPanel(this);
-		
 		this.rows = [];
 
 		const header = this.append(new Elements.UIRow({ class: "header" }));
@@ -61,26 +61,11 @@ export class UIPanel extends Elements.UICollection {
 
 	get settings() {
 		return {
-			open: this.open.value,
 			docked: !this.hasClass('undocked'),
-			block: this.hasClass('block'),
 			headless: this.hasClass('headless'),
 			order: this.order,
 			gridArea: this.gridArea,
 		};
-	}
-
-	isOpen() {
-		return this.open.value;
-	}
-
-	close() {
-		this.addClass('closed');
-		this.open.set(false);
-	}
-
-	block() {
-		this.addClass('block');
 	}
 
 	headless() {
@@ -93,6 +78,14 @@ export class UIPanel extends Elements.UICollection {
 
 	undock() {
 		this.addClass('undocked');
+	}
+
+	setup(settings) {
+		if (settings.docked) this.dock();
+		else this.undock();
+		if (settings.headless) this.headless();
+		this.order = settings.order;
+		this.gridArea = settings.gridArea;
 	}
 
 	addBreak() {
@@ -116,15 +109,27 @@ export class UIPanel extends Elements.UICollection {
 
 	addRef(params) {
 		if (!params.noRow) this.addRow();
-		const type = params.type ?? this.ui.getUIType(params);
+		const type = params.type ?? getUIType(params);
 		const id = params.id ?? params.ref;
 		const ui = new Elements[type](params);
 		this.add(new Elements.UILabel({ text: params.label ?? id }));
 		this.add(ui, id);
-		if (params.key) this.ui.keys[params.key] = ui;
-		if (!params.ignore) {
-			this.ui.faces[id] = ui; // or just loop through children later?
+		if (params.key) {
+			// this.ui.keys[params.key] = ui;
+			this.ui.addKey(params.key, ui);
 		}
+		if (!params.ignoreSettings) {
+			this.ui.faces[params.face ?? id] = ui;
+		}
+		this.ui.quick.register(ui, this.id, params);
+		return ui;
+	}
+
+	addButton(params) {
+		if (params.addRow) this.addRow();
+		const ui = this.add(new Elements.UIButton(params));
+		if (params.key) this.ui.addKey(params.key, ui, params);
+		this.ui.quick.register(ui, this.id, params);
 		return ui;
 	}
 
@@ -134,18 +139,5 @@ export class UIPanel extends Elements.UICollection {
 		if (!row) row = this.addRow();
 		row.append(child, k);
 		return child;
-	}
-
-	setup(settings) {
-		if (settings.docked) this.dock();
-		else this.undock();
-		
-		if (!settings.open) this.close();
-		
-		if (settings.block) this.block();
-		if (settings.headless) this.headless();
-		
-		this.order = settings.order;
-		this.gridArea = settings.gridArea;
 	}
 }

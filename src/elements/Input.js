@@ -1,5 +1,4 @@
 import { UIElement } from './Element.js';
-import { KeyMixins } from './Behaviors.js';
 
 export class UIInput extends UIElement {
 	constructor(params) {
@@ -15,11 +14,8 @@ export class UIInput extends UIElement {
 
 		this.callback = params.callback;
 		// this.args = params.args || [];
-		if (typeof params.value !== 'undefined') this.value = params.value;
-
-		if (params.key) {
-			Object.assign(this, KeyMixins);
-			this.setKey(params.key, params.label);
+		if (typeof params.value !== 'undefined') {
+			this.value = params.value;
 		}
 	}
 
