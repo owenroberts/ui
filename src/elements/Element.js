@@ -12,8 +12,14 @@ export class UIElement {
 
 		if (params.id !== undefined) this.el.id = params.id;
 		if (params.class) this.addClass(params.class); // list?
-		if (params.text) this.text = params.text;
+		// if (params.class === 'order-btn') console.log(params.hasOwnProperty("text"), params.text);
+		if (params.hasOwnProperty("text")) this.text = params.text;
+		// if (params.class === 'order-btn') console.log(this.text);
 		if (params.debug) this.debug = true;
+	}
+
+	setText(value) {
+		this.el.textContent = value;
 	}
 
 	get text() {
@@ -33,6 +39,7 @@ export class UIElement {
 	// 	this.el.title = value;
 	// }
 
+	// deprecate?
 	get position() {
 		return { x: this.el.getBoundingClientRect().x, y: this.el.getBoundingClientRect().y };
 	}
@@ -59,5 +66,17 @@ export class UIElement {
 
 	remove() {
 		this.el.remove();
+	}
+
+	add(child) {
+		this.el.appendChild(child.el);
+		return child;
+	}
+
+	clear() {
+		while (this.el.firstChild) {
+			this.el.firstChild.value = null; /* prevent blur event */
+			this.el.removeChild(this.el.firstChild);
+		}
 	}
 }

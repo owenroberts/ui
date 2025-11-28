@@ -26,11 +26,11 @@ export class UIPanel extends Elements.UICollection {
 		}));
 
 		this.orderBtn = header.append(new Elements.UIButton({
-			text: this.order || "0",
+			text: this.order ?? "0",
 			class: "order-btn",
 			callback: () => {
 				this.order = +this.el.style.order + 1;
-				this.orderBtn.text = this.order;
+				this.orderBtn.setText(this.order);
 			}
 		}));
 
@@ -55,7 +55,7 @@ export class UIPanel extends Elements.UICollection {
 	}
 
 	set order(n) {
-		this.orderBtn.text = n || "0";
+		this.orderBtn.setText(n ?? "0");
 		this.el.style.order = n;
 	}
 
@@ -66,6 +66,10 @@ export class UIPanel extends Elements.UICollection {
 			order: this.order,
 			gridArea: this.gridArea,
 		};
+	}
+
+	isOpen() {
+		return !this.hasClass('undocked');
 	}
 
 	headless() {
@@ -90,11 +94,11 @@ export class UIPanel extends Elements.UICollection {
 
 	addBreak() {
 		this.addRow({ class: 'break' });
-		this.addRow();
+		// this.addRow();
 	}
 
 	addRow(params={}) {
-		const row = new Elements.UIRow({ id: params.id, class: params.class });
+		const row = new Elements.UIRow(params);
 		this.append(row, params.id);
 		this.rows.push(row);
 		return row;
@@ -118,9 +122,8 @@ export class UIPanel extends Elements.UICollection {
 			// this.ui.keys[params.key] = ui;
 			this.ui.addKey(params.key, ui);
 		}
-		if (!params.ignoreSettings) {
-			this.ui.faces[params.face ?? id] = ui;
-		}
+		this.ui.faces[params.face ?? id] = ui;
+		if (params.ignoreSettings) ui.ignoreSettings = true;
 		this.ui.quick.register(ui, this.id, params);
 		return ui;
 	}
@@ -137,6 +140,7 @@ export class UIPanel extends Elements.UICollection {
 		if (this.debug) console.log(child, k, row);
 		if (!row) row = this.rows[this.rows.length - 1];
 		if (!row) row = this.addRow();
+		if (k) this.children[k] = child;
 		row.append(child, k);
 		return child;
 	}

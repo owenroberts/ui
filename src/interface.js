@@ -133,7 +133,7 @@ export class Interface {
 
 	onKeyPress(ui, triggerRelease) {
 		ui.addClass('triggered');
-		this.toolTip.text = `${ ui.el.title }`;
+		this.toolTip.setText(`${ ui.el.title }`);
 		this.toolTip.addClass('visible');
 		
 		if (triggerRelease === true) {

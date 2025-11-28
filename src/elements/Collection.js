@@ -71,10 +71,12 @@ export class UICollection extends UIElement {
 		return this.children[k]; 
 	}
 	
+	// need this?
 	getChildren() { 
 		return this.childList; 
 	}
 
+	// need this?
 	get uiList() {
 		return this.childList;
 	}

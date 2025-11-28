@@ -7,8 +7,10 @@ export class UIToggleGrid extends UICollection {
 	constructor(params) {
 		super(params);
 		
+		this.obj = params.obj;
+		this.ref = params.ref;
 		this.callback = params.callback;
-		this.value = params.value;
+		this.value = params.value ?? this.obj[this.ref];
 
 		const label = new UILabel({ text: params.text ?? 'Grid' });
 
@@ -19,7 +21,7 @@ export class UIToggleGrid extends UICollection {
 				for (let i = 0; i < this.value.length; i++) {
 					this.value[i].pop();
 				}
-				this.updateGrid();
+				this.update();
 			}
 		}));
 
@@ -30,7 +32,7 @@ export class UIToggleGrid extends UICollection {
 				for (let i = 0; i < this.value.length; i++) {
 					this.value[i].push(true);
 				}
-				this.updateGrid();
+				this.update();
 			}
 		}));
 
@@ -38,10 +40,10 @@ export class UIToggleGrid extends UICollection {
 			id: 'sequence-grid'
 		}));
 
-		this.updateGrid();
+		this.display();
 	}
 
-	updateGrid() {
+	display() {
 		this.grid.clear();
 		this.grid.setStyle('--rows', this.value.length);
 		this.grid.setStyle('--cols', this.value[0].length);
@@ -56,7 +58,7 @@ export class UIToggleGrid extends UICollection {
 					},
 					callback: value => {
 						this.value[i][j] = value;
-						this.callback(this.value);
+						this.update(this.value);
 					}
 				});
 				this.grid.add(toggle);
@@ -65,7 +67,9 @@ export class UIToggleGrid extends UICollection {
 	}
 
 	update(value) {
-		this.value = value;
-		this.updateGrid();
+		if (value) this.value = value;
+		if (this.obj && this.ref) this.obj[this.ref] = this.value;
+		if (this.callback) this.callback(this.value);
+		this.display();
 	}
 }

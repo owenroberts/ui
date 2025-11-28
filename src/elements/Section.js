@@ -33,7 +33,7 @@ export class UISection extends UICollection {
 
 		const wc = header.append(new UICollection({ class: 'width-collection' }));
 		wc.append(new UILabel({ text: '⧦' }));
-		this.maxWidth = wc.append(new UINumber({
+		this.maxWidth = wc.append(new UINumberStep({
 			value: 500,
 			callback: value => {
 				this.setStyle('--max-width', value);

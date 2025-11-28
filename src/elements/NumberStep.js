@@ -12,8 +12,8 @@ export class UINumberStep extends UICollection {
 		this.obj = params.obj;
 		this.ref = params.ref;
 		this.prompt = params.prompt;
-		// this.callback = params.callback;
-		this.onChange = params.onChange;
+		this.callback = params.callback;
+		// this.onChange = params.onChange;
 		this.value = params.value ?? this.obj[this.ref];
 
 		const step = +(params.step ?? 1);
@@ -65,8 +65,8 @@ export class UINumberStep extends UICollection {
 		}));
 	}
 
-	keyHandler(value) {
-		this.update(this.formatNumberInput(prompt(this.prompt)));
+	keyHandler() {
+		this.update(prompt(this.prompt));
 	}
 
 	update(value, uiOnly) {
@@ -87,6 +87,6 @@ export class UINumberStep extends UICollection {
 		this.value = this.formatNumberInput(value);
 		this.numberInput.value = this.value;
 		if (this.obj && this.ref) this.obj[this.ref] = this.value;
-		if (this.onUpdate) this.onUpdate(this.value);
+		if (this.callback) this.callback(this.value);
 	}
 }

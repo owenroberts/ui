@@ -21,11 +21,8 @@
 	overflow: hidden;
 	position: relative;
 	height: auto;
-	// margin-bottom: 0.5rem;
 	margin-bottom: 1px;
 	min-width: 152px;
-
-	// margin: 0 0.5em 0.5em 0;
 
 	& .break-line,
 	& .break-line-up {
@@ -47,28 +44,7 @@
 	}
 
 	&.block {
-		min-width: 100%;
-		max-width: unset;
-		width: max-content;
-		display: flex;
-		flex-wrap: wrap;
-
-		&.headless .row {
-			flex-wrap: nowrap;
-		}
-
-		.row .btn {
-			// align-self: flex-end;
-			margin-bottom: 0;
-		}
-
-		&.closed {
-			order: -2 !important;
-		}
-
-		.row label {
-			margin-right: 3px;
-		}
+		
 	}
 
 	.row label:first-child,
@@ -174,7 +150,24 @@
 		padding: 0 3px;
 		border-radius: 0;
 		margin: 0;
+		min-width: 100%;
 		max-width: unset;
+		width: max-content;
+		display: flex;
+		flex-wrap: wrap;
+
+		.row {
+			flex-wrap: nowrap;
+			margin-right: 3px;
+		}
+
+		.row .btn {
+			margin-bottom: 0;
+		}
+
+		.row label {
+			margin-right: 3px;
+		}
 
 		.header {
 			margin-bottom: 0;
@@ -189,6 +182,7 @@
 
 			label {
 				margin-left: auto;
+				margin-right: unset;
 				font-size: 10px;
 			}
 

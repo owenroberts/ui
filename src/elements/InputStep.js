@@ -10,7 +10,14 @@ export class UIInputStep extends UICollection {
 		this.obj = params.obj;
 		this.ref = params.ref;
 		this.options = params.options ?? [];
-		this.index = params.options.indexOf(this.obj[this.ref]); 
+
+		this.index = 0;
+		if (this.obj && this.ref) {
+			this.index = params.options.indexOf(this.obj[this.ref]);			
+		} else if (params.value) {
+			this.index = params.options.indexOf(params.value);			
+		} 
+
 		this.callback = params.callback;
 
 		this.textInput = this.add(new UIDrag({
@@ -51,8 +58,19 @@ export class UIInputStep extends UICollection {
 		}));
 	}
 
+	get value() {
+		return this.textInput.value;
+	}
+
+	set value(value) {
+		if (this.obj && this.ref) this.obj[this.ref] = value;
+		this.textInput.value = value;
+		if (this.callback) this.callback(value);
+	}
+
 	update() {
-		this.obj[this.ref] = this.options[this.index];
+		if (this.obj && this.ref) this.obj[this.ref] = this.options[this.index];
 		this.textInput.value = this.options[this.index];
+		if (this.callback) this.callback(this.value);
 	}
 }
