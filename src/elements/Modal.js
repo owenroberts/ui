@@ -11,33 +11,34 @@ export class UIModal extends UICollection {
 		this.append(new UILabel({ text: params.title }));
 
 		// better way to do this ?? 
-		document.getElementById('container').appendChild(this.el);
+		params.ui.container.append(this);
 		
 		this.break = this.append(new UIElement({ class: 'break' }));
 
 		const submit = this.append(new UIButton({
 			text: "Submit",
-			key: 'enter',
+			key: "enter",
 			callback: () => {
 				if (params.callback) params.callback();
 				this.clear();
 			}
 		}));
-		params.app.ui.keys['enter'] = submit; /* not modular ... */
+		params.ui.addKey("enter", submit);
 
 		const cancel = this.append(new UIButton({
 			text: "x",
 			key: "escape", // have to add keyHandler ... 
+			title: "close modal",
 			callback: ev => {
 				if (params.onClear) params.onClear();
 				this.clear();
 			}
 		}));
-		params.app.ui.keys['escape'] = cancel;
+		params.ui.addKey("escape", cancel);
 		this.addBreak();
 
-		let x = Math.max(16, params.app.ui.mousePosition.x - 100);
-		let y = Math.max(16, params.app.ui.mousePosition.y - 24);
+		let x = Math.max(16, params.ui.mousePosition.x - 100);
+		let y = Math.max(16, params.ui.mousePosition.y - 24);
 
 		this.setStyle('left', `${x}px`);
 		this.setStyle('top', `${y}px`);

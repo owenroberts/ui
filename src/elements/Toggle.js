@@ -1,3 +1,4 @@
+import { assert } from '../../../cool/cool.js';
 import { UIElement } from './Element.js';
 
 export class UIToggle extends UIElement {
@@ -6,61 +7,42 @@ export class UIToggle extends UIElement {
 		this.addClass(params.btnClass ?? "btn"); /* for diff types of button */
 		this.addClass('toggle');
 
+		this.obj = params.obj;
+		this.ref = params.ref;
 		this.callback = params.callback;
 		this.onText = params.onText ?? params.text;
 		this.offText = params.offText ?? params.text;
-		this.isOn = params.isOn ?? params.value ?? false;
-		if (this.isOn) this.on();
+		this.value = params.value ?? false;
 
-		// why super??
-		super.text = this.isOn ? this.onText : this.offText;
-
+		this.display();
 		this.el.addEventListener('click', () => {
-			this.keyHandler();
+			this.toggle();
 		});
 	}
 
-	update(isOn, uiOnly) {
-		if (isOn !== this.isOn) {
-			if (this.isOn === undefined) this.isOn = isOn;
-			if (!uiOnly) this.callback(isOn);
-			this.set(isOn);
-		}
+	update(value, uiOnly) {
+		assert(typeof value === "boolean", `UIToggle expects boolean value, got ${value}`);
+		this.value = value ?? this.value;
+		if (this.callback) this.callback(this.value);
+		if (this.obj && this.ref) this.obj[this.ref] = this.value;
+		this.display();
 	}
 
 	keyHandler() {
-		// key press/click is a toggle
-		this.set(!this.isOn);
-		this.callback(this.isOn);
+		this.toggle();
 	}
 
-	set(isOn) {
-		this.isOn = isOn;
-		if (isOn) this.on();
-		else this.off();
+	display() {
+		if (this.value) {
+			this.text = this.onText;
+			this.addClass('on');
+		} else {
+			this.text = this.offText;
+			this.removeClass('on');
+		}
 	}
-
+	
 	toggle() {
-		this.isOn = !this.isOn;
-		if (this.isOn) this.on();
-		else this.off();
-	}
-
-	on() {
-		this.text = this.onText;
-		this.addClass('on');
-	}
-
-	off() {
-		this.text = this.offText;
-		this.removeClass('on');
-	}
-
-	get value() {
-		return this.isOn;
-	}
-
-	set value(value) {
-		this.set(value);
+		this.update(!this.value);
 	}
 }

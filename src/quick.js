@@ -21,7 +21,7 @@ export class QuickMenu {
 
 		const m = new UIModal({
 			title: "Quick Menu",
-			app: this.app,
+			ui: this.app.ui,
 			onClear: () => {
 				this.isOpen = false;
 			}
@@ -31,8 +31,14 @@ export class QuickMenu {
 			listName: 'quick-menu-list',
 			options: this.reg.map(e => e.label),
 			callback: value => {
-				const { ui, params } = this.reg.find(e => e.label === value);
-				
+				const reg = this.reg.find(e => e.label === value);
+				if (!reg) {
+					input.focus();
+					return;
+				}
+
+				const { ui, params } = reg;
+
 				if (addQuickUI) {
 					this.app.ui.panels.quick.addUI(params);
 					return;

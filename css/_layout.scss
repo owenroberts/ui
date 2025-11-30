@@ -2,52 +2,18 @@
 @use "_mixins" as *;
 
 #container {
-
 	margin: 1rem;
-	display: grid;
-	grid-gap: 1em;
-	grid-template-areas:
-		'ui main'
-		'timeline timeline';
-	// justify-content: space-between;
-
-	#main { text-align: right; }
-
-	&.RL {
-		grid-template-areas:
-			'main ui'
-			'timeline timeline';
-		#main { text-align: left; }
-	}
-
-	&.UP {
-		grid-template-areas:
-			'timeline timeline'
-			'ui main';
-	}
-
-	&.UP.RL {
-		grid-template-areas:
-			'timeline timeline'
-			'main ui';
-	}
-
-	#ui { grid-area: ui; }
-	#main { grid-area: main; }
-	#ui-timeline { grid-area: timeline }
-	
-	.ui-section {
-		min-width: 120px;
-		--max-width: 500;
-
-		&.max-width {
-			min-width: calc(var(--max-width) * 1px);
-			// width: calc(var(--max-width) * 1px);
-		}
-	}
+	display: flex;
+	gap: 1px;
+	flex-wrap: wrap;
 }
 
-.ui-section {
+.section {
+
+	--width: 100;
+	width: calc(var(--width) * 1% - 1px);
+	order: 0;
+
 	.section-header {
 		background: $border-color;
 		border-top-right-radius: 0.5em;
@@ -69,9 +35,14 @@
 				}
 			}
 		}
+
+		.section-collection {
+			margin-left: auto;
+		}
 	}
 
-	&.hidden {
+	&.hidden .panel {
+		// visibility: collapse;
 		display: none;
 	}
 }

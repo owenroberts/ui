@@ -12,7 +12,7 @@ export class UICollection extends UIElement {
 	// k is the key value in the interface object
 	append(child, k) {
 		if (this.debug) console.log('append', child);
-		if (k !== undefined) this[k] = child; // remove this ?? 
+		// if (k !== undefined) this[k] = child; // remove this ?? 
 		if (k !== undefined) this.children[k] = child;
 		this.childList.push(child);
 		this.el.appendChild(child.el);
@@ -37,8 +37,8 @@ export class UICollection extends UIElement {
 	}
 
 	remove(child, k) {
-		if (k) delete this[k];
-		if (k) delete children[k];
+		// if (k) delete this[k];
+		if (k) delete this.children[k];
 		const removeIndex = this.childList.indexOf(child);
 		this.childList.splice(removeIndex, 1);
 		this.el.removeChild(child.el);
@@ -46,9 +46,10 @@ export class UICollection extends UIElement {
 	}
 
 	removeK(k) {
-		this.el.removeChild(this.children[k].el);
-		delete this[k];
-		delete this.children[k];
+		// this.el.removeChild(this.children[k].el);
+		// delete this[k];
+		// delete this.children[k];
+		return this.remove(this.children[k], k);
 	}
 
 	clear() {
@@ -64,7 +65,7 @@ export class UICollection extends UIElement {
 	pop() {
 		const child = this.childList.pop();
 		if (!child) return;
-		return remove(child);
+		return this.remove(child);
 	}
 
 	getChild(k) { 

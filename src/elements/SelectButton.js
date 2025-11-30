@@ -8,12 +8,12 @@ export class UISelectButton extends UICollection {
 		
 		const callback = params.callback;
 
-		const select = this.append(new UISelect({
+		this.select = this.append(new UISelect({
 			options: params.options,
 			callback: function() {
 				// do nothing ? to prevent error 
 			}
-		}), 'select');
+		}));
 
 		const btn = this.append(new UIButton({
 			text: "+",

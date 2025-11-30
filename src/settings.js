@@ -4,7 +4,6 @@
 export class Settings {
 
 	constructor(ui, params) {
-		console.log(params.name)
 		
 		this.ui = ui;
 		this.workspaces = params.workspaces ?? [];
@@ -25,9 +24,6 @@ export class Settings {
 			if (p === 'el') continue;
 			if (!this.ui.panels[p]) continue;
 			this.ui.panels[p].setup(panels[p]);
-			let panel = this.ui.panels[p];
-			let settings = panels[p];
-			this.ui.layout[panel.gridArea || 'default'].panels.append(panel);
 		}
 	}
 
@@ -40,9 +36,15 @@ export class Settings {
 		}
 	}
 
-	loadLayout(layout) {
-		for (const section in layout) {
-			this.ui.layout[section].load(layout[section]);
+	loadSections(sections={}) {
+		if (Object.keys(sections).length === 0) {
+			// add default section
+			this.ui.addSection('default');
+		} else {
+			for (const k in sections) {
+				this.ui.addSection(k);
+				this.ui.sections[k].setup(sections[k]);
+			}
 		}
 	}
 
@@ -50,7 +52,8 @@ export class Settings {
 		const settings = {
 			faces: {},
 			panels: {},
-			layout: this.ui.layout.getSettings(),
+			// layout: this.ui.layout.getSettings(),
+			sections: {},
 			quick: this.ui.quick.list,
 		};
 
@@ -65,7 +68,11 @@ export class Settings {
 		}
 		
 		for (const p in this.ui.panels) {
-			settings.panels[p] = this.ui.panels[p].settings;
+			settings.panels[p] = this.ui.panels[p].getSettings();
+		}
+
+		for (const k in this.ui.sections) {
+			settings.sections[k] = this.ui.sections[k].getSettings();
 		}
 
 		localStorage[this.localStorageString] = JSON.stringify(settings);
@@ -74,7 +81,9 @@ export class Settings {
 	load() {
 		if (localStorage[this.localStorageString]) {
 			const settings = JSON.parse(localStorage[this.localStorageString]);
-			this.loadLayout(settings.layout);
+			// this.loadLayout(settings.layout);
+			// 
+			this.loadSections(settings.sections);
 			this.loadPanels(settings.panels);
 			this.loadFaces(settings.faces);
 
@@ -112,6 +121,7 @@ export class Settings {
 		const jsonFile = JSON.stringify({ 
 			panels: savedSettings.panels, 
 			layout: savedSettings.layout,
+			sections: savedSettings.sections,
 			faces: facesSettings,
 		});
 		
@@ -122,13 +132,18 @@ export class Settings {
 
 	// prob need better name for this ... 
 	loadSettings(settings) {
-		this.loadLayout(settings.layout);
+		// this.loadLayout(settings.layout);
+		this.loadSections(settings.sections);
 		this.loadFaces(settings.faces); 
 		this.loadPanels(settings.panels);
 	}
 
 	loadWorkspace(url) {
-		if (url.hasOwnProperty('interface')) {
+
+		// need to clear sections first ... 
+
+		console.log(url);
+		if (url?.hasOwnProperty('interface')) {
 			this.loadSettings(url);
 		} else if (url) {
 			// load default file
@@ -141,12 +156,13 @@ export class Settings {
 			const openFile = document.createElement('input');
 			openFile.type = "file";
 			openFile.click();
-			openFile.onchange = function() {
+			openFile.onchange = () => {
 				for (let i = 0, f; f = openFile.files[i]; i++) {
 					if (!f.type.match('application/json')) continue;
 					const reader = new FileReader();
-					reader.onload = (function(theFile) {
-						return function(e) {
+					reader.onload = ((theFile) => {
+						return (e) => {
+							console.log(this);
 							this.loadSettings(JSON.parse(e.target.result))
 						}
 					})(f);

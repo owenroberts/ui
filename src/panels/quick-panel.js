@@ -13,7 +13,7 @@ export class QuickPanel extends UIPanel {
 			ref: 'fontSize',
 			reset: true, // ??
 			range: [10, 40],
-			onUpdate: value => {
+			callback: value => {
 				document.body.style.setProperty('--quick-ref-font-size', +value);
 			}
 		});

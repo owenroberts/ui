@@ -8,13 +8,11 @@
 */
 
 import { mobilecheck, whichKeyMap } from '../../cool/cool.js';
-import { Layout } from './layout.js';
 import { Settings } from './settings.js';
 import { QuickMenu } from './quick.js';
-import { UILabel, UIPanel, UIButton } from './elements.js';
+import { UILabel, UIPanel, UIButton, UICollection, UISection } from './elements.js';
 import * as Elements from './elements.js';
 
-import { LayoutPanel } from './panels/layout-panel.js';
 import { SettingsPanel } from './panels/settings-panel.js';
 import { WorkspacesPanel } from './panels/workspaces-panel.js';
 import { QuickPanel } from './panels/quick-panel.js';
@@ -52,14 +50,17 @@ export class Interface {
 		this.panels = {};
 		this.mousePosition = { x: 0, y: 0 };
 
+		this.container = new UICollection({ id: 'container' });
+		this.sections = {}; // new layout, just sections
+
 		this.toolTip = new UILabel({ id: 'tool-tip' }); // should be app ... 
-		this.layout = new Layout(app, params);
-		this.layout.default.append(this.toolTip);
+		this.container.append(this.toolTip);
+		// this.layout = new Layout(app, params);
 
 		this.quick = new QuickMenu(app);
 		this.settings = new Settings(this, params.settings);
 		
-		this.addPanel(new LayoutPanel({ ui: this }));
+		// this.addPanel(new LayoutPanel({ ui: this }));
 		this.addPanel(new SettingsPanel({ ui: this }));
 		this.addPanel(new WorkspacesPanel({ ui: this }));
 		this.addPanel(new QuickPanel({ ui: this }));
@@ -91,12 +92,14 @@ export class Interface {
 		k = ev.altKey ? "alt-" + k : k;
 
 		if (!k || !this.keys[k]) return;
-		if (document.activeElement.type === "text") return;
-		if (document.activeElement.type === "number") return;
+
+		if (k !== "escape") {
+			if (document.activeElement.type === "text") return;
+			if (document.activeElement.type === "number") return;
+		}
 		if (ev.metaKey) return;
 		
 		ev.preventDefault();
-
 		this.keys[k].keyHandler(ev.target.value);
 		this.onKeyPress(this.keys[k], true);
 	}
@@ -159,10 +162,36 @@ export class Interface {
 		return panel;
 	}
 
+	addSection(key, params={}) {
+		if (!key) return;
+		if (this.sections[key]) return;
+		
+		this.sections[key] = this.container.add(new UISection({
+			label: key,
+			id: `${key}-section`, 
+			ui: this,
+		}));
+		this.sections[key].addSelectorOptions(Object.keys(this.panels));
+	}
+
+	removeSection(key, ui) {
+		if (Object.keys(this.sections).length === 1) return;
+		this.container.remove(ui);
+		delete this.sections[key];
+	}
+
+	addSectionPanelOption(key, label) {
+		for (const k in this.sections) {
+			// name this add panel option?
+			this.sections[k].addSelectorOption(key, label);
+		}
+	}
+
 	addPanel(panel) {
 		const label = labelFromKey(panel.id);
 		this.panels[panel.id] = panel;
-		this.layout.addSelectOption(panel.id, label);
+		this.addSectionPanelOption(panel.id, label);
+		// this.layout.addSelectOption(panel.id, label);
 		return panel;
 	}
 

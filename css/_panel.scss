@@ -4,9 +4,7 @@
 
 .break { flex-basis: 100%; }
 .panel {
-	flex-basis: 12em;
 	flex-grow: 1;
-	max-width: 20em;
 	order: 0;
 
 	background-color: $bg-color;
@@ -22,7 +20,8 @@
 	position: relative;
 	height: auto;
 	margin-bottom: 1px;
-	min-width: 152px;
+	min-width: 140px;
+	max-width: 240px;
 
 	& .break-line,
 	& .break-line-up {
@@ -38,14 +37,6 @@
 	}
 
 	&.undocked { display: none !important; }
-	&.closed { 
-		height: 25px; 
-		order: -1 !important;
-	}
-
-	&.block {
-		
-	}
 
 	.row label:first-child,
 	.row .break + label,
@@ -88,6 +79,7 @@
 	.header {
 		flex-wrap: nowrap;
 		flex-basis: 100%;
+
 		label {  font-size: 1.0625em; }
 		span, label { 
 			margin-top: 0; 
@@ -96,48 +88,20 @@
 
 		.undock-btn {
 			align-self: flex-start;
-			margin-left: auto;
 		}
 
 		.order-btn {
+			margin-left: auto;
 			align-self: flex-start;
 		}
 
 		.toggle,
 		.order-btn,
 		.undock-btn,
-		.block-btn,
 		.headless-btn {
-			background-color: transparent;
-			display: inline-block;
-			cursor: pointer;
-			font-size: 1.0625em;
-			padding: 1px;
-			color: black;
-			// align-self: baseline;
-
-			border-top: 2px solid transparent;
-			border-radius: 0;
-
 			&.on { background-color: inherit; }
 			// &:hover { background: $ui-select; }
 			&:hover { color: white; }
-		}
-
-		.order-btn, 
-		.undock-btn, 
-		.block-btn, 
-		.headless-btn {
-
-			&:hover {
-				// background-color: $ui-color;
-				// border-top: 2px solid $ui-select;
-			}
-		}
-
-		.block-btn {
-			align-self: flex-start;
-			font-size: 1em;
 		}
 
 		.headless-btn.btn {
@@ -159,6 +123,9 @@
 		.row {
 			flex-wrap: nowrap;
 			margin-right: 3px;
+			@include horizontal-scroll;
+
+			&.header { overflow: initial; }
 		}
 
 		.row .btn {
@@ -172,6 +139,8 @@
 		.header {
 			margin-bottom: 0;
 			height: 12px;
+			margin-right: 0;
+			align-items: unset;
 
 			.toggle, 
 			.order-btn, 
@@ -187,24 +156,15 @@
 			}
 
 			.headless-btn {
-				margin-top: -4px;
-				font-size: 10px;
 				display: unset;
+				padding: 0;
+				align-self: center;
 			}
 		}
 
 		&:last-child {
 			border-bottom-left-radius: 3px;
 			border-bottom-right-radius: 3px;
-		}
-	}
-
-	&.block .row {
-		@include horizontal-scroll;
-
-		&.header {
-			overflow: initial;
-			// margin-top: 1em;
 		}
 	}
 

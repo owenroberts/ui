@@ -1,55 +1,42 @@
-import { UICollection } from './Collection.js';
-import { UIElement } from './Element.js';
-import { UISelectButton } from './SelectButton.js';
-import { UILabel } from './Label.js';
-import { UINumber } from './Number.js';
-import { UINumberStep } from './NumberStep.js';
-import { UIToggleCheck } from './ToggleCheck.js';
+import { UICollection, UIElement, UISelectButton, UILabel, UINumber, UINumberStep, UIToggleCheck, UIToggle, UIButton } from '../oi.js'; 
 
 export class UISection extends UICollection {
 	constructor(params) {
 		super(params);
-		this.addClass('ui-section');
-		this.gridArea = params.gridArea;
 
-		this.panels = new UICollection({ 
+		this.ui = params.ui;
+		this.label = params.label;
+		this.addClass('section');
+
+		const header = this.add(new UICollection({ id: params.id + '-header', class: 'section-header' }));
+
+		header.add(new UILabel({ text: params.label }));
+
+		this.panels = this.add(new UICollection({ 
 			id: params.id + '-panels', 
 			class: 'panels'
-		});
-
-		const header = this.append(new UICollection({ id: params.id + '-header', class: 'section-header' }));
-
-		this.selector = header.append(new UISelectButton({ 
-			class: 'selector',
-			callback: value => {
-				const panel = params.app.ui.panels[value];
-				this.panels.add(panel);
-				panel.gridArea = this.gridArea;
-				panel.dock();
-			}
 		}));
 		
-		this.append(this.panels);
-
-		const wc = header.append(new UICollection({ class: 'width-collection' }));
-		wc.append(new UILabel({ text: '⧦' }));
-		this.maxWidth = wc.append(new UINumberStep({
-			value: 500,
+		this.selector = header.add(new UISelectButton({ 
+			class: 'selector',
+			callback: value => { this.addPanel(value); }
+		}));
+		
+		const wc = header.add(new UICollection({ class: 'width-collection' }));
+		wc.add(new UILabel({ text: '⧦' }));
+		this.widthInput = wc.add(new UINumberStep({
+			value: 100,
+			min: 25,
+			max: 100,
 			callback: value => {
-				this.setStyle('--max-width', value);
+				// this.setStyle('--max-width', value);
+				this.setStyle("--width", value);
 			}
 		}));
 
-		this.maxWidthToggle = wc.append(new UIToggleCheck({
-			callback: value => {
-				if (value) this.addClass('max-width');
-				else this.removeClass('max-width');
-			}
-		}));
-
-		const sc = header.append(new UICollection({ 'class': 'scale-collection' }));
-		sc.append(new UILabel({ text: '◰' }));
-		this.baseFontSize = sc.append(new UINumberStep({
+		const sc = header.add(new UICollection({ 'class': 'scale-collection' }));
+		sc.add(new UILabel({ text: '◰' }));
+		this.baseFontSize = sc.add(new UINumberStep({
 			value: 11,
 			min: 10,
 			max: 40,
@@ -57,12 +44,50 @@ export class UISection extends UICollection {
 				this.panels.setStyle('--ui-scale', +value);
 			}
 		}));
+
+		const ui = header.add(new UICollection({ "class": "section-collection"}));
+
+		this.order = ui.add(new UINumberStep({
+			value: 0,
+			callback: value => {
+				this.setStyle("order", value);
+			}
+		}));
+
+		this.isVisibleToggle = ui.add(new UIToggle({
+			onText: "◉",
+			offText: "◎",
+			class: "left-end",
+			callback: value => {
+				if (value) {
+					this.removeClass("hidden");
+				} else {
+					this.addClass("hidden");
+				}
+			}
+		}));
+
+		ui.add(new UIButton({
+			text: "X",
+			class: "middle",
+			callback: () => {
+				this.ui.removeSection(params.label, this);
+			},
+		}));
+
+		ui.add(new UIButton({
+			text: "+",
+			class: "right-end",
+			callback: () => {
+				this.ui.addSection(prompt("Section name?"));
+			},
+		}));
 	}
 
 	addSelectorOptions(panelList) {
 		panelList.forEach(p => {
-			const [option, label] = p;
-			this.selector.select.addOption(option, label);
+			// const [option, label] = p;
+			this.selector.select.addOption(p, p);
 		});
 	}
 
@@ -70,30 +95,34 @@ export class UISection extends UICollection {
 		this.selector.select.addOption(key, label);
 	}
 
-	load(settings) {
-		this.maxWidth.update(settings.maxWidth);
-		this.maxWidthToggle.update(settings.maxWidthToggle);
-		if (settings.isVisible !== undefined) {
-			if (settings.isVisible) this.removeClass('hidden');
-			else this.addClass('hidden');
+	addPanel(panelName) {
+		const panel = this.ui.panels[panelName];
+		panel.section = this.label;
+		this.panels.add(panel, panelName);
+	}
+
+	removePanel(panelName) {
+		this.panels.removeK(panelName);
+	}
+
+	setup(settings) {
+		this.widthInput.update(settings.width);
+		this.baseFontSize.update(settings.baseFontSize);
+		this.isVisibleToggle.update(settings.isVisible ?? true);
+		this.order.update(settings.order ?? 0);
+
+		for (let i = 0; i < settings.panelList.length; i++) {
+			this.addPanel(settings.panelList[i]);
 		}
 	}
 
-	get isVisible() {
-		return !this.hasClass('hidden');
-	}
-
-	set isVisible(value) {
-		if (!value) this.addClass('hidden');
-		else this.removeClass('hidden');
-	}
-
-	get settings() {
+	getSettings() {
 		return {
-			maxWidthToggle: this.maxWidthToggle.value,
-			maxWidth: this.maxWidth.value,
+			width: this.widthInput.value,
 			isVisible: !this.hasClass('hidden'),
 			baseFontSize: this.baseFontSize.value,
+			order: this.order.value,
+			panelList: Object.keys(this.panels.children),
 		}
 	}
 }

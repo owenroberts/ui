@@ -16,13 +16,7 @@ export class UIText extends UIInput {
 		/* have to hit enter to confirm value */
 		this.el.addEventListener('keyup', ev => {
 			if (ev.which == 13) {
-				// this.update(ev.target.value);
-				
-				if (this.obj && this.ref) {
-					this.obj[this.ref] = ev.target.value;
-					this.value = ev.target.value;
-				}
-
+				this.update(ev.target.value);
 				this.el.blur();
 			}
 		});
@@ -32,11 +26,7 @@ export class UIText extends UIInput {
 				this.el.placeholder = this.placeholder;
 				this.el.value = '';
 			} else if (this.value != ev.target.value && ev.target.value) {
-				// this.update(ev.target.value);
-				if (this.obj && this.ref) {
-					this.obj[this.ref] = ev.target.value;
-					this.value = ev.target.value;
-				}
+				this.update(ev.target.value);
 			}
 		});
 	}
@@ -47,6 +37,7 @@ export class UIText extends UIInput {
 
 	update(value, uiOnly) {
 		this.value = value; // always set value before callback
+		if (this.obj && this.ref) this.obj[this.ref] = this.value;
 		if (this.callback && !uiOnly) this.callback(value);
 		
 		// this.el.blur(); // keep going back and forth on this??

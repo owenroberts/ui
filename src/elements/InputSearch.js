@@ -33,8 +33,8 @@ export class UIInputSearch extends UICollection {
 			id: params.listName
 		});
 
-		this.append(input, 'input');
-		this.append(list, 'list');
+		this.input = this.append(input);
+		this.list = this.append(list);
 		this.setOptions(params.options || []);
 		if (params.selected) this.value = params.selected;
 	}

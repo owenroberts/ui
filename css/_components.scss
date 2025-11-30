@@ -207,7 +207,8 @@
 }
 
 /* toggle */
-.on { background-color: $ui-select; }
+.toggle { background-color: $ui-select; }
+.on { background-color: $ui-color; }
 
 .modal {
 	position: fixed;

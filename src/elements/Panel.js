@@ -5,91 +5,56 @@ export class UIPanel extends Elements.UICollection {
 	constructor(params) {
 		super({ ...params, id: `${params.id}-panel` });
 		
-		this.ui = params.ui;
-		
+		this.ui = params.ui;		
 		this.id = params.id;
-		this.isPanel = true;
 		this.addClass("panel");
-		this.addClass("undocked");
-		this.gridArea = "default";
 		this.rows = [];
 
 		const header = this.append(new Elements.UIRow({ class: "header" }));
-		// header.addClass('header');
 
-		header.append(new Elements.UILabel({ text: params.label ?? params.id }));
+		header.add(new Elements.UILabel({ text: params.label ?? params.id }));
 
-		header.append(new Elements.UIButton({
-			text: 'X',
-			class: 'undock-btn',
-			callback: () => { this.undock(); },
-		}));
-
-		this.orderBtn = header.append(new Elements.UIButton({
-			text: this.order ?? "0",
+		this.order = header.add(new Elements.UINumberStep({
+			value: 0,
 			class: "order-btn",
-			callback: () => {
-				this.order = +this.el.style.order + 1;
-				this.orderBtn.setText(this.order);
+			callback: value => {
+				this.setStyle("order", value);
 			}
 		}));
 
-		header.append(new Elements.UIToggle({
+		header.add(new Elements.UIButton({
+			text: 'X',
+			class: 'undock-btn',
+			callback: () => {
+				console.log(this.id);
+				this.ui.sections[this.section].panels.removeK(this.id);
+			},
+		}));
+
+		this.headlessToggle = header.add(new Elements.UIToggle({
 			onText: "▿",
 			offText: "◃",
 			class: "headless-btn",
-			callback: isOn => {
-				if (isOn) {
+			callback: value => {
+				if (value) {
 					this.addClass('headless');
-					this.addClass('block');
 				} else {
-					this.removeClass('block');
 					this.removeClass('headless');
 				}
 			}
 		}));
 	}
-	
-	get order() {
-		return this.el.style.order;
-	}
 
-	set order(n) {
-		this.orderBtn.setText(n ?? "0");
-		this.el.style.order = n;
-	}
-
-	get settings() {
+	getSettings() {
 		return {
-			docked: !this.hasClass('undocked'),
 			headless: this.hasClass('headless'),
-			order: this.order,
-			gridArea: this.gridArea,
+			order: this.order.value,
 		};
 	}
 
-	isOpen() {
-		return !this.hasClass('undocked');
-	}
-
-	headless() {
-		this.addClass('headless');
-	}
-
-	dock() {
-		this.removeClass('undocked');
-	}
-
-	undock() {
-		this.addClass('undocked');
-	}
-
 	setup(settings) {
-		if (settings.docked) this.dock();
-		else this.undock();
-		if (settings.headless) this.headless();
-		this.order = settings.order;
-		this.gridArea = settings.gridArea;
+		this.headlessToggle.update(settings.headless ?? false);
+		this.order.update(settings.order ?? 0);
 	}
 
 	addBreak() {
