@@ -1,39 +1,54 @@
-import { UIInput } from './Input.js';
+import { UICollection } from './Collection.js';
+import { UIDrag } from './Drag.js';
+import { UILabel } from './Label.js';
 
-export class UIRange extends UIInput {
+export class UIRange extends UICollection {
 	constructor(params) {
 		super(params);
-		this.el.type = "range";
+		this.addClass('value-bg');
+
+		this.obj = params.obj;
+		this.ref = params.ref;
+		this.callback = params.callback;
+
+		this.value = params.value ?? this.obj?.[this.ref] ?? 0;
 		
-		const [min, max] = params.range ? 
-			[...params.range] : 
-			[params.min, params.max];
-		this.setRange(min, max);
+		this.min = params.min ?? 0;
+		this.max = params.max ?? 1;
+		this.step = params.step ?? 0.1;
+		this.total = this.max - this.min;
+
+		this.drag = this.append(new UIDrag({
+			value: this.value,
+			onDrag: change => {
+				// this.update(this.value + this.step * change * 10); // why?
+				this.update(this.value + this.step * change);
+			},
+			callback: value => {
+				if (!Number.isFinite(+value)) {
+					this.update(this.value);
+					return;
+				}
+				this.update(+value);
+			}
+		}));
+
+		this.updateStyle();
+	}
+
+	updateStyle() {
+		const pct = Math.round((this.value - this.min) / this.total * 100);
+		this.setStyle('--value-percent', pct);
+	}
+
+	update(value, uiOnly) {
+		if (value < this.min) value = this.min;
+		if (value > this.max) value = this.max;
+		this.value = +value.toFixed(3);
+		this.drag.value = this.value;
+		this.updateStyle()
 		
-		this.el.value = params.value || params.min;
-		if (params.step) this.setStep(params.step);
-
-		this.el.addEventListener(params.event ?? 'input', ev => {
-			this.update(ev.target.value);
-		});
-	}
-
-	keyHandler(value) {
-		this.update(+prompt(this.prompt));
-	}
-
-	update(value) {
-		this.el.value = value;
-		this.el.blur();
-		this.callback(value);
-	}
-
-	setRange(min, max) {
-		this.el.min = min;
-		this.el.max = max;	
-	}
-
-	setStep(step) {
-		this.el.step = step;
+		if (this.obj && this.ref) this.obj[this.ref] = this.value;
+		if (this.callback) this.callback(value);
 	}
 }

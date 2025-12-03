@@ -3,13 +3,17 @@ import { UIElement } from './Element.js';
 export class UISelect extends UIElement {
 	constructor(params) {
 		super({ ...params, tag: 'select' });
-		if (params.callback) this.callback = params.callback;
+		
+		this.obj = params.obj;
+		this.ref = params.ref;
+		this.callback = params.callback;
+		
+		this.value = params.value ?? this.obj?.[this.ref] ?? 0;
+		
 		this.setOptions(params.options ?? []);
-		if (params.selected) this.value = params.selected;
-		if (params.value) this.value = params.value;
 		
 		this.el.addEventListener('change', ev => {
-			if (params.callback) params.callback(ev.target.value);
+			this.update(ev.target.value);
 			ev.target.blur();
 		});
 	}
@@ -28,10 +32,9 @@ export class UISelect extends UIElement {
 	}
 
 	update(value) {
-		// what is this?
-		// if (!this.options.includes(value)) this.addOption(value);
 		this.value = value;
-		if (this.callback) this.callback(value);
+		if (this.callback) this.callback(this.value);
+		if (this.obj && this.ref) this.obj[this.ref] = this.value;
 	}
 
 	clearOptions() {

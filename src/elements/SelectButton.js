@@ -19,7 +19,7 @@ export class UISelectButton extends UICollection {
 			text: "+",
 			css: { 'margin-left': '1px' },
 			callback: () => {
-				callback(select.value);
+				callback(this.select.value);
 			}
 		}));
 
@@ -29,7 +29,7 @@ export class UISelectButton extends UICollection {
 					text: btn.text,
 					css: { 'margin-left': '1px' },
 					callback: () => {
-						btn.callback(select.value);
+						btn.callback(this.select.value);
 					}
 				});
 				this.append(b);

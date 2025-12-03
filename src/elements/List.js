@@ -10,7 +10,7 @@ export class UIList extends UICollection {
 		this.ref = params.ref;		
 		this.callback = params.callback;
 
-		this.list = params.list ?? params.obj[params.ref];
+		this.list = params.list ?? params.obj?.[params.ref] ?? [];
 		this.options = params.options ?? []; // maybe better default
 		this.itemClass = params.itemClass ?? UIInput;
 		if (params.class) this.addClass(params.class);
@@ -59,7 +59,7 @@ export class UIList extends UICollection {
 		}));
 
 		this.addBreak();
-		this.tree = this.add(new UITree({ title: "Items", isOpen: true }));
+		this.tree = this.add(new UITree({ title: "items", isOpen: true }));
 		this.addItemUIs();
 	}
 

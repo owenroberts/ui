@@ -66,19 +66,5 @@ export class UICollection extends UIElement {
 		const child = this.childList.pop();
 		if (!child) return;
 		return this.remove(child);
-	}
-
-	getChild(k) { 
-		return this.children[k]; 
-	}
-	
-	// need this?
-	getChildren() { 
-		return this.childList; 
-	}
-
-	// need this?
-	get uiList() {
-		return this.childList;
-	}
+	}	
 }

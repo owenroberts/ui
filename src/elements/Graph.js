@@ -10,42 +10,42 @@ export class UIGraph extends UICollection {
 		super(params);
 
 		const editBtn = new UIButton({
-			text: 'Edit Graph',
+			text: 'edit graph',
 			callback: openGraphEditor,
 		});
 
 		let list = params.list ?? [];
 
 		const count = new UINumberStep({
-			value: params.graph.count ?? 1,
+			value: params.graph?.count ?? 1,
 			callback: returnGraph,
 		});
 
 		const min = new UINumberStep({
-			value: params.graph.min ?? 0,
+			value: params.graph?.min ?? 0,
 			callback: returnGraph,
 		});
 
 		const max = new UINumberStep({
-			value: params.graph.max ?? 1,
+			value: params.graph?.max ?? 1,
 			callback: returnGraph,
 		});
 
 		const step = new UINumberStep({
-			value: params.graph.step ?? 0.1,
+			value: params.graph?.step ?? 0.1,
 			callback: returnGraph,
 		});
 
-		this.add(new UILabel({ text: 'Value count' }));
+		this.add(new UILabel({ text: 'count' }));
 		this.add(count);
 		this.addBreak();
-		this.add(new UILabel({ text: 'Min' }));
+		this.add(new UILabel({ text: 'min' }));
 		this.add(min);
 		this.addBreak();
-		this.add(new UILabel({ text: 'Max' }));
+		this.add(new UILabel({ text: 'max' }));
 		this.add(max);
 		this.addBreak();
-		this.add(new UILabel({ text: 'Step' }));
+		this.add(new UILabel({ text: 'step' }));
 		this.add(step);
 		this.addBreak();
 		this.add(editBtn);
@@ -57,14 +57,17 @@ export class UIGraph extends UICollection {
 				max: max.value,
 				step: step.value,
 			};
-			params.callback(list, graph);
+			if (params.obj) {
+				params.obj.list = list;
+				params.obj.graph = graph;
+			}
+			if (params.callback) params.callback(list, graph);
 		}
 
 		function openGraphEditor() {
 			const m = new UIModal({
-				title: 'Graph Editor',
-				position: { x: 200, y: 200 },
-				app: params.app,
+				title: 'graph editor',
+				ui: params.ui,
 				callback: returnGraph,
 			});
 

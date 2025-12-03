@@ -24,6 +24,11 @@
 		padding: 0.25em 0.25em;
 		@include horizontal-scroll;
 
+		* {
+			// background-color: #505050;
+			// color: white;
+		}
+
 		.width-collection,
 		.scale-collection {
 			display: flex;

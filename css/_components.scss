@@ -48,19 +48,23 @@
 
 .panel .row .value-bg {
 
-	label, 
+	min-width: 8em;
+
 	input.drag {
 		border: 0;
 		padding: 0;
 		color: $text-color;
 		margin: 0;
+		margin-left: auto;
+		color: black;
 	}
 
 	input.drag {
 		background-color: transparent;
 		width: 2em;
 		&::placeholder {
-			color: $text-color;
+			// color: $text-color;
+			color: black;
 		}
 	}
 

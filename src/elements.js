@@ -29,7 +29,6 @@ import { UIModal } from './elements/Modal.js';
 import { UIList } from './elements/List.js';
 
 // inherit UICollection -- prop elems
-import { UIChance } from './elements/Chance.js';
 import { UIToggleGrid } from './elements/ToggleGrid.js';
 import { UIToggleCheck } from './elements/ToggleCheck.js';
 import { UISelectButton } from './elements/SelectButton.js';
@@ -41,18 +40,7 @@ import { UIGraph } from './elements/Graph.js';
 
 // deprecated ??
 // import { UIDragButton } from './elements/DragButton.js';
-
+// import { UISlider } from './elements/Slider.js';
 
 // why not export?? -- i think because of that goofy type thing ... 
-export { UIChance, UIText, UIToggle, UIToggleCheck, UISelect, UISelectButton, UIRow, UISection, UINumberStep, UIPanel, UIRange, UIModal, UINumber, UIInputStep, UILabel, UIFile, UIElement, UIDrag, UIColor, UICollection, UIButton, UIToggleGrid, UIInputSearch, UINumberRange, UITree, UIGraph, UIList, UIInput };
-
-// export { Elements };
-
-/*
-	some notes
-
-	get/set usually setting props of ui.el
-	.text is el.text setter
-
-	why .position and .getPosition??
-*/
+export { UIText, UIToggle, UIToggleCheck, UISelect, UISelectButton, UIRow, UISection, UINumberStep, UIPanel, UIRange, UIModal, UINumber, UIInputStep, UILabel, UIFile, UIElement, UIDrag, UIColor, UICollection, UIButton, UIToggleGrid, UIInputSearch, UINumberRange, UITree, UIGraph, UIList, UIInput };

@@ -87,7 +87,7 @@ export class UIPanel extends Elements.UICollection {
 			// this.ui.keys[params.key] = ui;
 			this.ui.addKey(params.key, ui);
 		}
-		this.ui.faces[params.face ?? id] = ui;
+		this.ui.faces[params.face ?? id] = ui; // if params.face?
 		if (params.ignoreSettings) ui.ignoreSettings = true;
 		this.ui.quick.register(ui, this.id, params);
 		return ui;
