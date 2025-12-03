@@ -45,4 +45,14 @@ export class UIToggle extends UIElement {
 	toggle() {
 		this.update(!this.value);
 	}
+
+	off() {
+		this.value = false;
+		this.display();
+	}
+
+	on() {
+		this.value = true;
+		this.display();
+	}
 }

@@ -26,7 +26,6 @@ export class UIPanel extends Elements.UICollection {
 			text: 'X',
 			class: 'undock-btn',
 			callback: () => {
-				console.log(this.id);
 				this.ui.sections[this.section].panels.removeK(this.id);
 			},
 		}));

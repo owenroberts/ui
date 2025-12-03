@@ -8,9 +8,9 @@ export class UISelect extends UIElement {
 		this.ref = params.ref;
 		this.callback = params.callback;
 		
-		this.value = params.value ?? this.obj?.[this.ref] ?? 0;
-		
 		this.setOptions(params.options ?? []);
+		
+		this.value = params.value ?? this.obj?.[this.ref] ?? 0;
 		
 		this.el.addEventListener('change', ev => {
 			this.update(ev.target.value);
