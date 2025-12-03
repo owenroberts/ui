@@ -17,48 +17,51 @@ export class UIList extends UICollection {
 
 		const listGroup = this.add(new UICollection({ class: 'list-group' }));
 
-		// add or append ??
-		listGroup.add(new UIButton({
-			text: 'x',
-			class: 'left-end',
-			callback: () => {
-				this.set([]);
-				this.update();
-			}
-		}));
+		if (!params.isFixed) {
 
-		listGroup.add(new UIButton({
-			text: '*',
-			class: 'middle',
-			callback: () => {
-				if (this.options.length === 0) return;
-				this.set([...this.options]);
-				this.update();
-			}
-		}));
-
-		listGroup.add(new UIButton({
-			text: '-',
-			class: 'middle',
-			callback: () => {
-				if (this.list.length > 0) {
-					this.tree.pop();
-					this.list.pop();
+			listGroup.add(new UIButton({
+				text: 'x',
+				class: 'left-end',
+				callback: () => {
+					this.set([]);
+					this.update();
 				}
-				this.update();
-			}
-		}));
+			}));
 
-		listGroup.add(new UIButton({
-			text: '+',
-			class: 'right-end',
-			callback: () => {
-				this.addItem(this.options?.[0] ?? 0);
-				this.update();
-			}
-		}));
+			listGroup.add(new UIButton({
+				text: '*',
+				class: 'middle',
+				callback: () => {
+					if (this.options.length === 0) return;
+					this.set([...this.options]);
+					this.update();
+				}
+			}));
 
-		this.addBreak();
+			listGroup.add(new UIButton({
+				text: '-',
+				class: 'middle',
+				callback: () => {
+					if (this.list.length > 0) {
+						this.tree.pop();
+						this.list.pop();
+					}
+					this.update();
+				}
+			}));
+
+			listGroup.add(new UIButton({
+				text: '+',
+				class: 'right-end',
+				callback: () => {
+					this.addItem(this.options?.[0] ?? 0);
+					this.update();
+				}
+			}));
+
+			this.addBreak();
+		}
+
 		this.tree = this.add(new UITree({ title: "items", isOpen: true }));
 		this.addItemUIs();
 	}

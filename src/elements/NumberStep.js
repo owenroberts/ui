@@ -40,7 +40,6 @@ export class UINumberStep extends UICollection {
 				this.update(this.value + step * value);
 			},
 			callback: value => {
-				console.log('callback', value)
 				value = this.formatNumberInput(value);
 				this.update(value);
 			}
