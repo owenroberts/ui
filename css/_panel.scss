@@ -76,6 +76,10 @@
 
 	select { margin-top: 0.25em; }
 
+	summary {
+		flex-basis: 100%;
+	}
+
 	.header {
 		flex-wrap: nowrap;
 		flex-basis: 100%;

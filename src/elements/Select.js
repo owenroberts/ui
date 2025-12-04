@@ -10,7 +10,7 @@ export class UISelect extends UIElement {
 		
 		this.setOptions(params.options ?? []);
 		
-		this.value = params.value ?? this.obj?.[this.ref] ?? 0;
+		this.value = params.value ?? this.obj?.[this.ref] ?? this.options[0] ?? "none";
 		
 		this.el.addEventListener('change', ev => {
 			this.update(ev.target.value);
