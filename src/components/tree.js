@@ -1,6 +1,4 @@
-import { UICollection } from './Collection.js';
-import { UIElement } from './Element.js';
-import { UIRow } from './Row.js';
+import { UICollection, UIElement, UIRow } from '../oi.js';
 
 export class UITree extends UICollection {
 	constructor(params={}) {

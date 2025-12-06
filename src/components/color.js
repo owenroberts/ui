@@ -1,10 +1,9 @@
-import { UIInput } from './Input.js';
-import { UIButton } from './Button.js';
-import { UICollection } from './Collection.js';
+import { UIInput, UIButton, UICollection } from '../oi.js';
 
 export class UIColor extends UIInput {
 	constructor(params) {
 		super(params);
+		
 		this.el.type = "color";
 		this.colors = [];
 		this.args = params.args || [];

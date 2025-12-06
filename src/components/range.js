@@ -1,6 +1,4 @@
-import { UICollection } from './Collection.js';
-import { UIDrag } from './Drag.js';
-import { UILabel } from './Label.js';
+import { UICollection, UIDrag, UILabel } from '../oi.js';
 
 export class UIRange extends UICollection {
 	constructor(params) {

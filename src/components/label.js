@@ -1,8 +1,8 @@
-import { UIElement } from './Element.js';
+import { UIElement } from '../oi.js';
 
 export class UILabel extends UIElement {
 	constructor(params) {
 		super({ ...params, tag: "label" });
-		this.text = params.text;
+		this.setText(params.text);
 	}
 }

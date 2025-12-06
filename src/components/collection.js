@@ -1,4 +1,4 @@
-import { UIElement } from './Element.js';
+import { UIElement } from '../oi.js';
 
 export class UICollection extends UIElement {
 	constructor(params) {
@@ -46,9 +46,6 @@ export class UICollection extends UIElement {
 	}
 
 	removeK(k) {
-		// this.el.removeChild(this.children[k].el);
-		// delete this[k];
-		// delete this.children[k];
 		return this.remove(this.children[k], k);
 	}
 

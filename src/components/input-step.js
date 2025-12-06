@@ -1,6 +1,4 @@
-import { UICollection } from './Collection.js';
-import { UIDrag } from './Drag.js';
-import { UIButton } from './Button.js';
+import { UICollection, UIDrag, UIButton } from '../oi.js';
 
 export class UIInputStep extends UICollection {
 	constructor(params) {

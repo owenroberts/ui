@@ -1,7 +1,6 @@
-import * as Elements from '../elements.js';
-import { getUIType } from '../interface.js';
+import { UILabel, UICollection, UIToggle, UIRow, UINumberStep, UIButton } from '../oi.js';
 
-export class UIPanel extends Elements.UICollection {
+export class UIPanel extends UICollection {
 	constructor(params) {
 		super({ ...params, id: `${params.id}-panel` });
 		
@@ -10,11 +9,11 @@ export class UIPanel extends Elements.UICollection {
 		this.addClass("panel");
 		this.rows = [];
 
-		const header = this.append(new Elements.UIRow({ class: "header" }));
+		const header = this.append(new UIRow({ class: "header" }));
 
-		header.add(new Elements.UILabel({ text: params.label ?? params.id }));
+		header.add(new UILabel({ text: params.label ?? params.id }));
 
-		this.order = header.add(new Elements.UINumberStep({
+		this.order = header.add(new UINumberStep({
 			value: 0,
 			class: "order-btn",
 			callback: value => {
@@ -22,7 +21,7 @@ export class UIPanel extends Elements.UICollection {
 			}
 		}));
 
-		header.add(new Elements.UIButton({
+		header.add(new UIButton({
 			text: 'X',
 			class: 'undock-btn',
 			callback: () => {
@@ -30,7 +29,7 @@ export class UIPanel extends Elements.UICollection {
 			},
 		}));
 
-		this.headlessToggle = header.add(new Elements.UIToggle({
+		this.headlessToggle = header.add(new UIToggle({
 			onText: "▿",
 			offText: "◃",
 			class: "headless-btn",
@@ -62,7 +61,7 @@ export class UIPanel extends Elements.UICollection {
 	}
 
 	addRow(params={}) {
-		const row = new Elements.UIRow(params);
+		const row = new UIRow(params);
 		this.append(row, params.id);
 		this.rows.push(row);
 		return row;
@@ -76,28 +75,12 @@ export class UIPanel extends Elements.UICollection {
 	}
 
 	addRef(params) {
-		if (!params.noRow) this.addRow();
-		const type = params.type ?? getUIType(params);
-		const id = params.id ?? params.ref;
-		const component = new Elements[type](params);
-		this.add(new Elements.UILabel({ text: params.label ?? id }));
-		this.add(component, id);
-		if (params.key) {
-			// this.ui.keys[params.key] = ui;
-			this.ui.addKey(params.key, component);
-		}
-		this.ui.faces[params.face ?? id] = component; // if params.face?
-		if (params.ignoreSettings) component.ignoreSettings = true;
-		this.ui.quick.register(component, this.id, params);
-		return component;
+		// if (params.ref === "sequence") console.log(params);
+		return this.ui.addRef(this, params);
 	}
 
 	addButton(params) {
-		if (params.addRow) this.addRow();
-		const component = this.add(new Elements.UIButton(params));
-		if (params.key) this.ui.addKey(params.key, component, params);
-		this.ui.quick.register(component, this.id, params);
-		return component;
+		return this.ui.addButton(this, params);
 	}
 
 	add(child, k, row) {

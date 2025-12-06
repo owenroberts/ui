@@ -1,7 +1,4 @@
-import { UICollection } from './Collection.js';
-import { UIElement } from './Element.js';
-import { UIButton } from './Button.js';
-import { UILabel } from './Label.js';
+import { UIElement, UIButton, UILabel, UICollection } from '../oi.js';
 
 export class UIModal extends UICollection {
 	constructor(params) {

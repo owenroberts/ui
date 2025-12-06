@@ -4,17 +4,13 @@
 export class Settings {
 
 	constructor(ui, params) {
-		
 		this.ui = ui;
-
-		// need this??
 		this.workspaces = params.workspaces ?? [];
+		this.localStorageString = `settings-${ params.name }`;
 
 		// deprecated ?
 		this.appLoad = params.appLoad;
 		this.appSave = params.appSave;
-
-		this.localStorageString = `settings-${ params.name }`;
 	}
 
 	loadPanels(panels) {
@@ -73,7 +69,6 @@ export class Settings {
 		}
 
 		localStorage[this.localStorageString] = JSON.stringify(settings);
-		console.log(settings);
 		return JSON.stringify(settings);
 	}
 
@@ -84,18 +79,11 @@ export class Settings {
 			this.loadSections(settings.sections);
 			this.loadPanels(settings.panels);
 			this.loadFaces(settings.faces);
+			
+			settings.quick.forEach(label => {
+				this.ui.panels.quick.addUI(this.ui.quick.getUI(label));
+			});
 
-			console.log(settings.quick);
-
-			if (settings.quick) {
-				// this.ui.quick.list = settings.quickRef;
-				
-				settings.quick.forEach(label => {
-					// app.ui.createUI(ref, ref.mod, ref.sub, app.ui.panels.quickRef);
-					this.ui.panels.quick.addUI(this.ui.quick.getUI(label));
-
-				});
-			}
 			if (this.appLoad) this.appLoad(settings);
 		} else {
 			if (this.workspaces.length > 0) {

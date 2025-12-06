@@ -1,4 +1,4 @@
-import { UIElement } from './Element.js';
+import { UIElement } from '../oi.js';
 
 export class UIButton extends UIElement {
 	constructor(params) {

@@ -1,9 +1,5 @@
-import { UICollection } from './Collection.js';
-import { UIButton } from './Button.js';
-import { UINumberStep } from './NumberStep.js';
-import { UILabel } from './Label.js';
-import { UIModal } from './Modal.js';
-import * as Cool from '../../../cool/cool.js';
+import { map } from '../../../cool/cool.js';
+import { UICollection, UIButton, UINumberStep, UILabel, UIModal } from '../oi.js';
 
 export class UIGraph extends UICollection {
 	constructor(params) {
@@ -107,7 +103,7 @@ export class UIGraph extends UICollection {
 				if (mouseIsDown) {
 					for (let i = 0; i < count.value; i++) {
 						if (ev.offsetX > i * c && ev.offsetX < i * c + c) {
-							let v = Cool.map(ev.offsetY, h - r, r, min.value, max.value, true);
+							let v = map(ev.offsetY, h - r, r, min.value, max.value, true);
 							v = Math.round((v / step.value)) * step.value;
 							list[i] = v;
 						}
@@ -122,7 +118,7 @@ export class UIGraph extends UICollection {
 				for (let i = 0; i < count.value; i++) {
 					const v = list[i];
 					const x = i * c;
-					const y = Cool.map(v, min.value, max.value, h - r, r, true);
+					const y = map(v, min.value, max.value, h - r, r, true);
 					if (i === 0 || v !== list[i-1]) {
 						if (v) ctx.fillText(v.toFixed(1), x, y - 5); // idk why error
 					}

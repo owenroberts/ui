@@ -1,5 +1,5 @@
 import { assert } from '../../../cool/cool.js';
-import { UIElement } from './Element.js';
+import { UIElement } from '../oi.js';
 
 export class UIToggle extends UIElement {
 	constructor(params) {
@@ -34,10 +34,10 @@ export class UIToggle extends UIElement {
 
 	display() {
 		if (this.value) {
-			this.text = this.onText;
+			this.setText(this.onText);
 			this.addClass('on');
 		} else {
-			this.text = this.offText;
+			this.setText(this.offText);
 			this.removeClass('on');
 		}
 	}

@@ -1,13 +1,10 @@
-import { UICollection } from './Collection.js';
-import { UINumber } from './Number.js';
-import { UIRange } from './Range.js';
+import { UICollection, UINumber, UIRange } from '../oi.js';
 
 export class UINumberRange extends UICollection {
 	constructor(params) {
 		super(params);
 
 		this.callback = params.callback;
-		this.args = params.args || [];
 
 		this.numberInput = this.add(new UINumber({
 			...params,

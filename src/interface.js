@@ -1,42 +1,33 @@
-/*
-	main interface function that handles everything else
-	need better naming conventions to make uis clear
-	add callback is for button w function
-	add prop is for something to save in local settings
-	add ui is for more complex ui types
-
-*/
-
 import { mobilecheck, whichKeyMap } from '../../cool/cool.js';
 import { Settings } from './settings.js';
 import { QuickMenu } from './quick.js';
-import { UILabel, UIPanel, UIButton, UICollection, UISection } from './elements.js';
-import * as Elements from './elements.js';
+import { UILabel, UIPanel, UIButton, UICollection, UISection } from './components.js';
+import * as Components from './components.js';
 
+// panels for core settings and quick are separated to avoid loading error
 import { SettingsPanel } from './panels/settings-panel.js';
 import { WorkspacesPanel } from './panels/workspaces-panel.js';
 import { QuickPanel } from './panels/quick-panel.js';
 
-// move to cool.js? or oi/helpers?
 export function labelFromKey(key) {
 	let label = key[0].toUpperCase() + key.substring(1);
 	label = label.replace(/(?<=[a-z])(?=[A-Z])/g, ' ');
 	return label;
 }
 
-export function getUIType(params) {
-	const value = params.value ?? params.obj[params.ref]
-	// options is either select or steppers
-	if (params.options) {
-		if (typeof value[0] === 'string') return 'UISelect';
-	} else {
-		if (typeof value === 'string') return 'UIText';
-		if (typeof value === 'number') return 'UINumberStep';
-		if (typeof value === 'boolean') return 'UIToggleCheck';
-		if (Array.isArray(value)) return 'UIList';
+export function formatNumberInput(value) {
+	if (typeof value === 'string') {
+		if (value.match(/\D/)) {
+			try {
+				value = eval(value);
+			} catch(e) {
+				alert("Please enter a numerical value or mathematical expression.");
+				return;
+			}
+		}
 	}
+	return value;
 }
-
 
 export class Interface {
 
@@ -94,25 +85,6 @@ export class Interface {
 		ev.preventDefault();
 		this.keys[k].keyHandler(ev.target.value);
 		this.onKeyPress(this.keys[k], true);
-	}
-
-	getType(value, type) {
-		if (typeof value === 'string') return 'UIText';
-		if (typeof value === 'number') return 'UINumber';
-		if (typeof value === 'boolean') return 'UIToggle';
-	}
-
-	getUIType(params) {
-		const value = params.value ?? params.obj[params.ref]
-		// options is either select or steppers
-		if (params.options) {
-			if (typeof value[0] === 'string') return 'UISelect';
-		} else {
-			if (typeof value === 'string') return 'UIText';
-			if (typeof value === 'number') return 'UINumberStep';
-			if (typeof value === 'boolean') return 'UIToggleCheck';
-			if (Array.isArray(value)) return 'UIList';
-		}
 	}
 
 	addKey(key, ui) {
@@ -174,5 +146,43 @@ export class Interface {
 		this.addSectionPanelOption(panel.id, label);
 		// this.layout.addSelectOption(panel.id, label);
 		return panel;
+	}
+
+	getComponentType(params) {
+		const value = params.value ?? params.obj[params.ref]
+		// options is either select or steppers
+		if (params.options) {
+			if (typeof value[0] === 'string') return 'UISelect';
+		} else {
+			if (typeof value === 'string') return 'UIText';
+			if (typeof value === 'number') return 'UINumberStep';
+			if (typeof value === 'boolean') return 'UIToggleCheck';
+			if (Array.isArray(value)) return 'UIList';
+		}
+	}
+	
+	addRef(panel, params) {
+		if (!params.noRow) panel.addRow();
+		const type = params.type ?? this.getComponentType(params);
+		const id = params.id ?? params.ref;
+		const component = new Components[type](params);
+		panel.add(new UILabel({ text: params.label ?? id }));
+		panel.add(component, id);
+		if (params.key) {
+			this.addKey(params.key, component);
+		}
+		this.faces[params.face ?? id] = component; // if params.face?
+		if (params.ignoreSettings) component.ignoreSettings = true;
+		this.quick.register(component, panel.id, params);
+		// if (params.ref === "sequence") console.log(component)
+		return component;
+	}
+
+	addButton(panel, params) {
+		if (params.addRow) panel.addRow();
+		const component = panel.add(new Components.UIButton(params));
+		if (params.key) this.addKey(params.key, component, params);
+		this.quick.register(component, panel.id, params);
+		return component;
 	}
 }

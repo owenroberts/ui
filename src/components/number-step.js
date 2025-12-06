@@ -1,13 +1,9 @@
-import { UICollection } from './Collection.js';
-import { UIDrag } from './Drag.js';
-import { UIButton } from './Button.js';
-import { NumberMixins } from './Behaviors.js';
+import { UICollection, UIDrag, UIButton, formatNumberInput } from '../oi.js';
 
 export class UINumberStep extends UICollection {
 	constructor(params) {
 		super(params);
 		this.addClass('number-step');
-		Object.assign(this, NumberMixins);
 
 		this.obj = params.obj;
 		this.ref = params.ref;
@@ -40,7 +36,7 @@ export class UINumberStep extends UICollection {
 				this.update(this.value + step * value);
 			},
 			callback: value => {
-				value = this.formatNumberInput(value);
+				value = formatNumberInput(value);
 				this.update(value);
 			}
 		});
@@ -84,8 +80,9 @@ export class UINumberStep extends UICollection {
 		if (value < this.min) value = this.min;
 		if (value > this.max) value = this.max;
 		
-		this.value = this.formatNumberInput(value);
+		this.value = formatNumberInput(value);
 		this.numberInput.value = this.value;
+		
 		if (this.obj && this.ref) this.obj[this.ref] = this.value;
 		if (this.callback) this.callback(this.value);
 	}

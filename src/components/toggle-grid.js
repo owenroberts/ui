@@ -1,18 +1,15 @@
-import { UICollection } from './Collection.js';
-import { UIToggleCheck } from './ToggleCheck.js';
-import { UILabel } from './Label.js';
-import { UIButton } from './Button.js';
+import { UICollection, UIToggleCheck, UILabel, UIButton, } from '../oi.js';
 
 export class UIToggleGrid extends UICollection {
 	constructor(params) {
 		super(params);
-		
+
 		this.obj = params.obj;
 		this.ref = params.ref;
 		this.callback = params.callback;
-		this.value = params.value ?? this.obj[this.ref];
+		this.value = params.value ?? this.obj?.[this.ref] ?? [[true]];
 
-		const label = new UILabel({ text: params.text ?? 'Grid' });
+		const label = new UILabel({ text: params.text ?? 'grid' });
 
 		const subCol = this.add(new UIButton({
 			text: '-',

@@ -12,9 +12,7 @@ export class UIElement {
 
 		if (params.id !== undefined) this.el.id = params.id;
 		if (params.class) this.addClass(params.class); // list?
-		// if (params.class === 'order-btn') console.log(params.hasOwnProperty("text"), params.text);
-		if (params.hasOwnProperty("text")) this.text = params.text;
-		// if (params.class === 'order-btn') console.log(this.text);
+		if (params.hasOwnProperty("text")) this.setText(params.text);
 		if (params.debug) this.debug = true;
 	}
 
@@ -22,26 +20,8 @@ export class UIElement {
 		this.el.textContent = value;
 	}
 
-	get text() {
-		return this.el.textContent;
-	}
-
-	set text(value) {
-		this.el.textContent = value;
-	}
-
-	// idk ... why ... 
-	// get title() {
-	// 	return this.el.title;
-	// }
-
-	// set title(value) {
-	// 	this.el.title = value;
-	// }
-
-	// deprecate?
-	get position() {
-		return { x: this.el.getBoundingClientRect().x, y: this.el.getBoundingClientRect().y };
+	setTitle(value) {
+		this.el.title = value;
 	}
 
 	setStyle(prop, value) {

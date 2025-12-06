@@ -1,6 +1,4 @@
-import { UICollection } from './Collection.js';
-import { UISelect } from './Select.js';
-import { UIButton } from './Button.js';
+import { UICollection, UISelect, UIButton } from '../oi.js';
 
 export class UISelectButton extends UICollection {
 	constructor(params) {
@@ -10,7 +8,7 @@ export class UISelectButton extends UICollection {
 
 		this.select = this.append(new UISelect({
 			options: params.options,
-			callback: function() {
+			callback: () => {
 				// do nothing ? to prevent error 
 			}
 		}));

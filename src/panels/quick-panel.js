@@ -1,5 +1,4 @@
 import { UIPanel, UIModal, UIButton, UILabel } from '../oi.js';
-import * as Elements from '../elements.js';
 
 export class QuickPanel extends UIPanel {
 	constructor(params) {
@@ -49,8 +48,6 @@ export class QuickPanel extends UIPanel {
 		const row = this.addRow();
 		row.add(new UILabel({ text: item.panelName }));
 
-		console.log(item.params, item.panelName)
-		console.log(item.params.callback)
 		if (item.params.callback) {
 			this.addButton(item.params);
 		} else {

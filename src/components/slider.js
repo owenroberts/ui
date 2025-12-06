@@ -1,4 +1,4 @@
-import { UIInput } from './Input.js';
+import { UIInput } from '../oi.js';
 
 export class UISlider extends UIInput {
 	constructor(params) {
