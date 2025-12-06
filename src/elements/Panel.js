@@ -79,25 +79,25 @@ export class UIPanel extends Elements.UICollection {
 		if (!params.noRow) this.addRow();
 		const type = params.type ?? getUIType(params);
 		const id = params.id ?? params.ref;
-		const ui = new Elements[type](params);
+		const component = new Elements[type](params);
 		this.add(new Elements.UILabel({ text: params.label ?? id }));
-		this.add(ui, id);
+		this.add(component, id);
 		if (params.key) {
 			// this.ui.keys[params.key] = ui;
-			this.ui.addKey(params.key, ui);
+			this.ui.addKey(params.key, component);
 		}
-		this.ui.faces[params.face ?? id] = ui; // if params.face?
-		if (params.ignoreSettings) ui.ignoreSettings = true;
-		this.ui.quick.register(ui, this.id, params);
-		return ui;
+		this.ui.faces[params.face ?? id] = component; // if params.face?
+		if (params.ignoreSettings) component.ignoreSettings = true;
+		this.ui.quick.register(component, this.id, params);
+		return component;
 	}
 
 	addButton(params) {
 		if (params.addRow) this.addRow();
-		const ui = this.add(new Elements.UIButton(params));
-		if (params.key) this.ui.addKey(params.key, ui, params);
-		this.ui.quick.register(ui, this.id, params);
-		return ui;
+		const component = this.add(new Elements.UIButton(params));
+		if (params.key) this.ui.addKey(params.key, component, params);
+		this.ui.quick.register(component, this.id, params);
+		return component;
 	}
 
 	add(child, k, row) {

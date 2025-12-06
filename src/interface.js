@@ -48,30 +48,22 @@ export class Interface {
 		this.keys = {}; // all short cut keys
 		this.faces = {}; // all interfaces that need to be saved/updated -- make this all interfaces?
 		this.panels = {};
+		this.sections = {}; 
+		
 		this.mousePosition = { x: 0, y: 0 };
 
 		this.container = new UICollection({ id: 'container' });
-		this.sections = {}; // new layout, just sections
-
 		this.toolTip = new UILabel({ id: 'tool-tip' }); // should be app ... 
 		this.container.append(this.toolTip);
-		// this.layout = new Layout(app, params);
 
-		this.quick = new QuickMenu(app);
+		this.quick = new QuickMenu(this);
 		this.settings = new Settings(this, params.settings);
 		
-		// this.addPanel(new LayoutPanel({ ui: this }));
 		this.addPanel(new SettingsPanel({ ui: this }));
 		this.addPanel(new WorkspacesPanel({ ui: this }));
 		this.addPanel(new QuickPanel({ ui: this }));
-
-		// this.layout.connect();
-		// this.quick.connect();
-
-		// let currentPanel;
 		
 		/* key commands */
-		
 		document.addEventListener("keydown", ev => {
 			this.keyDown(ev);
 		}, false);
@@ -151,17 +143,6 @@ export class Interface {
 		this.toolTip.removeClass('visible');
 	}
 
-	getPanel(key, params={}) {
-		// if (!key) return currentPanel;
-		if (this.panels[key]) return this.panels[key];
-		const label = params.label || labelFromKey(key);
-		const panel = new UIPanel({ id: key, label });
-		this.panels[key] = panel;
-		this.layout.addSelectOption(key, label);
-		// if (panel !== currentPanel) currentPanel = panel;
-		return panel;
-	}
-
 	addSection(key, params={}) {
 		if (!key) return;
 		if (this.sections[key]) return;
@@ -193,97 +174,5 @@ export class Interface {
 		this.addSectionPanelOption(panel.id, label);
 		// this.layout.addSelectOption(panel.id, label);
 		return panel;
-	}
-
-	addCallbacks(callbacks, panel) {
-		callbacks.forEach(params => { this.addCallback(params, panel); });
-	}
-
-	addCallback(params, panel) {
-		if (!panel) panel = currentPanel;
-		if (!panel.isPanel) panel = this.getPanel(panel);
-		if (params.row) panel.addRow();
-		if (params.label) panel.add(new UILabel({ text: params.label }));
-		
-		const ui = new Elements[params.type || 'UIButton'](params);
-		panel.add(ui, params.k);
-		if (params.key) this.keys[params.key] = ui;
-		
-		// error with type file ... 
-		this.quick.registerCallback(labelFromKey(panel.id), labelFromKey(params.text || params.label), params);
-		
-		return ui;
-	}
-
-	addProps(props, panel) {
-		for (const prop in props) {
-			addProp(prop, props[prop], panel);
-		}
-	}
-
-	addProp(prop, params, panel) {
-		if (!panel) panel = currentPanel;
-		if (!panel.isPanel) panel = getPanel(panel);
-		
-		const type = params.type || getType(params.value);
-		const ui = new Elements[type](params);
-		panel.addRow();
-		if (!params.noLabel) { // any props not have a label ??
-			panel.add(new UILabel({ 
-				text: params.label || labelFromKey(prop),
-				class: 'prop',
-			}));
-		}
-		panel.add(ui);
-		faces[prop] = ui;
-		if (params.key) keys[params.key] = ui;
-
-		if (params.reset) {
-			panel.add(new UIButton({ text: 'Reset', callback: () => {
-				ui.update(params.value);
-			}}))
-		}
-
-		quick.registerProp(prop, labelFromKey(panel.id), labelFromKey(prop), params);
-		return ui;
-	}
-
-	addUIs(uis, panel) {
-		if (Array.isArray(uis)) {
-			uis.forEach(ui => { addUI(ui, panel); });
-		}
-		else {
-			for (const prop in uis) {
-				const params = { ...uis[prop], face: prop, row: true };
-				addUI(params, panel);
-			}
-		}
-	}
-
-	addUI(params, panel) {
-		if (!panel) panel = currentPanel;
-		if (!panel.isPanel) panel = this.getPanel(panel);
-		if (params.row) panel.addRow();
-
-		const type = params.type || getType(params.value);
-		
-		if (params.label) { // any props not have a label ??
-			panel.add(new UILabel({ 
-				text: params.label || labelFromKey(prop),
-				class: 'prop',
-			}));
-		}
-		
-		let ui = new Elements[type](params);
-		panel.add(ui, undefined, params.k);
-
-		if (params.key) keys[params.key] = ui;
-		if (params.face) {
-			faces[params.face] = ui;
-			ui.ignoreSettings = true;
-			// quick.registerCallback(labelFromKey(panel.id), labelFromKey(params.face), params);
-		}
-
-		return ui;
 	}
 }

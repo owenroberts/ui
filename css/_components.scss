@@ -13,7 +13,7 @@
 
 	display: inline-block;
 	background-color: $ui-color;
-	// padding: 0 0.5em;
+	padding: 0 0.5em;
 	border-radius: 3px;
 	
 	&:hover {
@@ -31,8 +31,6 @@
 	white-space: nowrap;
 	
 	&.press { background-color: $accent-two; }
-
-	
 
 	&.progress {
 		background: linear-gradient(90deg, $ui-select 0%, $ui-select calc(var(--progress-percent) * 1%), $ui-color calc(var(--progress-percent) * 1%));
@@ -86,7 +84,7 @@
 .section-header {
 
 	button {
-		padding: 0 0.25em;
+		padding: 0 0.5em;
 	}
 		
 	span, 

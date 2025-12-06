@@ -1,4 +1,4 @@
-import { UIPanel, UIModal, UIButton } from '../oi.js';
+import { UIPanel, UIModal, UIButton, UILabel } from '../oi.js';
 import * as Elements from '../elements.js';
 
 export class QuickPanel extends UIPanel {
@@ -24,16 +24,16 @@ export class QuickPanel extends UIPanel {
 			callback: () => {
 				this.quick.open(false);
 			}, 
-			text: "Menu", 
-			key: "q" 
+			text: "menu", 
+			key: "q",
 		});
 
 		this.addButton({ 
 			callback: () => {
 				this.quick.displayKeys();
 			}, 
-			text: 'Key Commands', 
-			key: 'alt-k' 
+			text: "key commands",
+			key: "alt-k", 
 		});
 
 		this.addButton({ 
@@ -45,12 +45,16 @@ export class QuickPanel extends UIPanel {
 		});
 	}
 
-	addUI(params) {
+	addUI(item) {
 		const row = this.addRow();
-		if (params.callback) {
-			this.addButton(params);
+		row.add(new UILabel({ text: item.panelName }));
+
+		console.log(item.params, item.panelName)
+		console.log(item.params.callback)
+		if (item.params.callback) {
+			this.addButton(item.params);
 		} else {
-			this.addRef(params);
+			this.addRef(item.params);
 		}
 
 		row.append(new UIButton({

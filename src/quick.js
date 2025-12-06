@@ -1,55 +1,56 @@
-/*
-	module for running a function or adding uis to quick ref menu
-	register all callbacks, props, uis with params to either run or recreate ui 
-*/
-
 import { UIModal, UIButton, UILabel, UIInputSearch, UITree, UIRow } from './oi.js';
 
+/**
+ * get ui refs and buttons
+ * display key commnds
+ * add refs and buttons to panel for quick access
+ */
 export class QuickMenu {
-	constructor(app) {
-		this.app = app;
-		this.reg = []; // registered uis for reference
-		this.keys = {}; // list of key commands for display 
-		this.list = []; // list of uis added to interfaces
-		this.isOpen = false;
+	
+	constructor(ui) {
+		this.ui = ui;
+		this.registry = []; // registered components for reference
+		this.isModalOpen = false;
 	}
 
-	open(addQuickUI) {
-		if (this.isOpen) return;
+	open(addToPanel) {
+		if (this.isModalOpen) return;
 
-		this.isOpen = true;
+		this.isModalOpen = true;
 
 		const m = new UIModal({
-			title: "Quick Menu",
-			ui: this.app.ui,
+			title: "quick menu",
+			ui: this.ui,
 			onClear: () => {
-				this.isOpen = false;
-			}
+				this.isModalOpen = false;
+			},
 		});
 
 		const input = m.add(new UIInputSearch({
-			listName: 'quick-menu-list',
-			options: this.reg.map(e => e.label),
+			listName: "quick-menu-list",
+			options: this.registry.map(e => e.label),
 			callback: value => {
-				const reg = this.reg.find(e => e.label === value);
-				if (!reg) {
+				const item = this.getUI(value);
+				if (!item) {
 					input.focus();
 					return;
 				}
 
-				const { ui, params } = reg;
+				const { component, params, panelName } = item;
 
-				if (addQuickUI) {
-					this.app.ui.panels.quick.addUI(params);
+				if (addToPanel) {
+					item.isInPanel = true;
+					this.ui.panels.quick.addUI(item);
 					return;
-				} 
-
-				if (ui.callback) {
-					ui.callback();
-				} else if (ui.update) {
-					ui.update(prompt('Value:'));
+				} else {
+					if (component.callback) {
+						component.callback();
+					} else if (component.update) {
+						component.update(prompt('value:'));
+					}
 				}
-				this.isOpen = false;
+
+				this.isModalOpen = false;
 				m.clear();
 			}
 		}));
@@ -57,73 +58,68 @@ export class QuickMenu {
 		input.focus();
 	}
 
-	register(ui, panelName, params) {
-		const label = params.face ?? params.id ?? params.ref ?? params.text;
-		this.reg.push({
-			label: `${panelName} > ${ label }`,
-			params,
-			ui,
-		});
-
-		if (params.key) {
-			this.addToKeys(panelName, label, params);
-		}
+	getUI(label) {
+		return this.registry.find(e => e.label === label);
 	}
 
-	addToKeys(panelName, label, params) {
-		if (!this.keys[panelName]) {
-			this.keys[panelName] = [];
-		}
-		this.keys[panelName].push({ 
-			key: params.key, 
-			label, 
-			letter: params.key.split('-').pop(),
+	register(component, panelName, params) {
+		const label = params.face ?? params.id ?? params.ref ?? params.text;
+		this.registry.push({
+			label: `${ panelName } > ${ label }`,
+			params,
+			component,
+			panelName,
+			isInPanel: false,
 		});
+	}
+
+	getList() {
+		return this.registry.filter(c => c.isInPanel).map(c => c.label);
 	}
 
 	displayKeys() {
 		const m = new UIModal({
 			title: "Key Commands",
-			app: this.app,
+			ui: this.ui,
 			class: 'key-command-list',
 		});
 
 		const keyRow = m.add(new UIRow());
 
-		// console.log(keys);
 
 		const alphas = {};
-		const alphaTree = m.add(new UITree({ title: 'Alphabetical' }));
+		const alphaTree = m.add(new UITree({ title: 'alpha' }));
 		keyRow.add(alphaTree);
-
-		const panels = {};
-		const panelTree = m.add(new UITree({ title: 'Panel' }));
-		keyRow.add(panelTree);
-		
 		const alphaLetters = [];
 
-		for (let panelName in this.keys) {
+		const panels = {};
+		const panelTree = m.add(new UITree({ title: 'panel' }));
+		keyRow.add(panelTree);
+
+		for (let i = 0; i < this.registry.length; i++) {
+			if (!this.registry[i].params.hasOwnProperty("key")) continue;
+
+			const { panelName, label } = this.registry[i];
+			const key = this.registry[i].params.key;
+
+			const letter = key.split('-').pop();
 
 			if (!panels[panelName]) {
 				panels[panelName] = new UITree({ title: panelName });
 			}
 
-			for (let i = 0; i < this.keys[panelName].length; i++) {
-				const k = this.keys[panelName][i];
-				if (!alphas[k.letter]) {
-
-					alphas[k.letter] = new UITree({ title: k.letter.toUpperCase() });
-					alphaLetters.push(k.letter);
-				}
-
-				const text = `${k.key} -- ${panelName} > ${k.label}`;
-					
-				panels[panelName].add(new UILabel({ text, class: 'key-command-label' }));
-				panels[panelName].addBreak();
-
-				alphas[k.letter].add(new UILabel({ text, class: 'key-command-label' }));
-				alphas[k.letter].addBreak();
+			if (!alphas[letter]) {
+				alphas[letter] = new UITree({ title: letter });
+				alphaLetters.push(letter);
 			}
+
+			const text = `${ key } -- ${ label }`;
+
+			panels[panelName].add(new UILabel({ text, class: 'key-command-label' }));
+			panels[panelName].addBreak();
+
+			alphas[letter].add(new UILabel({ text, class: 'key-command-label' }));
+			alphas[letter].addBreak();
 		}
 
 		alphaLetters.sort();
@@ -132,9 +128,13 @@ export class QuickMenu {
 			alphaTree.add(alphas[letter]);
 		}
 
-		const panelAlphas = Object.keys(this.keys).sort();
-		for (let i = 0; i < panelAlphas.length; i++) {
-			panelTree.add(panels[panelAlphas[i]]);
+		// const panelAlphas = this.registry
+		// 	.filter(c => c.params.hasOwnProperty("key"))
+		// 	.map(c => c.params.key)
+		// 	.sort();
+		
+		for (const k in panels) {
+			panelTree.add(panels[k])
 		}
 	}
 }

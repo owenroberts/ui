@@ -6,17 +6,15 @@ export class Settings {
 	constructor(ui, params) {
 		
 		this.ui = ui;
+
+		// need this??
 		this.workspaces = params.workspaces ?? [];
+
+		// deprecated ?
 		this.appLoad = params.appLoad;
 		this.appSave = params.appSave;
 
 		this.localStorageString = `settings-${ params.name }`;
-		this.workspaceFields = [
-			...params?.workspaceFields,
-			'timelineLayout', 
-			'rightLayout',
-			'upLayout',
-		];
 	}
 
 	loadPanels(panels) {
@@ -52,9 +50,8 @@ export class Settings {
 		const settings = {
 			faces: {},
 			panels: {},
-			// layout: this.ui.layout.getSettings(),
 			sections: {},
-			quick: this.ui.quick.list,
+			quick: this.ui.quick.getList(),
 		};
 
 		Object.keys(this.ui.faces)
@@ -76,22 +73,27 @@ export class Settings {
 		}
 
 		localStorage[this.localStorageString] = JSON.stringify(settings);
+		console.log(settings);
+		return JSON.stringify(settings);
 	}
 
 	load() {
 		if (localStorage[this.localStorageString]) {
 			const settings = JSON.parse(localStorage[this.localStorageString]);
-			// this.loadLayout(settings.layout);
-			// 
+			
 			this.loadSections(settings.sections);
 			this.loadPanels(settings.panels);
 			this.loadFaces(settings.faces);
 
-			if (settings.quickRef) {
-				this.ui.quick.list = settings.quickRef;
-				settings.quickRef.forEach(ref => {
+			console.log(settings.quick);
+
+			if (settings.quick) {
+				// this.ui.quick.list = settings.quickRef;
+				
+				settings.quick.forEach(label => {
 					// app.ui.createUI(ref, ref.mod, ref.sub, app.ui.panels.quickRef);
-					console.log(ref);
+					this.ui.panels.quick.addUI(this.ui.quick.getUI(label));
+
 				});
 			}
 			if (this.appLoad) this.appLoad(settings);
@@ -107,26 +109,10 @@ export class Settings {
 	}
 
 	saveWorkspace() {
-		this.save();
-
-		const facesSettings = {};
-		this.workspaceFields
-			.filter(f => this.ui.faces[f])
-			.forEach(f => {
-				facesSettings[f] = this.ui.faces[f].value;
-			});
-
-		const savedSettings = JSON.parse(localStorage.getItem(this.localStorageString));
-		
-		const jsonFile = JSON.stringify({ 
-			panels: savedSettings.panels, 
-			layout: savedSettings.layout,
-			sections: savedSettings.sections,
-			faces: facesSettings,
-		});
-		
 		const fileName = prompt('Layout Name:', 'New Layout');
-		const blob = new Blob([jsonFile], { type: "application/x-download;charset=utf-8" });
+		if (!fileName) return;
+		const settings = this.save();
+		const blob = new Blob([settings], { type: "application/x-download;charset=utf-8" });
 		saveAs(blob, `${fileName}.json`);
 	}
 
@@ -140,10 +126,12 @@ export class Settings {
 
 	loadWorkspace(url) {
 
-		// need to clear sections first ... 
+		for (const k in this.ui.sections) {
+			this.ui.sections[k].panels.clear();
+		}
 
-		console.log(url);
-		if (url?.hasOwnProperty('interface')) {
+		// if url is json from vite load
+		if (url?.hasOwnProperty('faces')) {
 			this.loadSettings(url);
 		} else if (url) {
 			// load default file
@@ -162,7 +150,6 @@ export class Settings {
 					const reader = new FileReader();
 					reader.onload = ((theFile) => {
 						return (e) => {
-							console.log(this);
 							this.loadSettings(JSON.parse(e.target.result))
 						}
 					})(f);

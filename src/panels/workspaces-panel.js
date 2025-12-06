@@ -11,14 +11,14 @@ export class WorkspacesPanel extends UIPanel {
 				settings.saveWorkspace();
 			}, 
 			key: 'alt-w', 
-			text: 'Save'
+			text: 'save'
 		});
 
 		this.addButton({ 
 			callback: () => {
 				settings.loadWorkspace();
 			},	 
-			text: 'Load'
+			text: 'load'
 		});
 
 		this.addRow();
