@@ -3,7 +3,7 @@ import { UIElement } from '../oi.js';
 export class UIButton extends UIElement {
 	constructor(params) {
 		super({ ...params, tag: "button"});
-		this.addClass(params.btnClass ?? "btn");
+		if (params.buttonClass) this.addClass(params.buttonClass);
 		
 		this.callback = params.callback;
 		this.el.addEventListener('click', params.callback);

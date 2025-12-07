@@ -23,15 +23,14 @@ export class UIColor extends UIInput {
 		if (!this.colors) return; // called by value update before it exists
 		if (!this.colors.includes(color) && color) {
 			this.colors.push(color);
-			const btn = new UIButton({
+			this.palette.append(new UIButton({
 				text: color,
 				css: { "background": color },
 				value: color,
 				callback: () => {
 					this.update(color);
 				}
-			});
-			this.palette.append(btn);
+			}));
 		}
 	}
 

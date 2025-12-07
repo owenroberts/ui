@@ -8,7 +8,10 @@ export class UISection extends UICollection {
 		this.label = params.label;
 		this.addClass('section');
 
-		const header = this.add(new UICollection({ id: params.id + '-header', class: 'section-header' }));
+		const header = this.add(new UICollection({ 
+			id: params.id + '-header',
+			class: 'section-header',
+		}));
 
 		header.add(new UILabel({ text: params.label }));
 
@@ -22,9 +25,9 @@ export class UISection extends UICollection {
 			callback: value => { this.addPanel(value); }
 		}));
 		
-		const wc = header.add(new UICollection({ class: 'width-collection' }));
-		wc.add(new UILabel({ text: '⧦' }));
-		this.widthInput = wc.add(new UINumberStep({
+		const width = header.add(new UICollection({ class: 'width-collection' }));
+		width.add(new UILabel({ text: '⧦' }));
+		this.widthInput = width.add(new UINumberStep({
 			value: 100,
 			min: 25,
 			max: 100,
@@ -34,9 +37,9 @@ export class UISection extends UICollection {
 			}
 		}));
 
-		const sc = header.add(new UICollection({ 'class': 'scale-collection' }));
-		sc.add(new UILabel({ text: '◰' }));
-		this.baseFontSize = sc.add(new UINumberStep({
+		const scale = header.add(new UICollection({ 'class': 'scale-collection' }));
+		scale.add(new UILabel({ text: '◰' }));
+		this.baseFontSize = scale.add(new UINumberStep({
 			value: 11,
 			min: 10,
 			max: 40,
@@ -45,16 +48,16 @@ export class UISection extends UICollection {
 			}
 		}));
 
-		const ui = header.add(new UICollection({ "class": "section-collection"}));
+		const section = header.add(new UICollection({ "class": "section-collection"}));
 
-		this.order = ui.add(new UINumberStep({
+		this.order = section.add(new UINumberStep({
 			value: 0,
 			callback: value => {
 				this.setStyle("order", value);
 			}
 		}));
 
-		this.isVisibleToggle = ui.add(new UIToggle({
+		this.isVisibleToggle = section.add(new UIToggle({
 			onText: "◉",
 			offText: "◎",
 			class: "left-end",
@@ -67,7 +70,7 @@ export class UISection extends UICollection {
 			}
 		}));
 
-		ui.add(new UIButton({
+		section.add(new UIButton({
 			text: "X",
 			class: "middle",
 			callback: () => {
@@ -75,7 +78,7 @@ export class UISection extends UICollection {
 			},
 		}));
 
-		ui.add(new UIButton({
+		section.add(new UIButton({
 			text: "+",
 			class: "right-end",
 			callback: () => {

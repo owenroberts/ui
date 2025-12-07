@@ -4,7 +4,7 @@ import { QuickMenu } from './quick.js';
 import { UILabel, UIPanel, UIButton, UICollection, UISection } from './components.js';
 import * as Components from './components.js';
 
-// panels for core settings and quick are separated to avoid loading error
+// panels for quick menu and settings are separated to avoid loading error
 import { SettingsPanel } from './panels/settings-panel.js';
 import { WorkspacesPanel } from './panels/workspaces-panel.js';
 import { QuickPanel } from './panels/quick-panel.js';
@@ -31,7 +31,7 @@ export function formatNumberInput(value) {
 
 export class Interface {
 
-	constructor(app, params) {
+	constructor(settings) {
 
 		// turn off ipad request desktop
 		document.body.classList.add(mobilecheck() ? 'mobile' : 'desktop');
@@ -44,11 +44,11 @@ export class Interface {
 		this.mousePosition = { x: 0, y: 0 };
 
 		this.container = new UICollection({ id: 'container' });
-		this.toolTip = new UILabel({ id: 'tool-tip' }); // should be app ... 
+		this.toolTip = new UILabel({ id: 'tool-tip' });
 		this.container.append(this.toolTip);
 
 		this.quick = new QuickMenu(this);
-		this.settings = new Settings(this, params.settings);
+		this.settings = new Settings(this, settings);
 		
 		this.addPanel(new SettingsPanel({ ui: this }));
 		this.addPanel(new WorkspacesPanel({ ui: this }));
@@ -87,31 +87,32 @@ export class Interface {
 		this.onKeyPress(this.keys[k], true);
 	}
 
-	addKey(key, ui) {
-		this.keys[key] = ui;
-		ui.el.title = `${ ui.text ?? ui.ref ?? ui.id } ~ ${ key }`;
-		ui.el.addEventListener('mouseenter', () => { 
-			this.onKeyPress(ui, false);
+	addKey(key, params, component) {
+		this.keys[key] = component;
+		component.setTitle(`${ params.text ?? params.ref ?? params.id } ~ ${ key }`);
+
+		component.el.addEventListener('mouseenter', () => { 
+			this.onKeyPress(component, false);
 		});
-		ui.el.addEventListener('mouseleave', () => {
-			this.onKeyRelease(ui); 
+		component.el.addEventListener('mouseleave', () => {
+			this.onKeyRelease(component); 
 		});
 	}
 
-	onKeyPress(ui, triggerRelease) {
-		ui.addClass('triggered');
-		this.toolTip.setText(`${ ui.el.title }`);
+	onKeyPress(component, triggerRelease) {
+		component.addClass('triggered');
+		this.toolTip.setText(`${ component.el.title }`);
 		this.toolTip.addClass('visible');
 		
 		if (triggerRelease === true) {
 			setTimeout(() => { 
-				this.onKeyRelease(ui); 
+				this.onKeyRelease(component);
 			}, 400);
 		}
 	}
 
-	onKeyRelease(ui) {
-		ui.removeClass('triggered');
+	onKeyRelease(component) {
+		component.removeClass('triggered');
 		this.toolTip.removeClass('visible');
 	}
 
@@ -127,9 +128,9 @@ export class Interface {
 		this.sections[key].addSelectorOptions(Object.keys(this.panels));
 	}
 
-	removeSection(key, ui) {
+	removeSection(key, section) {
 		if (Object.keys(this.sections).length === 1) return;
-		this.container.remove(ui);
+		this.container.remove(section);
 		delete this.sections[key];
 	}
 
@@ -169,7 +170,7 @@ export class Interface {
 		panel.add(new UILabel({ text: params.label ?? id }));
 		panel.add(component, id);
 		if (params.key) {
-			this.addKey(params.key, component);
+			this.addKey(params.key, params, component);
 		}
 		this.faces[params.face ?? id] = component; // if params.face?
 		if (params.ignoreSettings) component.ignoreSettings = true;
@@ -181,7 +182,7 @@ export class Interface {
 	addButton(panel, params) {
 		if (params.addRow) panel.addRow();
 		const component = panel.add(new Components.UIButton(params));
-		if (params.key) this.addKey(params.key, component, params);
+		if (params.key) this.addKey(params.key, params, component);
 		this.quick.register(component, panel.id, params);
 		return component;
 	}

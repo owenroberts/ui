@@ -1,7 +1,7 @@
 @use "_colors" as *;
 @use "_mixins" as *;
 
-.btn {
+button {
 
 	--progress-percent: 0;
 
@@ -37,8 +37,8 @@
 	}
 }
 
-.panel .btn,
-.btn {
+.panel button,
+button {
 	&.left-end { @include left-end; }
 	&.middle { @include middle; }
 	&.right-end { @include right-end; }
@@ -200,7 +200,7 @@
 }
 
 .tree {
-	.row .btn {
+	.row button {
 		margin-bottom: 0;
 	}
 	.break {
@@ -235,21 +235,7 @@
 
 	label:first-child { flex: 100%; }
 
-	label, 
-	.btn, 
-	input {
-		// margin: 3px;
-	}
-
 	.right-end { margin-left: 0; }
-
-	&.key-command-list {
-		// max-width:
-		// display: grid;
-    	// grid-template-columns: 1fr 1fr 1fr;
-    	// grid-gap: 0.25em 2em;
-    	// max-width: 700px;
-	}
 
 	input[type=text] {
 

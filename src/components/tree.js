@@ -34,7 +34,6 @@ export class UITree extends UICollection {
 	}
 
 	remove(child) {
-		// this.row.el.removeChild(ui.child); // ????
 		this.row.el.removeChild(child.el);
 	}
 

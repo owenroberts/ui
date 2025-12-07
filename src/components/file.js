@@ -3,7 +3,6 @@ import { UIElement } from '../oi.js';
 export class UIFile extends UIElement {
 	constructor(params) {
 		super({ ...params, tag: 'button' });
-		this.addClass('btn');
 
 		this.callback = params.callback;
 		this.multiple = params.multiple || false;

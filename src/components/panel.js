@@ -15,7 +15,7 @@ export class UIPanel extends UICollection {
 
 		this.order = header.add(new UINumberStep({
 			value: 0,
-			class: "order-btn",
+			class: "order",
 			callback: value => {
 				this.setStyle("order", value);
 			}
@@ -23,7 +23,7 @@ export class UIPanel extends UICollection {
 
 		header.add(new UIButton({
 			text: 'X',
-			class: 'undock-btn',
+			class: 'undock',
 			callback: () => {
 				this.ui.sections[this.section].panels.removeK(this.id);
 			},
@@ -32,7 +32,7 @@ export class UIPanel extends UICollection {
 		this.headlessToggle = header.add(new UIToggle({
 			onText: "▿",
 			offText: "◃",
-			class: "headless-btn",
+			class: "headless",
 			callback: value => {
 				if (value) {
 					this.addClass('headless');

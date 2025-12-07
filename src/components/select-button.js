@@ -13,7 +13,7 @@ export class UISelectButton extends UICollection {
 			}
 		}));
 
-		const btn = this.append(new UIButton({
+		this.append(new UIButton({
 			text: "+",
 			css: { 'margin-left': '1px' },
 			callback: () => {
@@ -21,16 +21,15 @@ export class UISelectButton extends UICollection {
 			}
 		}));
 
-		if (params.btns) {
-			params.btns.forEach(btn => {
-				const b = new UIButton({
-					text: btn.text,
+		if (params.buttons) {
+			params.button.forEach(button => {
+				this.append(new UIButton({
+					text: button.text,
 					css: { 'margin-left': '1px' },
 					callback: () => {
-						btn.callback(this.select.value);
+						button.callback(this.select.value);
 					}
-				});
-				this.append(b);
+				}));
 			});
 		}
 	}
